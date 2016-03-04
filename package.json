@@ -1,28 +1,31 @@
 {
-  "name": "electron-quick-start",
+  "name": "pipelinedog",
   "version": "1.0.0",
-  "description": "A minimal Electron application",
+  "description": "A scientific pipeline maker.",
   "main": "main.js",
   "scripts": {
     "start": "electron main.js"
   },
+  "dependencies": {
+    "react": "^0.14.7",
+    "react-dom": "^0.14.7"
+  },
+  "devDependencies": {
+    "babel-preset-react": "^6.5.0",
+    "electron-prebuilt": "^0.36.0"
+  },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/atom/electron-quick-start.git"
+    "url": "git+https://github.com/zhouanbo/pipelinedog.git"
   },
   "keywords": [
-    "Electron",
-    "quick",
-    "start",
-    "tutorial"
+    "PipelineDog",
+    "pipeline"
   ],
-  "author": "GitHub",
-  "license": "CC0-1.0",
+  "author": "Anbo Zhou",
+  "license": "ISC",
   "bugs": {
-    "url": "https://github.com/atom/electron-quick-start/issues"
+    "url": "https://github.com/zhouanbo/pipelinedog/issues"
   },
-  "homepage": "https://github.com/atom/electron-quick-start#readme",
-  "devDependencies": {
-    "electron-prebuilt": "^0.36.0"
-  }
+  "homepage": "https://github.com/zhouanbo/pipelinedog#readme"
 }
