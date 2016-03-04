@@ -1,0 +1,36 @@
+{
+  "name": "samtools view",
+  "version": "0.1.20",
+  "description": "Viewing a BAM/SAM file.",
+  "path": "samtools view",
+  "basic_options": [
+
+  ],
+  "advance_options": [
+    ["-b", "checkbox", "output BAM"],
+    ["-h", "checkbox", "print header for the SAM output"],
+    ["-H", "checkbox", "print header only (no alignments)"],
+    ["-S", "checkbox", "input is SAM"],
+    ["-u", "checkbox", "uncompressed BAM output (force -b)"],
+    ["-1", "checkbox", "fast compression (force -b)"],
+    ["-x", "checkbox", "output FLAG in HEX (samtools-C specific)"],
+    ["-X", "checkbox", "output FLAG in text (samtools-C specific)"],
+    ["-c", "checkbox", "print only the count of matching records"],
+    ["-B", "checkbox", "collapse the backward CIGAR operation"],
+    ["-@", "text", "number of BAM compression threads [0]"],
+    ["-L", "file", "output alignments overlapping the input BED FILE [null]"],
+    ["-t", "file", "list of reference names and lengths (force -S) [null]"],
+    ["-T", "file", "reference sequence file (force -S) [null]"],
+    ["-o", "file", "output file name [stdout]"],
+    ["-R", "file", "list of read groups to be outputted [null]"],
+    ["-f", "number", "required flag, 0 for unset [0]"],
+    ["-F", "number", "filtering flag, 0 for unset [0]"],
+    ["-q", "number", "minimum mapping quality [0]"],
+    ["-l", "text", "only output reads in library STR [null]"],
+    ["-r", "text", "only output reads in read group STR [null]"],
+    ["-s", "text", "fraction of templates to subsample; integer part as seed [-1]"],
+  ],
+  "pseudo_output": [
+
+  ]
+}
