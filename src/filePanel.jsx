@@ -3,7 +3,7 @@ var React = require('react');
 var FilePanel = React.createClass({
   render: function() {
     return (
-      <div className="pane sidebar pull-right">
+      <div className="pane-sm sidebar pull-right">
         <ul className="list-group">
           <li className="list-group-header">
             <strong>Files</strong>
@@ -30,7 +30,7 @@ var FilePanel = React.createClass({
               <td>File</td>
             </tr>
             <tr>
-              <td>photodddddddddddddddddddddddddddddssssssn.css</td>
+              <td>photooooooooo.css</td>
               <td>FileList</td>
             </tr>
           </tbody>

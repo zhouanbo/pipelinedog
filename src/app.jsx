@@ -2,7 +2,7 @@ var React = require('react');
 var ReactDOM = require('react-dom');
 var HeaderPanel = require('./lib/headerPanel');
 var ToolPanel = require('./lib/toolPanel');
-var OptionPanel = require('./lib/optionPanel');
+var CodePanel = require('./lib/codePanel');
 var FilePanel = require('./lib/filePanel');
 
 var MainComponent = React.createClass({
@@ -20,7 +20,7 @@ var MainComponent = React.createClass({
         <div className="window-content">
           <div className="pane-group">
             <ToolPanel />
-            <OptionPanel />
+            <CodePanel />
             <FilePanel />
           </div>
         </div>
