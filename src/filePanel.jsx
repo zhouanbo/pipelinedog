@@ -1,9 +1,15 @@
 var React = require('react');
+var $ = require('jquery');
 
 var FilePanel = React.createClass({
+
+  componentDidMount: function() {
+    $('.filepanel .list-group-header').width($('.filepanel .table-striped').width()-20);
+  },
+
   render: function() {
     return (
-      <div className="pane-sm sidebar pull-right">
+      <div className="filepanel pane-sm sidebar pull-right">
         <ul className="list-group">
           <li className="list-group-header">
             <strong>Files</strong>
@@ -17,22 +23,14 @@ var FilePanel = React.createClass({
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td>photon.css</td>
-              <td>File</td>
-            </tr>
-            <tr>
-              <td>photon.css</td>
-              <td>File</td>
-            </tr>
-            <tr>
-              <td>photon.css</td>
-              <td>File</td>
-            </tr>
-            <tr>
-              <td>photooooooooo.css</td>
-              <td>FileList</td>
-            </tr>
+            {this.props.files.map(function(file, index) {
+              return (
+                <tr key={index}>
+                  <td>{file.name}</td>
+                  <td>{file.type}</td>
+                </tr>
+              );
+            })}
           </tbody>
         </table>
       </div>

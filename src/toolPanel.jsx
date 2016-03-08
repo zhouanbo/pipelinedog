@@ -8,18 +8,16 @@ var ToolPanel = React.createClass({
           <li className="list-group-header">
             <strong>Pipelines</strong>
           </li>
-          <li className="list-group-item">
-            <div className="media-body">
-              <strong>samtools index</strong>
-              <p>Index SAM/BAM files.</p>
-            </div>
-          </li>
-          <li className="list-group-item">
-            <div className="media-body">
-              <strong>samtools mdup</strong>
-              <p>Remove PCR duplicates in SAM/BAM files.</p>
-            </div>
-          </li>
+          {this.props.tools.map(function(tool, index) {
+            return (
+              <li key={index} className="list-group-item">
+                <div className="media-body">
+                  <strong>{tool.name}</strong>
+                  <p>{tool.description}</p>
+                </div>
+              </li>
+            );
+          })}
         </ul>
       </div>
     );

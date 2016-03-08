@@ -18,10 +18,6 @@ var HeaderPanel = React.createClass({
               <span className="icon icon-doc-text icon-text"></span>
               Import File
             </button>
-            <button className="btn btn-large btn-default">
-              <span className="icon icon-docs icon-text"></span>
-              Import FileList
-            </button>
           </div>
           <button className="btn btn-large btn-default pull-right">
             <span className="icon icon-play icon-text"></span>

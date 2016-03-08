@@ -28,7 +28,7 @@ var CodePanel = React.createClass({
       <div className="pane">
         <ul className="list-group">
           <li className="list-group-header">
-            <strong>Options</strong>
+            <strong>Code</strong>
           </li>
         </ul>
         <AceEditor
@@ -36,9 +36,11 @@ var CodePanel = React.createClass({
           theme="chrome"
           name="code"
           width="100%"
-          fontSize="18px"
-          value="#Code to invoke the tool here"
+          maxLines={200}
+          minLines={27}
+          fontSize={14}
           ref="ace"
+          editorProps={{$blockScrolling: Infinity}}
         />
       </div>
     );
