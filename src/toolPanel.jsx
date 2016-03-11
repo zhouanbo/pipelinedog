@@ -9,15 +9,17 @@ var ToolPanel = React.createClass({
           <li className="list-group-header">
             <strong>Pipelines</strong>
           </li>
-          {this.props.tools.map(function(tool, index) {
-            return (
-              <li key={index} name={index} className={"list-group-item"+(this.props.currentTool == index ? " active" : "")} onClick={this.props.toolClick} >
-                <div name={index} className="media-body">
-                  <strong name={index} >{tool.name}</strong>
-                  <p name={index} >{tool.description}</p>
-                </div>
-              </li>
-            );
+          {this.props.tools.map(function(level, levelindex) {
+            return level.map(function(tool, index) {
+              return (
+                <li key={tool.id} name={tool.id} className={"list-group-item"+(this.props.currentTool == tool.id ? " active" : "")} onClick={this.props.toolClick} >
+                  <div name={tool.id} className="media-body">
+                    <strong name={tool.id}>{tool.name}</strong>
+                    <p name={tool.id}>{tool.description}</p>
+                  </div>
+                </li>
+              );
+            }, this);
           }, this)}
         </ul>
       </div>

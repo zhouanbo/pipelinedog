@@ -14,7 +14,12 @@ var MainComponent = React.createClass({
 
   getInitialState: function() {
     return {
-      tools: [{name: "aaa", description: "bbb", code: "toolcode1"}, {name: "ccc", description: "ddd", code: "toolcode2"}],
+      tools: [
+        [{id: 0, name: "aaa", description: "bbb", code: "toolcode1", upstream:[], downstream:[]}],
+        [{id: 1, name: "ccc", description: "ddd", code: "toolcode2", upstream:[], downstream:[]},
+        {id: 2, name: "eee", description: "fff", code: "toolcode3", upstream:[], downstream:[]}],
+      ],
+      lastId: 2,
       files: [{name: "call.vcf", type: "imported", path:"./call.vcf"}, {name: "result.bed", type: "predicted", path: "/home/me/result.bed"}],
       action: "map",
       currentTool: "",
@@ -24,11 +29,9 @@ var MainComponent = React.createClass({
   openProject: function() {
     FileOperation.openProject(this);
   },
-
   saveProject: function() {
     FileOperation.saveProject(this);
   },
-
   importFile: function() {
     FileOperation.importFile(this);
   },
@@ -41,13 +44,22 @@ var MainComponent = React.createClass({
     console.log("5 clicked");
   },
 
-  pathCode: function() {
-    this.state.action = this.state.action === "map" ? "code" : "map";
-    this.setState({action: this.state.action});
+  mapCode: function() {
+    this.state.action = this.state.action == "map" ? "code" : "map";
+    this.setState({action: this.state.action, currentTool: this.state.currentTool});
   },
 
-  addTool: function() {
-    console.log("addtool clicked");
+  addTool: function(e) {
+    this.state.lastId++;
+    var hierarchy = e.target.getAttribute("tabIndex");
+    if(e.target.getAttribute("name") == "bottomplus"){
+      hierarchy++;
+    }
+    if(!this.state.tools[hierarchy]) {
+      this.state.tools[hierarchy]=[];
+    };
+    this.state.tools[hierarchy].push({id: this.state.lastId, name: "ooo", description: "kkk", code: "toolcode4", upstream:[], downstream:[]});
+    this.setState({tools: this.state.tools, lastId: this.state.lastId});
   },
 
   linkTool: function(e) {
@@ -68,7 +80,7 @@ var MainComponent = React.createClass({
           openProject={this.openProject}
           saveProject={this.saveProject}
           importFile={this.importFile}
-          pathCode={this.pathCode}
+          mapCode={this.mapCode}
           exportCode={this.exportCode}
           runCode={this.runCode}
         />
@@ -83,6 +95,7 @@ var MainComponent = React.createClass({
               <MapPanel
                 addTool={this.addTool}
                 linkTool={this.linkTool}
+                tools={this.state.tools}
               /> :
               <CodePanel
                 currentTool={this.state.currentTool}

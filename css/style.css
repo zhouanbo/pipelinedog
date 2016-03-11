@@ -19,3 +19,26 @@ table {
 .filepanel {
   overflow: auto;
 }
+.maplevel {
+  display: flex;
+  justify-content: center;
+}
+.mapnode {
+  flex: 1 1 auto;
+  border-radius: 10px;
+  background: #0E6EB8;
+  height: 60px;
+  max-width: 150px;
+  margin: 15px;
+  color: white;
+  text-align: center;
+  line-height: 60px;
+  font-size: 18px;
+}
+.maplevel .rightplus {
+  align-self: center;
+}
+.maplevel .bottomplus {
+  align-self: flex-end;
+  margin-left: -100;
+}
