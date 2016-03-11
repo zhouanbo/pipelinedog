@@ -14,9 +14,10 @@ var MainComponent = React.createClass({
 
   getInitialState: function() {
     return {
-      tools: [{name: "aaa", description: "bbb"}, {name: "ccc", description: "ddd"}],
-      files: [{name: "call.vcf", type: "real"}, {name: "result.bed", type: "virtual"}],
+      tools: [{name: "aaa", description: "bbb", code: "toolcode1"}, {name: "ccc", description: "ddd", code: "toolcode2"}],
+      files: [{name: "call.vcf", type: "imported"}, {name: "result.bed", type: "virtual"}],
       action: "map",
+      currentTool: "",
     };
   },
 
@@ -56,6 +57,12 @@ var MainComponent = React.createClass({
     console.log(e.target.toString());
   },
 
+  toolClick: function(e) {
+    this.state.currentTool = e.target.getAttribute("name");
+    this.state.action = "code";
+    this.setState({currentTool: this.state.currentTool, action: this.state.action});
+  },
+
 
   render: function() {
     return (
@@ -71,9 +78,20 @@ var MainComponent = React.createClass({
         <div className="window-content">
           <div className="pane-group">
             <ToolPanel
+              currentTool={this.state.currentTool}
               tools={this.state.tools}
+              toolClick={this.toolClick}
             />
-          {this.state.action === "map" ? <MapPanel addTool={this.addTool} linkTool={this.linkTool} /> : <CodePanel />}
+            {this.state.action === "map" ?
+              <MapPanel
+                addTool={this.addTool}
+                linkTool={this.linkTool}
+              /> :
+              <CodePanel
+                currentTool={this.state.currentTool}
+                tools={this.state.tools}
+              />
+            }
             <FilePanel
               files={this.state.files}
             />
