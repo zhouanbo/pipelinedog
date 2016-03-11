@@ -2,9 +2,8 @@ var React = require('react');
 var ReactDOM = require('react-dom');
 var remote = require('remote');
 var dialog = remote.require('dialog');
-var path = require('path');
-var fs = require('fs');
 
+var FileOperation = require('./lib/fileOperation');
 var HeaderPanel = require('./lib/headerPanel');
 var ToolPanel = require('./lib/toolPanel');
 var CodePanel = require('./lib/codePanel');
@@ -23,52 +22,15 @@ var MainComponent = React.createClass({
   },
 
   openProject: function() {
-    var app = this;
-    var filepath = dialog.showOpenDialog({
-      title: "Open Project",
-      properties: ['openFile']
-    }, function(filepath) {
-      if (!filepath) {return;}
-      fs.readFile(filepath[0], 'utf8', function(err, data) {
-        if (err) {
-          return console.log(err);
-        }
-        var readState = JSON.parse(data)
-        app.state = readState;
-        app.setState(app.state);
-      });
-    });
+    FileOperation.openProject(this);
   },
 
   saveProject: function() {
-    var app = this;
-    var filepath = dialog.showSaveDialog({
-      title: "Save Project",
-      defaultPath: path.join(process.env.HOME, "defaultProject.JSON")
-    }, function(filepath) {
-      if (!filepath) {return;}
-      var writeState = JSON.stringify(app.state)
-      fs.writeFile(filepath, writeState, function(err) {
-        if(err) {
-            return console.log(err);
-        }
-        console.log("Project saved!");
-      });
-    });
+    FileOperation.saveProject(this);
   },
 
   importFile: function() {
-    var app = this;
-    var filepaths = dialog.showOpenDialog({
-      title: "Import File",
-      properties: ['openFile','multiSelections']
-    }, function(filepaths) {
-      if (!filepaths) {return;}
-      filepaths.map(function(filepath) {
-        app.state.files.push({name: path.basename(filepath), type: "imported", path: filepath});
-        app.setState({files: app.state.files});
-      }, this)
-    });
+    FileOperation.importFile(this);
   },
 
   runCode: function(e) {
