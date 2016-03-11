@@ -3,8 +3,16 @@ var $ = require('jquery');
 
 var FilePanel = React.createClass({
 
-  componentDidMount: function() {
+  refreshFileList: function() {
     $('.filepanel .list-group-header').width($('.filepanel .table-striped').width()-20);
+  },
+
+  componentDidMount: function() {
+    this.refreshFileList();
+  },
+
+  componentDidUpdate: function() {
+    this.refreshFileList();
   },
 
   render: function() {

@@ -22,7 +22,6 @@ var CodePanel = React.createClass({
     } else {
       this.refs.ace.editor.setReadOnly(false);
       this.refs.ace.editor.setValue(this.props.tools[this.props.currentTool].code, 1);
-
     }
   },
 
@@ -32,11 +31,6 @@ var CodePanel = React.createClass({
 
   componentDidUpdate: function() {
     this.refreshEditor();
-  },
-
-  setOptionState: function(event) {
-    this.state.options[event.target.name] = event.target.value;
-    return this.setState({options: this.state.options});
   },
 
   render: function() {
