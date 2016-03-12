@@ -22,6 +22,7 @@ table {
 .maplevel {
   display: flex;
   justify-content: center;
+  flex-wrap: wrap;
 }
 .mapnode {
   flex: 1 1 auto;
@@ -29,16 +30,16 @@ table {
   background: #0E6EB8;
   height: 60px;
   max-width: 150px;
-  margin: 15px;
+  min-width: 100px;
+  margin: 2px;
   color: white;
   text-align: center;
   line-height: 60px;
   font-size: 18px;
 }
-.maplevel .rightplus {
+.maplevel .btn-group {
   align-self: center;
 }
-.maplevel .bottomplus {
-  align-self: flex-end;
-  margin-left: -100;
+.mappanel .list-group-header {
+  width: 100%;
 }

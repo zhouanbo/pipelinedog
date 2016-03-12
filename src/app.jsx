@@ -15,14 +15,12 @@ var MainComponent = React.createClass({
   getInitialState: function() {
     return {
       tools: [
-        [{id: 0, name: "aaa", description: "bbb", code: "toolcode1", upstream:[], downstream:[]}],
-        [{id: 1, name: "ccc", description: "ddd", code: "toolcode2", upstream:[], downstream:[]},
-        {id: 2, name: "eee", description: "fff", code: "toolcode3", upstream:[], downstream:[]}],
+        [{id: 0, name: "New Step", description: "A new step you just created", code: "#Input Code Here", upstream:[], downstream:[]}],
       ],
-      lastId: 2,
+      lastId: 0,
       files: [{name: "call.vcf", type: "imported", path:"./call.vcf"}, {name: "result.bed", type: "predicted", path: "/home/me/result.bed"}],
       action: "map",
-      currentTool: "",
+      currentTool: 0,
     };
   },
 
