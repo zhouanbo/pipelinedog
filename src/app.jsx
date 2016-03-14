@@ -9,13 +9,26 @@ var ToolPanel = require('./lib/toolPanel');
 var CodePanel = require('./lib/codePanel');
 var MapPanel = require('./lib/mapPanel');
 var FilePanel = require('./lib/filePanel');
+var WelcomeScreen = require('./lib/welcomeScreen');
 
 var MainComponent = React.createClass({
 
   getInitialState: function() {
     return {
+      workDir: "",
       tools: [
-        [{id: 0, name: "New Step", description: "A new step you just created", code: "#Insert Code Here", upstream:[], downstream:[]}],
+        [{
+          id: 0,
+          name: "New Step",
+          description: "A new step you just created",
+          code: "#Insert Code Here",
+          haveloop: false,
+          loop: "",
+          havecondition: false,
+          condition: "",
+          upstream: [],
+          output: []
+        }],
       ],
       lastId: 0,
       files: [{name: "call.vcf", type: "imported", path:"./call.vcf"}, {name: "result.bed", type: "predicted", path: "/home/me/result.bed"}],
@@ -32,6 +45,9 @@ var MainComponent = React.createClass({
   },
   importFile: function() {
     FileOperation.importFile(this);
+  },
+  newProject: function() {
+    FileOperation.newProject(this);
   },
 
   runCode: function(e) {
@@ -56,7 +72,7 @@ var MainComponent = React.createClass({
     if(!this.state.tools[hierarchy]) {
       this.state.tools[hierarchy]=[];
     };
-    this.state.tools[hierarchy].push({id: this.state.lastId, name: "ooo", description: "kkk", code: "toolcode4", upstream:[], downstream:[]});
+    this.state.tools[hierarchy].push({id: this.state.lastId, name: "New Step", description: "A new step you just created", code: "#Insert Code Here", upstream:[], downstream:[]});
     this.setState({tools: this.state.tools, lastId: this.state.lastId});
   },
 
@@ -73,41 +89,48 @@ var MainComponent = React.createClass({
 
   render: function() {
     return (
-      <div className="window">
-        <HeaderPanel
-          openProject={this.openProject}
-          saveProject={this.saveProject}
-          importFile={this.importFile}
-          mapCode={this.mapCode}
-          exportCode={this.exportCode}
-          runCode={this.runCode}
-        />
-        <div className="window-content">
-          <div className="pane-group">
-            <ToolPanel
-              currentTool={this.state.currentTool}
-              tools={this.state.tools}
-              toolClick={this.toolClick}
-            />
-            {this.state.action === "map" ?
-              <MapPanel
-                addTool={this.addTool}
-                linkTool={this.linkTool}
-                tools={this.state.tools}
-              /> :
-              <CodePanel
+      this.state.workDir !== "" ?
+        <div className="window">
+          <HeaderPanel
+            openProject={this.openProject}
+            saveProject={this.saveProject}
+            importFile={this.importFile}
+            mapCode={this.mapCode}
+            exportCode={this.exportCode}
+            runCode={this.runCode}
+          />
+          <div className="window-content">
+            <div className="pane-group">
+              <ToolPanel
                 currentTool={this.state.currentTool}
                 tools={this.state.tools}
+                toolClick={this.toolClick}
               />
-            }
-            <FilePanel
-              files={this.state.files}
-            />
+              {this.state.action === "map" ?
+                <MapPanel
+                  addTool={this.addTool}
+                  linkTool={this.linkTool}
+                  tools={this.state.tools}
+                /> :
+                <CodePanel
+                  currentTool={this.state.currentTool}
+                  tools={this.state.tools}
+                />
+              }
+              <FilePanel
+                files={this.state.files}
+              />
+            </div>
           </div>
+        </div> :
+        <div className="window welcomescreen">
+          <WelcomeScreen
+            openProject={this.openProject}
+            newProject={this.newProject}
+          />
         </div>
-      </div>
-    );
-  }
+      );
+    }
 });
 
 ReactDOM.render(

@@ -30,7 +30,7 @@ var HeaderPanel = React.createClass({
           </button>
           <button className="btn btn-large btn-default pull-right" onClick={this.props.mapCode}>
             <span className="icon icon-arrows-ccw icon-text"></span>
-            Map/Code
+            Map / Tool
           </button>
         </div>
       </header>

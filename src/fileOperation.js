@@ -48,6 +48,18 @@ FileOperation = {
       }, this)
     });
   },
+
+  newProject: function(app) {
+    var filepath = dialog.showOpenDialog({
+      title: "New Project",
+      defaultPath: process.env.HOME,
+      properties: ['openDirectory']
+    }, function(filepath) {
+      if (!filepath) {return;}
+      app.state.workDir = filepath;
+      app.setState({workDir: app.state.workDir})
+    });
+  }
 }
 
 module.exports = FileOperation;

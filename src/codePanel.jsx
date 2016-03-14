@@ -60,12 +60,12 @@ var CodePanel = React.createClass({
           </ul>
           <div className="form-group">
             <span>Name: </span>
-            <div>
+            <div className="nameinput">
               <input type="text" name="name" className="form-control" placeholder="Name" defaultValue={tool[0].name}/>
             </div>
             <span className="splitter">splitter</span>
-            <span>Description</span>
-            <div>
+            <span>Description: </span>
+            <div className="descriptioninput">
               <input type="text" name="description" className="form-control" placeholder="Description" defaultValue={tool[0].description}/>
             </div>
           </div>
@@ -98,7 +98,6 @@ var CodePanel = React.createClass({
               <strong>Code</strong>
             </li>
           </ul>
-
           <AceEditor
             mode="sh"
             theme="chrome"
