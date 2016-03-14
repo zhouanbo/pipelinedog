@@ -44,7 +44,7 @@ FileOperation = {
       if (!filepaths) {return;}
       filepaths.map(function(filepath) {
         app.state.files.push({name: path.basename(filepath), type: "imported", path: filepath});
-        app.setState({files: app.state.files});
+        app.setState(app.state);
       }, this)
     });
   },
@@ -57,7 +57,7 @@ FileOperation = {
     }, function(filepath) {
       if (!filepath) {return;}
       app.state.workDir = filepath;
-      app.setState({workDir: app.state.workDir})
+      app.setState(app.state)
     });
   }
 }

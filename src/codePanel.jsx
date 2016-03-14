@@ -1,6 +1,7 @@
 var React = require('react');
 var brace = require('brace');
 var AceEditor = require('react-ace');
+var Util = require('./util');
 
 require('brace/mode/sh');
 require('brace/theme/chrome');
@@ -13,27 +14,8 @@ var CodePanel = React.createClass({
     };
   },
 
-  filterByProperty: function(array, prop, value) {
-    var filtered = [];
-    for(var i = 0; i < array.length; i++){
-      var obj = array[i];
-      for(var key in obj){
-        if(typeof(obj[key] == "object")){
-          var item = obj[key];
-          if(item[prop] == value){
-            filtered.push(item);
-          }
-        }
-      }
-    }
-    return filtered;
-  },
-
   refreshEditor: function() {
-    this.focusEditor();
     this.refs.ace.editor.getSession().setUseWrapMode(true);
-    var tool = this.filterByProperty(this.props.tools, "id", this.props.currentTool);
-    this.refs.ace.editor.setValue(tool[0].code, 1);
   },
 
   componentDidMount: function() {
@@ -48,7 +30,7 @@ var CodePanel = React.createClass({
   },
 
   render: function() {
-    var tool = this.filterByProperty(this.props.tools, "id", this.props.currentTool);
+    var tool = Util.filterByProperty(this.props.tools, "id", this.props.currentTool);
 
     return (
       <div className="pane">
@@ -61,12 +43,12 @@ var CodePanel = React.createClass({
           <div className="form-group">
             <span>Name: </span>
             <div className="nameinput">
-              <input type="text" name="name" className="form-control" placeholder="Name" defaultValue={tool[0].name}/>
+              <input type="text" name="name" className="form-control" placeholder="Name" value={tool[0].name} onChange={this.props.inputChange}/>
             </div>
             <span className="splitter">splitter</span>
             <span>Description: </span>
             <div className="descriptioninput">
-              <input type="text" name="description" className="form-control" placeholder="Description" defaultValue={tool[0].description}/>
+              <input type="text" name="description" className="form-control" placeholder="Description" value={tool[0].description} onChange={this.props.inputChange}/>
             </div>
           </div>
         </div>
@@ -77,17 +59,17 @@ var CodePanel = React.createClass({
             </li>
           </ul>
           <div className="form-group">
-            <span><input type="checkbox" /></span>
+            <span><input type="checkbox" name="loopcheck" onChange={this.props.inputChange}/></span>
             <span>for</span>
             <div>
-              <input type="text" name="loop" className="form-control" placeholder="Loop" />
+              <input type="text" name="loop" className="form-control" placeholder="Loop" onChange={this.props.inputChange} disabled={!tool[0].haveloop}/>
             </div>
             <span>do...</span>
             <span className="splitter">splitter</span>
-            <span><input type="checkbox" /></span>
+            <span><input type="checkbox" name="conditioncheck" onChange={this.props.inputChange}/></span>
             <span>if</span>
             <div>
-              <input type="text" name="condition" className="form-control" placeholder="Condition" />
+              <input type="text" name="condition" className="form-control" placeholder="Condition"  onChange={this.props.inputChange} disabled={!tool[0].havecondition}/>
             </div>
             <span>then...</span>
           </div>
@@ -106,6 +88,8 @@ var CodePanel = React.createClass({
             maxLines={100}
             fontSize={14}
             ref="ace"
+            value={tool[0].code}
+            onChange={this.props.editorChange}
             editorProps={{$blockScrolling: Infinity}}
           />
         </div>
