@@ -15,7 +15,7 @@ var MainComponent = React.createClass({
   getInitialState: function() {
     return {
       tools: [
-        [{id: 0, name: "New Step", description: "A new step you just created", code: "#Input Code Here", upstream:[], downstream:[]}],
+        [{id: 0, name: "New Step", description: "A new step you just created", code: "#Insert Code Here", upstream:[], downstream:[]}],
       ],
       lastId: 0,
       files: [{name: "call.vcf", type: "imported", path:"./call.vcf"}, {name: "result.bed", type: "predicted", path: "/home/me/result.bed"}],

@@ -48,23 +48,68 @@ var CodePanel = React.createClass({
   },
 
   render: function() {
+    var tool = this.filterByProperty(this.props.tools, "id", this.props.currentTool);
+
     return (
-      <div className="codepane pane" onClick={this.focusEditor}>
-        <ul className="list-group">
-          <li className="list-group-header">
-            <strong>Code</strong>
-          </li>
-        </ul>
-        <AceEditor
-          mode="sh"
-          theme="chrome"
-          name="code"
-          width="100%"
-          maxLines={100}
-          fontSize={14}
-          ref="ace"
-          editorProps={{$blockScrolling: Infinity}}
-        />
+      <div className="pane">
+        <div className="formpane">
+          <ul className="list-group">
+            <li className="list-group-header">
+              <strong>Profile</strong>
+            </li>
+          </ul>
+          <div className="form-group">
+            <span>Name: </span>
+            <div>
+              <input type="text" name="name" className="form-control" placeholder="Name" defaultValue={tool[0].name}/>
+            </div>
+            <span className="splitter">splitter</span>
+            <span>Description</span>
+            <div>
+              <input type="text" name="description" className="form-control" placeholder="Description" defaultValue={tool[0].description}/>
+            </div>
+          </div>
+        </div>
+        <div className="formpane">
+          <ul className="list-group">
+            <li className="list-group-header">
+              <strong>Loop & Condition</strong>
+            </li>
+          </ul>
+          <div className="form-group">
+            <span><input type="checkbox" /></span>
+            <span>for</span>
+            <div>
+              <input type="text" name="loop" className="form-control" placeholder="Loop" />
+            </div>
+            <span>do...</span>
+            <span className="splitter">splitter</span>
+            <span><input type="checkbox" /></span>
+            <span>if</span>
+            <div>
+              <input type="text" name="condition" className="form-control" placeholder="Condition" />
+            </div>
+            <span>then...</span>
+          </div>
+        </div>
+        <div className="codepane" onClick={this.focusEditor}>
+          <ul className="list-group">
+            <li className="list-group-header">
+              <strong>Code</strong>
+            </li>
+          </ul>
+
+          <AceEditor
+            mode="sh"
+            theme="chrome"
+            name="code"
+            width="100%"
+            maxLines={100}
+            fontSize={14}
+            ref="ace"
+            editorProps={{$blockScrolling: Infinity}}
+          />
+        </div>
       </div>
     );
   }

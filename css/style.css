@@ -43,3 +43,23 @@ table {
 .mappanel .list-group-header {
   width: 100%;
 }
+.formpane {
+  background-color: #e6e6e6;
+}
+.formpane .form-group{
+  display: flex;
+  margin-bottom: 0;
+  border-bottom: solid 1px #ddd;
+}
+.formpane .form-group div {
+  flex: 1 1 auto;
+}
+.formpane .form-group span {
+  align-self: center;
+  margin: 0 5px;
+}
+.splitter {
+  background: grey;
+  flex: 0 0 2px;
+  text-indent: -9999px;
+}
