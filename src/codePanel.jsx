@@ -33,7 +33,7 @@ var CodePanel = React.createClass({
     var tool = Util.filterByProperty(this.props.tools, "id", this.props.currentTool);
 
     return (
-      <div className="pane">
+      <div className="pane parampane">
         <div className="formpane">
           <ul className="list-group">
             <li className="list-group-header">
