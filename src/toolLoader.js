@@ -1,9 +1,9 @@
 var fs = require('fs');
 
-var ToolLoader = {
+ToolLoader = {
   load: function(path) {
     var obj = JSON.parse(fs.readFileSync(path));
-    
+
   }
 }
 

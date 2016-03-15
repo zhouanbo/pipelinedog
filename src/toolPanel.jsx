@@ -7,7 +7,7 @@ var ToolPanel = React.createClass({
       <div className="pane-sm sidebar">
         <ul className="list-group">
           <li className="list-group-header">
-            <strong>Pipelines</strong>
+            <strong>Tools</strong>
           </li>
           {this.props.tools.map(function(level, levelindex) {
             return level.map(function(tool, index) {

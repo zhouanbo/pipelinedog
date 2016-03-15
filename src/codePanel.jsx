@@ -3,16 +3,10 @@ var brace = require('brace');
 var AceEditor = require('react-ace');
 var Util = require('./util');
 
-require('brace/mode/sh');
+require('brace/mode/json');
 require('brace/theme/chrome');
 
 var CodePanel = React.createClass({
-
-  getInitialState: function() {
-    return {
-      options: {}
-    };
-  },
 
   refreshEditor: function() {
     this.refs.ace.editor.getSession().setUseWrapMode(true);
@@ -45,43 +39,21 @@ var CodePanel = React.createClass({
             <div className="nameinput">
               <input type="text" name="name" className="form-control" placeholder="Name" value={tool[0].name} onChange={this.props.inputChange}/>
             </div>
-            <span className="splitter">splitter</span>
             <span>Description: </span>
             <div className="descriptioninput">
               <input type="text" name="description" className="form-control" placeholder="Description" value={tool[0].description} onChange={this.props.inputChange}/>
             </div>
           </div>
         </div>
-        <div className="formpane">
-          <ul className="list-group">
-            <li className="list-group-header">
-              <strong>Loop & Condition</strong>
-            </li>
-          </ul>
-          <div className="form-group">
-            <span><input type="checkbox" name="loopcheck" onChange={this.props.inputChange}/></span>
-            <span>for</span>
-            <div>
-              <input type="text" name="loop" className="form-control" placeholder="Loop" onChange={this.props.inputChange} disabled={!tool[0].haveloop}/>
-            </div>
-            <span>do...</span>
-            <span className="splitter">splitter</span>
-            <span><input type="checkbox" name="conditioncheck" onChange={this.props.inputChange}/></span>
-            <span>if</span>
-            <div>
-              <input type="text" name="condition" className="form-control" placeholder="Condition"  onChange={this.props.inputChange} disabled={!tool[0].havecondition}/>
-            </div>
-            <span>then...</span>
-          </div>
-        </div>
         <div className="codepane" onClick={this.focusEditor}>
           <ul className="list-group">
             <li className="list-group-header">
               <strong>Code</strong>
+              {tool[0].valid ? <strong style={{color: '#016936', float: 'right'}}>Valid</strong> : <strong style={{color: '#B03060', float: 'right'}}>Invalid</strong>}
             </li>
           </ul>
           <AceEditor
-            mode="sh"
+            mode="json"
             theme="chrome"
             name="code"
             width="100%"

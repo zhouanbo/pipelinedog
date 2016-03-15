@@ -23,7 +23,7 @@ FileOperation = {
   saveProject: function(app) {
     var filepath = dialog.showSaveDialog({
       title: "Save Project",
-      defaultPath: path.join(process.env.HOME, "defaultProject.JSON")
+      defaultPath: path.join(app.state.workDir, "defaultProject.JSON")
     }, function(filepath) {
       if (!filepath) {return;}
       var writeState = JSON.stringify(app.state)
@@ -50,16 +50,26 @@ FileOperation = {
   },
 
   newProject: function(app) {
+    var touchFile = function(filepath) {
+      var txtpath = filepath;
+      fs.writeFile(txtpath, "", { flag: 'wx' }, function (err) {
+        if (err) return;
+        console.log(txtpath+" touched.");
+      });
+    }
     var filepath = dialog.showOpenDialog({
       title: "New Project",
       defaultPath: process.env.HOME,
       properties: ['openDirectory']
     }, function(filepath) {
       if (!filepath) {return;}
-      app.state.workDir = filepath;
+      touchFile(path.join(filepath[0], "FILELIST.txt"));
+      app.state.files.push({name: "FILELIST.txt", type: "pimary", path: path.join(filepath[0], "FILELIST.txt")});
+      app.state.workDir = filepath[0];
       app.setState(app.state)
     });
-  }
+  },
+
 }
 
 module.exports = FileOperation;
