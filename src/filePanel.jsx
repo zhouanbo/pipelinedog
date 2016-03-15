@@ -7,7 +7,9 @@ var FilePanel = React.createClass({
   refreshTitle: function() {
     $('.filepanel .list-group-header').width($('.filepanel .table-striped').width()-20);
   },
-
+  componentDidMount: function() {
+    this.refreshTitle();
+  },
   componentDidUpdate: function() {
     this.refreshTitle();
   },
