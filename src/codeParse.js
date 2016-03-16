@@ -10,24 +10,25 @@ CodeParse = {
   },
 
   syncEditorToState: function(app) {
-    code = Util.filterByProperty(app.state.tools, "id", app.state.currentTool)[0].code;
+    code = Util.filterByProperty(app.state.tools, "id", app.state.currentTool).code;
     var codeobj = {};
     try{
       codeobj = JSON.parse(code);
     }catch(e){
       console.log('JSON not valid.');
-      Util.filterByProperty(app.state.tools, "id", app.state.currentTool)[0].valid = false;
+      Util.filterByProperty(app.state.tools, "id", app.state.currentTool).valid = false;
       app.setState(app.state);
       return;
     }
-    Util.filterByProperty(app.state.tools, "id", app.state.currentTool)[0].valid = true;
-    Util.filterByProperty(app.state.tools, "id", app.state.currentTool)[0].name = codeobj.name;
-    Util.filterByProperty(app.state.tools, "id", app.state.currentTool)[0].description = codeobj.description;
+    Util.filterByProperty(app.state.tools, "id", app.state.currentTool).valid = true;
+    Util.filterByProperty(app.state.tools, "id", app.state.currentTool).codeobj = codeobj;
+    Util.filterByProperty(app.state.tools, "id", app.state.currentTool).name = codeobj.name;
+    Util.filterByProperty(app.state.tools, "id", app.state.currentTool).description = codeobj.description;
     app.setState(app.state);
   },
 
   syncStateToEditor: function(app) {
-    code = Util.filterByProperty(app.state.tools, "id", app.state.currentTool)[0].code;
+    code = Util.filterByProperty(app.state.tools, "id", app.state.currentTool).code;
     var codeobj = {};
     try{
       codeobj = JSON.parse(code);
@@ -35,9 +36,10 @@ CodeParse = {
       console.log('JSON not valid.');
       return;
     }
-    codeobj.name = Util.filterByProperty(app.state.tools, "id", app.state.currentTool)[0].name;
-    codeobj.description = Util.filterByProperty(app.state.tools, "id", app.state.currentTool)[0].description;
-    Util.filterByProperty(app.state.tools, "id", app.state.currentTool)[0].code = JSON.stringify(codeobj, null, "  ");
+    codeobj.name = Util.filterByProperty(app.state.tools, "id", app.state.currentTool).name;
+    codeobj.description = Util.filterByProperty(app.state.tools, "id", app.state.currentTool).description;
+    Util.filterByProperty(app.state.tools, "id", app.state.currentTool).codeobj = codeobj;
+    Util.filterByProperty(app.state.tools, "id", app.state.currentTool).code = JSON.stringify(codeobj, null, "  ");
   },
 
 };

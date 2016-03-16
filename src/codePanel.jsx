@@ -19,10 +19,6 @@ var CodePanel = React.createClass({
     this.refreshEditor();
   },
 
-  focusEditor: function() {
-    this.refs.ace.editor.focus();
-  },
-
   render: function() {
     var tool = Util.filterByProperty(this.props.tools, "id", this.props.currentTool);
 
@@ -37,11 +33,11 @@ var CodePanel = React.createClass({
           <div className="form-group">
             <span>Name: </span>
             <div className="nameinput">
-              <input type="text" name="name" className="form-control" placeholder="Name" value={tool[0].name} onChange={this.props.inputChange}/>
+              <input type="text" name="name" className="form-control" placeholder="Name" value={tool.name} onChange={this.props.inputChange}/>
             </div>
             <span>Description: </span>
             <div className="descriptioninput">
-              <input type="text" name="description" className="form-control" placeholder="Description" value={tool[0].description} onChange={this.props.inputChange}/>
+              <input type="text" name="description" className="form-control" placeholder="Description" value={tool.description} onChange={this.props.inputChange}/>
             </div>
           </div>
         </div>
@@ -49,7 +45,7 @@ var CodePanel = React.createClass({
           <ul className="list-group">
             <li className="list-group-header">
               <strong>Code</strong>
-              {tool[0].valid ? <strong style={{color: '#016936', float: 'right'}}>Valid</strong> : <strong style={{color: '#B03060', float: 'right'}}>Invalid</strong>}
+              {tool.valid ? <strong style={{color: '#016936', float: 'right'}}>Valid</strong> : <strong style={{color: '#B03060', float: 'right'}}>Invalid</strong>}
             </li>
           </ul>
           <AceEditor
@@ -60,7 +56,7 @@ var CodePanel = React.createClass({
             maxLines={100}
             fontSize={14}
             ref="ace"
-            value={tool[0].code}
+            value={tool.code}
             onChange={this.props.editorChange}
             editorProps={{$blockScrolling: Infinity}}
           />

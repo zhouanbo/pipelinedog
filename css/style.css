@@ -70,20 +70,33 @@ input:focus {
   flex-wrap: wrap;
 }
 .mapnode {
-  flex: 1 1 auto;
-  border-radius: 10px;
+  flex: 0 0 auto;
+  padding: 10px;
+  border-radius: 2px;
   background: #0E6EB8;
-  height: 60px;
+  height: 40px;
   max-width: 150px;
-  min-width: 100px;
-  margin: 2px;
+  margin: 10px 5px;
   color: white;
   text-align: center;
-  line-height: 60px;
-  font-size: 18px;
+  line-height: 20px;
+  font-size: 12px;
+  box-shadow: 2px 2px black;
+}
+.mapnode.chose {
+  background: black;
 }
 .maplevel .btn-group {
+  display: flex;
+  flex-direction: column;
   align-self: center;
+  margin: 10px 5px;
+}
+.maplevel .btn-group div {
+  align-self: center;
+  height: 20px;
+  flex: 0 0 50%;
+  margin: 0px !important;
 }
 .mappanel .list-group-header {
   width: 100%;
