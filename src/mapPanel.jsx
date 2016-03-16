@@ -5,21 +5,6 @@ var Util = require('./util');
 
 var MapPanel = React.createClass({
 
-  drawLines: function() {
-
-  },
-
-  linkNodes: function() {
-
-  },
-
-  componentDidMount: function() {
-    this.linkNodes();
-  },
-  componentDidUpdate: function() {
-    this.linkNodes();
-  },
-
   render: function() {
 
     var chose = this.props.chose;
@@ -36,9 +21,12 @@ var MapPanel = React.createClass({
         {this.props.tools.map(function(level, levelindex) {
           return (
             <div key={levelindex} className="maplevel" name={levelindex}>
+
+              <div className="hierarchynum">{levelindex+1}</div>
+
               {level.map(function(tool, index) {
                 return (
-                  <div key={index} name={tool.id} className={(chose && choosing == tool.id) ? "chose mapnode" : "mapnode"} onClick={this.props.onNodeClick}>{tool.name}</div>
+                  <div key={index} name={tool.id} className={(chose && choosing == tool.id) ? "chose mapnode" : "mapnode"} onClick={this.props.onNodeClick} onDoubleClick={this.props.toolClick}>{tool.name}</div>
                 );
               }, this)}
               {(this.props.tools[levelindex].length > 0) ?

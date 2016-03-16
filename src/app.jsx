@@ -26,7 +26,6 @@ var MainComponent = React.createClass({
           code: CodeParse.initCode(),
           codeobj: {},
           valid: true,
-          upstream: [],
           output: []
         }],
       ],
@@ -77,17 +76,7 @@ var MainComponent = React.createClass({
     if(!this.state.tools[hierarchy]) {
       this.state.tools[hierarchy]=[];
     };
-    this.state.tools[hierarchy].push({id: this.state.lastId, name: "New Step", description: "A new step you just created", code: CodeParse.initCode(), codeobj: {}, upstream:[], output:[]});
-    this.setState(this.state);
-  },
-  linkTool: function(n1, n2) {
-    if(Util.getHierarchy(this.state.tools, n1) > Util.getHierarchy(this.state.tools, n2)) {
-      Util.filterByProperty(this.state.tools, "id", n1).upstream.push(n2);
-    } else if(Util.getHierarchy(this.state.tools, n1) < Util.getHierarchy(this.state.tools, n2)) {
-      Util.filterByProperty(this.state.tools, "id", n2).upstream.push(n1);
-    } else {
-      dialog.showErrorBox("Link Error", "Cannot link tools that executed synchronously.");
-    }
+    this.state.tools[hierarchy].push({id: this.state.lastId, name: "New Step", description: "A new step you just created", code: CodeParse.initCode(), codeobj: {}, output:[]});
     this.setState(this.state);
   },
   deleteTool: function(chose, toolid) {
@@ -119,9 +108,8 @@ var MainComponent = React.createClass({
     } else if(!this.state.chose) { //select node
       this.state.chose = true;
       this.state.choosing = e.target.getAttribute("name");
-    } else if(this.state.chose && this.state.choosing != e.target.getAttribute("name")) { //link node
-      this.state.chose = false;
-      this.linkTool(this.state.choosing, e.target.getAttribute("name"));
+    } else if(this.state.chose && this.state.choosing != e.target.getAttribute("name")) { //select another node
+      this.state.choosing = e.target.getAttribute("name");
     }
     this.setState(this.state);
   },
@@ -179,6 +167,7 @@ var MainComponent = React.createClass({
                   tools={this.state.tools}
                   deleteTool={this.deleteTool}
                   onNodeClick={this.onNodeClick}
+                  toolClick={this.toolClick}
                   chose={this.state.chose}
                   choosing={this.state.choosing}
                 /> :

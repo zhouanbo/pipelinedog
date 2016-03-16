@@ -69,6 +69,14 @@ input:focus {
   justify-content: center;
   flex-wrap: wrap;
 }
+.maplevel .hierarchynum {
+  flex: 0 0 auto;
+  margin-right: 20px;
+  align-self: flex-start;
+  font-size: 30px;
+  line-height: 40px;
+  color: grey;
+}
 .mapnode {
   flex: 0 0 auto;
   padding: 10px;
