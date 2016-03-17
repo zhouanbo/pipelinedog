@@ -17,7 +17,7 @@ var MainComponent = React.createClass({
 
   getInitialState: function() {
     return {
-      workDir: process.env.HOME,
+      workDir: "",
       tools: [
         [{
           id: 0,

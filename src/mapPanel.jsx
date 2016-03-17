@@ -22,8 +22,10 @@ var MapPanel = React.createClass({
           return (
             <div key={levelindex} className="maplevel" name={levelindex}>
 
-              <div className="hierarchynum">{levelindex+1}</div>
-
+              {(this.props.tools[levelindex].length > 0) ?
+                <div className="hierarchynum">{levelindex+1}</div> :
+                <div></div>
+              }
               {level.map(function(tool, index) {
                 return (
                   <div key={index} name={tool.id} className={(chose && choosing == tool.id) ? "chose mapnode" : "mapnode"} onClick={this.props.onNodeClick} onDoubleClick={this.props.toolClick}>{tool.name}</div>
