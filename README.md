@@ -1,3 +1,4 @@
+![PipelineDog Logo](pipeline.dog/icon.png)
 # PiplineDog Docs
 
 This is the documentation of PipelineDog, a tool that helps you better construct and maintain your scientific pipelines.
