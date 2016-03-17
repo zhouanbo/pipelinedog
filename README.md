@@ -1,4 +1,4 @@
-![PipelineDog Logo](http://pipeline.dog/icon.png)
+<img src="http://pipeline.dog/icon.png" alt="pipelinedog logo" height="128" >
 # PiplineDog Docs
 
 This is the documentation of PipelineDog, a tool that helps you better construct and maintain your scientific pipelines.
