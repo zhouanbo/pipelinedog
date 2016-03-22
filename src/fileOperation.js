@@ -1,7 +1,7 @@
 var path = require('path');
 var fs = require('fs');
 
-FileOperation = {
+var FileOperation = {
 
   openProject: function(app) {
     var filepath = dialog.showOpenDialog({
@@ -13,7 +13,7 @@ FileOperation = {
         if (err) {
           return console.log(err);
         }
-        var readState = JSON.parse(data)
+        var readState = JSON.parse(data);
         app.state = readState;
         app.setState(app.state);
       });
@@ -26,7 +26,7 @@ FileOperation = {
       defaultPath: path.join(app.state.workDir, "defaultProject.JSON")
     }, function(filepath) {
       if (!filepath) {return;}
-      var writeState = JSON.stringify(app.state)
+      var writeState = JSON.stringify(app.state);
       fs.writeFile(filepath, writeState, function(err) {
         if(err) {
             return console.log(err);
@@ -45,7 +45,7 @@ FileOperation = {
       filepaths.map(function(filepath) {
         app.state.files.push({name: path.basename(filepath), type: "imported", path: filepath});
         app.setState(app.state);
-      }, this)
+      }, this);
     });
   },
 
@@ -56,7 +56,7 @@ FileOperation = {
         if (err) return;
         console.log(txtpath+" touched.");
       });
-    }
+    };
     var filepath = dialog.showOpenDialog({
       title: "New Project",
       defaultPath: process.env.HOME,
@@ -66,10 +66,10 @@ FileOperation = {
       touchFile(path.join(filepath[0], "FILELIST.txt"));
       app.state.files.push({name: "FILELIST.txt", type: "pimary", path: path.join(filepath[0], "FILELIST.txt")});
       app.state.workDir = filepath[0];
-      app.setState(app.state)
+      app.setState(app.state);
     });
   },
 
-}
+};
 
 module.exports = FileOperation;

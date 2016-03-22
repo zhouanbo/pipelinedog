@@ -25,6 +25,8 @@ var MainComponent = React.createClass({
           description: "A new step you just created",
           code: CodeParse.initCode(),
           codeobj: {},
+          looping: false,
+          parsedCommnad: "",
           valid: true,
           output: []
         }],
@@ -75,14 +77,14 @@ var MainComponent = React.createClass({
     }
     if(!this.state.tools[hierarchy]) {
       this.state.tools[hierarchy]=[];
-    };
+    }
     this.state.tools[hierarchy].push({id: this.state.lastId, name: "New Step", description: "A new step you just created", code: CodeParse.initCode(), codeobj: {}, output:[]});
     this.setState(this.state);
   },
   deleteTool: function(chose, toolid) {
     var id = toolid;
     if(chose) {
-      if(id == 0) {
+      if(Number(id) === 0) {
         dialog.showErrorBox("Deletion Error", "Leave your root node alone T.T");
       } else {
         dialog.showMessageBox({
@@ -91,14 +93,14 @@ var MainComponent = React.createClass({
           title: "Deletion Warning",
           message: "Are you sure to delete "+Util.filterByProperty(this.state.tools, "id", this.state.currentTool).name+"?",
         }, function(r){
-          if(r == 0) {
+          if(Number(r) === 0) {
             Util.deleteById(this.state.tools, id);
             this.state.chose = false;
             this.setState(this.state);
           } else {
             return;
           }
-        }.bind(this))
+        }.bind(this));
       }
     }
   },
