@@ -63,7 +63,11 @@ var MainComponent = React.createClass({
   exportCode: function() {
     console.log("5 clicked");
   },
-
+  
+  onFileClick: function(path) {
+    this.refs.codePanel.refs.ace.editor.insert('"'+path+'"');
+    this.refs.codePanel.refs.ace.editor.focus();
+  },
 
   //Mapping workflow
   mapCode: function() {
@@ -118,8 +122,6 @@ var MainComponent = React.createClass({
     } else if(this.state.chose && this.state.choosing != id) { //select another node
       this.state.choosing = id;
     }
-    console.log("choosing:"+this.state.choosing);
-    console.log("currentTool:"+this.state.chose);
     this.setState(this.state);
   },
 
@@ -201,10 +203,12 @@ var MainComponent = React.createClass({
                   editorChange={this.editorChange}
                   parseCode={this.parseCode}
                   editCode={this.editCode}
+                  ref="codePanel"
                 />
               }
               <FilePanel
                 files={this.state.files}
+                onFileClick={this.onFileClick}
               />
             </div>
           </div>

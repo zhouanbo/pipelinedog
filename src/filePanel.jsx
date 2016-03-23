@@ -1,6 +1,5 @@
 var React = require('react');
 var $ = require('jquery');
-require('jquery-ui');
 
 var FilePanel = React.createClass({
 
@@ -32,12 +31,12 @@ var FilePanel = React.createClass({
           <tbody>
             {this.props.files.map(function(file, index) {
               return (
-                <tr key={index}>
+                <tr key={index} onClick={this.props.onFileClick.bind(null, file.path)}>
                   <td>{file.name}</td>
                   <td>{file.type}</td>
                 </tr>
               );
-            })}
+            }, this)}
           </tbody>
         </table>
       </div>

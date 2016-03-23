@@ -64,7 +64,7 @@ var FileOperation = {
     }, function(filepath) {
       if (!filepath) {return;}
       touchFile(path.join(filepath[0], "FILELIST.txt"));
-      app.state.files.push({name: "FILELIST.txt", type: "pimary", path: path.join(filepath[0], "FILELIST.txt")});
+      app.state.files.push({name: "FILELIST.txt", type: "list", path: path.join(filepath[0], "FILELIST.txt")});
       app.state.workDir = filepath[0];
       app.setState(app.state);
     });
