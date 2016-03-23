@@ -45,7 +45,15 @@ var CodePanel = React.createClass({
           <ul className="list-group">
             <li className="list-group-header">
               <strong>Code</strong>
-              {tool.valid ? <strong style={{color: '#016936', float: 'right'}}>Valid</strong> : <strong style={{color: '#B03060', float: 'right'}}>Invalid</strong>}
+              {tool.valid ? <strong style={{color: '#016936', float: 'right'}}><span style={{color: "black"}}>JSON: </span>Valid</strong> : <strong style={{color: '#B03060', float: 'right'}}><span style={{color: "black"}}>JSON: </span>Invalid</strong>}
+              <div style={{marginRight: '10px'}} className="btn-group pull-right">
+                <button className="btn btn-mini btn-default" onClick={this.props.parseCode}>
+                  Parse
+                </button>
+                <button className="btn btn-mini btn-default" onClick={this.props.editCode}>
+                  Edit
+                </button>
+              </div>
             </li>
           </ul>
           <AceEditor

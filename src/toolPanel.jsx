@@ -12,7 +12,7 @@ var ToolPanel = React.createClass({
           {this.props.tools.map(function(level, levelindex) {
             return level.map(function(tool, index) {
               return (
-                <li key={tool.id} name={tool.id} className={"list-group-item"+(this.props.currentTool == tool.id ? " active" : "")} onClick={this.props.toolClick} >
+                <li key={tool.id} className={"list-group-item"+(this.props.currentTool == tool.id ? " active" : "")} onClick={this.props.toolClick.bind(null, tool.id)} >
                   <div name={tool.id} className="media-body">
                     <strong name={tool.id}>{tool.name}</strong>
                     <p name={tool.id}>{tool.description}</p>

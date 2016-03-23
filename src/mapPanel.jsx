@@ -28,7 +28,7 @@ var MapPanel = React.createClass({
               }
               {level.map(function(tool, index) {
                 return (
-                  <div key={index} name={tool.id} className={(chose && choosing == tool.id) ? "chose mapnode" : "mapnode"} onClick={this.props.onNodeClick} onDoubleClick={this.props.toolClick}>{tool.name}</div>
+                  <div key={index} className={(chose && choosing == tool.id) ? "chose mapnode" : "mapnode"} onClick={this.props.onNodeClick.bind(null, tool.id)} onDoubleClick={this.props.toolClick}>{tool.name}</div>
                 );
               }, this)}
               {(this.props.tools[levelindex].length > 0) ?

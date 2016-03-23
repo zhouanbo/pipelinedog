@@ -25,6 +25,7 @@ var MainComponent = React.createClass({
           description: "A new step you just created",
           code: CodeParse.initCode(),
           codeobj: {},
+          parsedOptions: {},
           looping: false,
           parsedCommnad: "",
           valid: true,
@@ -85,17 +86,21 @@ var MainComponent = React.createClass({
     var id = toolid;
     if(chose) {
       if(Number(id) === 0) {
-        dialog.showErrorBox("Deletion Error", "Leave your root node alone T.T");
+        dialog.showErrorBox("Deletion Error", "Root node cannot be deleted.");
       } else {
         dialog.showMessageBox({
           type: "warning",
-          buttons: ["You bet", "Just kidding"],
+          buttons: ["Delete", "Cancel"],
           title: "Deletion Warning",
           message: "Are you sure to delete "+Util.filterByProperty(this.state.tools, "id", this.state.currentTool).name+"?",
         }, function(r){
           if(Number(r) === 0) {
             Util.deleteById(this.state.tools, id);
             this.state.chose = false;
+            if(this.state.currentTool == id){
+              this.state.currentTool = 0;
+              this.state.choosing = 0;
+            }
             this.setState(this.state);
           } else {
             return;
@@ -104,34 +109,38 @@ var MainComponent = React.createClass({
       }
     }
   },
-  onNodeClick: function(e) {
-    if(this.state.chose && this.state.choosing == e.target.getAttribute("name")){ //unselect node
+  onNodeClick: function(id) {
+    if(this.state.chose && this.state.choosing == id){ //unselect node
       this.state.chose = false;
     } else if(!this.state.chose) { //select node
       this.state.chose = true;
-      this.state.choosing = e.target.getAttribute("name");
-    } else if(this.state.chose && this.state.choosing != e.target.getAttribute("name")) { //select another node
-      this.state.choosing = e.target.getAttribute("name");
+      this.state.choosing = id;
+    } else if(this.state.chose && this.state.choosing != id) { //select another node
+      this.state.choosing = id;
     }
+    console.log("choosing:"+this.state.choosing);
+    console.log("currentTool:"+this.state.chose);
     this.setState(this.state);
   },
 
 
   //Tool defining
-  toolClick: function(e) {
-    this.state.currentTool = e.target.getAttribute("name");
+  toolClick: function(id) {
+    this.state.currentTool = id;
     this.state.action = "code";
-    CodeParse.syncEditorToState(this);
+    CodeParse.syncEditorToState(this); //validate the JSON
     this.setState(this.state);
   },
   inputChange: function(e) {
     if(e.target.getAttribute("name")=="name") {
       Util.filterByProperty(this.state.tools, "id", this.state.currentTool).name = e.target.value;
+      Util.filterByProperty(this.state.tools, "id", this.state.currentTool).codeobj.name = e.target.value;
       CodeParse.syncStateToEditor(this);
       this.setState(this.state);
     }
     if(e.target.getAttribute("name")=="description") {
       Util.filterByProperty(this.state.tools, "id", this.state.currentTool).description = e.target.value;
+      Util.filterByProperty(this.state.tools, "id", this.state.currentTool).codeobj.description = e.target.value;
       CodeParse.syncStateToEditor(this);
       this.setState(this.state);
     }
@@ -140,6 +149,18 @@ var MainComponent = React.createClass({
     Util.filterByProperty(this.state.tools, "id", this.state.currentTool).code = v;
     CodeParse.syncEditorToState(this);
     this.setState(this.state);
+  },
+  
+  //Code parsing
+  parseCode: function() {
+    CodeParse.parseToolCommand(this);
+    this.setState(this.state);
+    console.log("parsing.");
+  },
+  editCode: function() {
+    CodeParse.syncStateToEditor(this);
+    this.setState(this.state);
+    console.log("editing.");
   },
 
 
@@ -178,6 +199,8 @@ var MainComponent = React.createClass({
                   tools={this.state.tools}
                   inputChange={this.inputChange}
                   editorChange={this.editorChange}
+                  parseCode={this.parseCode}
+                  editCode={this.editCode}
                 />
               }
               <FilePanel
