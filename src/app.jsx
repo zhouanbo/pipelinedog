@@ -74,6 +74,13 @@ var MainComponent = React.createClass({
   newProject: function() {
     FileOperation.newProject(this);
   },
+  openFile: function(filepath) {
+    FileOperation.openFile(filepath);
+  },
+  deleteFile: function(index) {
+    this.state.files.splice(index, 1);
+    this.setState(this.state);
+  },
 
   runCode: function() {
     CodeParse.generateCommand(this);
@@ -248,6 +255,8 @@ var MainComponent = React.createClass({
               <FilePanel
                 files={this.state.files}
                 onFileClick={this.onFileClick}
+                openFile={this.openFile}
+                deleteFile={this.deleteFile}
               />
             </div>
           </div>

@@ -1,6 +1,7 @@
 var path = require('path');
 var fs = require('fs');
 var mkdirp = require('mkdirp');
+var open = require("open");
 
 var Util = require('./util');
 
@@ -140,7 +141,11 @@ var FileOperation = {
   runCommand: function(app) {
     fs.writeFileSync(path.join(app.state.workDir, ".piplinecommand.sh"), app.state.command);
   },
-
+  
+  openFile: function(filepath)
+  {
+    open(filepath);
+  },
 };
 
 module.exports = FileOperation;
