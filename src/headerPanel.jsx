@@ -15,6 +15,10 @@ var HeaderPanel = React.createClass({
               <span className="icon icon-floppy icon-text"></span>
               Save Project
             </button>
+            <button className="btn btn-large btn-default" onClick={this.props.saveAsProject}>
+              <span className="icon icon-floppy icon-text"></span>
+              Save As...
+            </button>
             <button className="btn btn-large btn-default" onClick={this.props.importFile}>
               <span className="icon icon-doc-text icon-text"></span>
               Import File

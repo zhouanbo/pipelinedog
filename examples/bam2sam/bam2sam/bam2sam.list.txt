@@ -1,0 +1,3 @@
+/home/usr/file1.sam
+/home/usr/file2.sam
+/home/usr/file3.sam

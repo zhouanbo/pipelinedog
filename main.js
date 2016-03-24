@@ -3,6 +3,7 @@
 const electron = require('electron');
 const app = electron.app;
 const BrowserWindow = electron.BrowserWindow;
+const globalShortcut = electron.globalShortcut;
 
 let mainWindow;
 
@@ -25,6 +26,7 @@ function createWindow () {
 app.on('ready', createWindow);
 
 app.on('window-all-closed', function () {
+  globalShortcut.unregisterAll();
   if (process.platform !== 'darwin') {
     app.quit();
   }

@@ -2,6 +2,7 @@ var React = require('react');
 var ReactDOM = require('react-dom');
 var remote = require('remote');
 var dialog = remote.require('dialog');
+var globalShortcut = remote.globalShortcut;
 var spawn = require('child_process').spawn;
 var path = require('path');
 
@@ -20,6 +21,7 @@ var MainComponent = React.createClass({
   getInitialState: function() {
     return {
       workDir: "",
+      lastSaved: "",
       tools: [
         [{
           id: 0,
@@ -46,6 +48,15 @@ var MainComponent = React.createClass({
     };
   },
 
+  componentDidMount: function() {
+    var app = this;
+    var linuxSaveShotcut = globalShortcut.register('ctrl+s', function() {
+      FileOperation.saveProject(app);
+    });
+    var macSaveShotcut = globalShortcut.register('cmd+s', function() {
+      FileOperation.saveProject(app);
+    });
+  },
 
   //File operations
   openProject: function() {
@@ -53,6 +64,9 @@ var MainComponent = React.createClass({
   },
   saveProject: function() {
     FileOperation.saveProject(this);
+  },
+  saveAsProject: function() {
+    FileOperation.saveAsProject(this);
   },
   importFile: function() {
     FileOperation.importFile(this);
@@ -64,7 +78,7 @@ var MainComponent = React.createClass({
   runCode: function() {
     CodeParse.generateCommand(this);
     FileOperation.runCommand(this);
-    var pipeline = spawn("bash", [path.join(this.state.workDir, "piplinecommand.sh")]);
+    var pipeline = spawn("bash", [path.join(this.state.workDir, ".piplinecommand.sh")]);
     pipeline.stdout.on('data', (data) => {
       console.log(`stdout: ${data}`);
     });
@@ -197,6 +211,7 @@ var MainComponent = React.createClass({
           <HeaderPanel
             openProject={this.openProject}
             saveProject={this.saveProject}
+            saveAsProject={this.saveAsProject}
             importFile={this.importFile}
             mapCode={this.mapCode}
             exportCode={this.exportCode}
