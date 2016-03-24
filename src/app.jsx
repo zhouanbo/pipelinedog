@@ -23,13 +23,13 @@ var MainComponent = React.createClass({
           id: 0,
           name: "New Step",
           description: "A new step you just created",
-          code: CodeParse.initCode(),
-          codeobj: {},
-          parsedOptions: {},
-          looping: false,
-          parsedCommnad: "",
-          valid: true,
-          output_files: []
+          code: CodeParse.initCode(), //the JSON code
+          codeobj: {}, //JOSN object parsed from the code
+          parsedOptions: {}, //LEASH converted options of the tool
+          looping: false, //if the command is to run as a loop, or the values to loop
+          parsedCommnad: "", //the command to finally run
+          valid: true, //if the JSON is valid
+          output_files: [] //the array of predicted output files path
         }],
       ],
       lastId: 0,

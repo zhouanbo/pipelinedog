@@ -1,7 +1,9 @@
 var fs = require('fs');
 var path = require('path');
-var Util = require('./util');
 var _ = require('lodash');
+
+var Util = require('./util');
+
 
 var CodeParse = {
     initCode: function () {
@@ -59,38 +61,77 @@ var CodeParse = {
     })
   },
   
-  parseToolCommand: function(app) { //generate command for each tool and create predicted filelist
+  parseToolCommand: function(app) { //generate command for each tool
+    
+    //NOTE: Looping implementation is based on overwriting the parsedCommnad from convertOptionString function in parseToolCommand function. The reason for this is because the strings variable is only viable in convertOptionString function. However, I added a state called tool.looping that stores the strings variable when looping is needed. So I can have  access to the direct LEASH parsing result through tool.looping in this function.
+    
+    var scope = '%';
+    var segment = ':';
+    
     var tool = Util.filterByProperty(app.state.tools, "id", app.state.currentTool);
-    this.convertOptionString(app);
-    tool.parsedCommand = tool.codeobj.invoke + " " + tool.parsedOptions.join(" ");
+    this.convertOptionString(app, scope, segment);
+    if(!tool.looping) { //if the tool is not looping
+      
+      tool.parsedCommand = tool.codeobj.invoke + " " + tool.parsedOptions.join(" ");
+      
+    } else { //if the tool is looping
+      
+      tool.parsedCommand = "";
+      var inputLoopArray = [], outputLoopArray = [], labelLoopArray = [];
+      if(tool.looping[0]) inputLoopArray = tool.looping[0].split('^LOOP^');
+      if(tool.looping[1]) outputLoopArray = tool.looping[1].split('^LOOP^');
+      if(tool.looping[2]) labelLoopArray = tool.looping[2].split('^LOOP^');
+      
+      inputLoopArray.map(function(fn, i) {
+        var index = i;
+        var filename = fn;
+        tool.parsedOptions = tool.codeobj.options.map(function(s, i) { //overwrite the placeholder replacement to assign one filename to parsed options a time
+          var a = s.split(scope);
+          for (var i=1; i<a.length-1; i+=2) {
+            if(a[i] == "INPUT"){
+              a[i] = inputLoopArray[index];
+            }
+            if(a[i] == "OUTPUT"){
+              a[i] = outputLoopArray[index];
+            }
+            if(a[i] == "LABEL"){
+              a[i] = labelLoopArray[index];
+            }
+          }
+          return a.join('');
+        }, this);
+        tool.parsedCommand += tool.codeobj.invoke + " " + tool.parsedOptions.join(" ")+"\n";
+      }, this);
+      
+    }
     tool.code = tool.parsedCommand;
   },
   
-  convertOptionString: function(app) { //recognize LEASH expression and replace it
-    var codeobj = Util.filterByProperty(app.state.tools, "id", app.state.currentTool).codeobj;
-    var scope = '%';
-    var segment = ':';
-    var strings = [codeobj.input_option, codeobj.output_option, codeobj.label_option];
+  convertOptionString: function(app, scope, segment) { //recognize LEASH expression and replace it, also update output_files info
+    var tool = Util.filterByProperty(app.state.tools, "id", app.state.currentTool);
+    var strings = [tool.codeobj.input_option, tool.codeobj.output_option, tool.codeobj.label_option];
     
     strings = strings.map(function(s, i) { //translate each LEASH expressions
       if(!s) {return;}
       var a = s.split(scope);
       for (var i=1; i<a.length-1; i+=2) {
-        a[i] = this.parseLEASH(a[i], codeobj, segment, fs, this.parseRange);
+        a[i] = this.parseLEASH(a[i], tool, segment, fs, this.parseRange);
       }
       return a.join("");
     }, this);
+    
+    tool.looping = strings;
 
     var outfilesArray = []; //process output_files array
-    codeobj.output_files.map(function(s) {
+    tool.codeobj.output_files.map(function(s) {
       var a = s.split(scope);
       for (var i=1; i<a.length-1; i+=2) {
-        outfilesArray.push(this.parseLEASH(a[i], codeobj, segment, fs, this.parseRange));
+        outfilesArray.push(this.parseLEASH(a[i], tool, segment, fs, this.parseRange));
       }  
     }, this);     
-    Util.filterByProperty(app.state.tools, "id", app.state.currentTool).output_files = _.flattenDeep(outfilesArray);
+    tool.output_files = _.flattenDeep(outfilesArray);
     
-    Util.filterByProperty(app.state.tools, "id", app.state.currentTool).parsedOptions = codeobj.options.map(function(s, i) { //replace placeholders with the translated expressions
+    tool.parsedOptions = tool.codeobj.options.map(function(s, i) { //replace placeholders with the translated expressions
       var a = s.split(scope);
       for (var i=1; i<a.length-1; i+=2) {
         if(a[i] == "INPUT"){
@@ -106,11 +147,10 @@ var CodeParse = {
       return a.join('');
     }, this);
     
-    
   },
   
-  parseLEASH: function(expression, codeobj, segment, fs, parseRange) { //parse LEASH expression and process filelists
-    var filelists = codeobj.filelists;
+  parseLEASH: function(expression, tool, segment, fs, parseRange) { //parse LEASH expression and process filelists
+    var filelists = tool.codeobj.filelists;
     var segs = expression.split(segment);
     var filelines = [];
     var f = [], l = [], b = [], e = [], a = "";
@@ -172,8 +212,8 @@ var CodeParse = {
           } else if(arrangeString == 's') {
             a = e.join(' ');
           } else if(arrangeString == 'l') {
-            codeobj.looping = true;
-            a = e;
+            tool.looping = true;
+            a = e.join('^LOOP^');
           } else {
             a = e.map(function(filename, i){
               return arrangeString+' '+filename;
