@@ -35,6 +35,15 @@ var Util = {
       }
     }
   },
+  
+  hasPath: function(array, path) {
+    for (var i=0; i < array.length; i++) {
+      if (array[i].path == path) {
+          return true;
+      }
+    }
+    return false;
+  },
 
 }
 

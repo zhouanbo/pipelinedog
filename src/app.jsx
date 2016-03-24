@@ -29,12 +29,13 @@ var MainComponent = React.createClass({
           looping: false,
           parsedCommnad: "",
           valid: true,
-          output: []
+          output_files: []
         }],
       ],
       lastId: 0,
       files: [],
       action: "map",
+      showingParsed: false,
       currentTool: 0,
       chose: false,
       choosing: 0
@@ -65,8 +66,10 @@ var MainComponent = React.createClass({
   },
   
   onFileClick: function(path) {
-    this.refs.codePanel.refs.ace.editor.insert('"'+path+'"');
-    this.refs.codePanel.refs.ace.editor.focus();
+    if(!this.state.showingParsed) {
+      this.refs.codePanel.refs.ace.editor.insert('"'+path+'"');
+      this.refs.codePanel.refs.ace.editor.focus();
+    }
   },
 
   //Mapping workflow
@@ -155,12 +158,17 @@ var MainComponent = React.createClass({
   
   //Code parsing
   parseCode: function() {
+    this.state.showingParsed = true;
     CodeParse.parseToolCommand(this);
+    FileOperation.newParse(this);
+    this.refs.codePanel.refs.ace.editor.setReadOnly(true);
     this.setState(this.state);
     console.log("parsing.");
   },
   editCode: function() {
+    this.state.showingParsed = false;
     CodeParse.syncStateToEditor(this);
+    this.refs.codePanel.refs.ace.editor.setReadOnly(false);
     this.setState(this.state);
     console.log("editing.");
   },

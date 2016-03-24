@@ -1,4 +1,5 @@
 var fs = require('fs');
+var path = require('path');
 var Util = require('./util');
 var _ = require('lodash');
 
@@ -18,7 +19,9 @@ var CodeParse = {
   "input_option": "",
   "output_option": "",
   "label_option": "",
-  "output_files": ""
+  "output_files": [
+
+  ]
 }`);
   },
 
@@ -67,7 +70,7 @@ var CodeParse = {
     var codeobj = Util.filterByProperty(app.state.tools, "id", app.state.currentTool).codeobj;
     var scope = '%';
     var segment = ':';
-    var strings = [codeobj.input_option, codeobj.output_option, codeobj.label_option, codeobj.output_files];
+    var strings = [codeobj.input_option, codeobj.output_option, codeobj.label_option];
     
     strings = strings.map(function(s, i) { //translate each LEASH expressions
       if(!s) {return;}
@@ -77,6 +80,15 @@ var CodeParse = {
       }
       return a.join("");
     }, this);
+
+    var outfilesArray = []; //process output_files array
+    codeobj.output_files.map(function(s) {
+      var a = s.split(scope);
+      for (var i=1; i<a.length-1; i+=2) {
+        outfilesArray.push(this.parseLEASH(a[i], codeobj, segment, fs, this.parseRange));
+      }  
+    }, this);     
+    Util.filterByProperty(app.state.tools, "id", app.state.currentTool).output_files = _.flattenDeep(outfilesArray);
     
     Util.filterByProperty(app.state.tools, "id", app.state.currentTool).parsedOptions = codeobj.options.map(function(s, i) { //replace placeholders with the translated expressions
       var a = s.split(scope);
@@ -93,6 +105,7 @@ var CodeParse = {
       }
       return a.join('');
     }, this);
+    
     
   },
   
@@ -124,13 +137,21 @@ var CodeParse = {
         case 'B':
           b = l.map(function(filename, i) {
             var name = [];
-            var bases = filename.split('.');
-            var baseArray = parseRange(s.slice(0,-1), bases.length);
+            var baseArray = [];
+            var dirname = path.dirname(filename);
+            var basename = path.basename(filename);
+            var bases = basename.split('.');
+            
+            if(s.slice(0, 1) == 'P'){
+              baseArray = parseRange(s.slice(1,-1), bases.length);
+            } else {
+              baseArray = parseRange(s.slice(0,-1), bases.length);
+            }
             baseArray.map(function(base, i) {
               name.push(bases[base-1]);
             }, this);
-            return name.join('.');
-          });
+            return s.slice(0, 1) == 'P' ? path.join(dirname, name.join('.')) : name.join('.');
+          }, this);
         break;
           
         case 'E':
