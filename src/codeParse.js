@@ -61,26 +61,39 @@ var CodeParse = {
     })
   },
   
-  parseToolCommand: function(app) { //generate command for each tool
-    
-    //NOTE: Looping implementation is based on overwriting the parsedCommnad from convertOptionString function in parseToolCommand function. The reason for this is because the strings variable is only viable in convertOptionString function. However, I added a state called tool.looping that stores the strings variable when looping is needed. So I can have  access to the direct LEASH parsing result through tool.looping in this function.
+  parseToolCommand: function(app) { //replace placeholders and generate command for each tool
     
     var scope = '%';
     var segment = ':';
     
     var tool = Util.filterByProperty(app.state.tools, "id", app.state.currentTool);
-    this.convertOptionString(app, scope, segment);
+    this.convertExpressions(app, scope, segment);
     if(!tool.looping) { //if the tool is not looping
       
+      tool.parsedOptions = tool.codeobj.options.map(function(s, i) { //replace placeholders with the translated expressions
+        var a = s.split(scope);
+        for (var i=1; i<a.length-1; i+=2) {
+          if(a[i] == "INPUT"){
+            a[i] = tool.expressions[0];
+          }
+          if(a[i] == "OUTPUT"){
+            a[i] = tool.expressions[1];
+          }
+          if(a[i] == "LABEL"){
+            a[i] = tool.expressions[2];
+          }
+        }
+        return a.join('');
+      }, this);
       tool.parsedCommand = tool.codeobj.invoke + " " + tool.parsedOptions.join(" ");
       
     } else { //if the tool is looping
       
       tool.parsedCommand = "";
       var inputLoopArray = [], outputLoopArray = [], labelLoopArray = [];
-      if(tool.looping[0]) inputLoopArray = tool.looping[0].split('^LOOP^');
-      if(tool.looping[1]) outputLoopArray = tool.looping[1].split('^LOOP^');
-      if(tool.looping[2]) labelLoopArray = tool.looping[2].split('^LOOP^');
+      if(tool.expressions[0]) inputLoopArray = tool.expressions[0].split('^LOOP^');
+      if(tool.expressions[1]) outputLoopArray = tool.expressions[1].split('^LOOP^');
+      if(tool.expressions[2]) labelLoopArray = tool.expressions[2].split('^LOOP^');
       
       inputLoopArray.map(function(fn, i) {
         var index = i;
@@ -107,11 +120,11 @@ var CodeParse = {
     tool.code = tool.parsedCommand;
   },
   
-  convertOptionString: function(app, scope, segment) { //recognize LEASH expression and replace it, also update output_files info
+  convertExpressions: function(app, scope, segment) { //recognize LEASH expressions, also update output_files info
     var tool = Util.filterByProperty(app.state.tools, "id", app.state.currentTool);
-    var strings = [tool.codeobj.input_option, tool.codeobj.output_option, tool.codeobj.label_option];
+    tool.expressions = [tool.codeobj.input_option, tool.codeobj.output_option, tool.codeobj.label_option];
     
-    strings = strings.map(function(s, i) { //translate each LEASH expressions
+    tool.expressions = tool.expressions.map(function(s, i) { //translate each LEASH expressions
       if(!s) {return;}
       var a = s.split(scope);
       for (var i=1; i<a.length-1; i+=2) {
@@ -120,8 +133,6 @@ var CodeParse = {
       return a.join("");
     }, this);
     
-    tool.looping = strings;
-
     var outfilesArray = []; //process output_files array
     tool.codeobj.output_files.map(function(s) {
       var a = s.split(scope);
@@ -130,22 +141,6 @@ var CodeParse = {
       }  
     }, this);     
     tool.output_files = _.flattenDeep(outfilesArray);
-    
-    tool.parsedOptions = tool.codeobj.options.map(function(s, i) { //replace placeholders with the translated expressions
-      var a = s.split(scope);
-      for (var i=1; i<a.length-1; i+=2) {
-        if(a[i] == "INPUT"){
-          a[i] = strings[0];
-        }
-        if(a[i] == "OUTPUT"){
-          a[i] = strings[1];
-        }
-        if(a[i] == "LABEL"){
-          a[i] = strings[2];
-        }
-      }
-      return a.join('');
-    }, this);
     
   },
   
