@@ -92,6 +92,26 @@ var FileOperation = {
     }
     app.setState(app.state);
   },
+  
+  exportCommand: function(app) {
+    var filepath = dialog.showSaveDialog({
+      title: "Export Code",
+      defaultPath: path.join(app.state.workDir, "PipelineDog.sh")
+    }, function(filepath) {
+      if (!filepath) {return;}
+      var writeState = app.state.command;
+      fs.writeFile(filepath, writeState, function(err) {
+        if(err) {
+            return console.log(err);
+        }
+        console.log("Command exported!");
+      });
+    });
+  },
+  
+  runCommand: function(app) {
+    fs.writeFileSync(path.join(app.state.workDir, "piplinecommand.sh"), app.state.command);
+  },
 
 };
 
