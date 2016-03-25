@@ -35,7 +35,7 @@ The components that used to assemble a *LEASH* expression, including:
 
 ***Segments***
 
-An *LEASH* expression consists of 4 segments. Segments are indicated by colons. The 4 segments in a LEASH expression are:
+An *LEASH* expression consists of 5 segments. Segments are indicated by colons. The 4 segments in a LEASH expression are:
 
 1. **Scope**: 
 the first segment of the expression, specifying which Inputlist the expression should execute upon. This step pipes the *Inputlists* to the next segment. Scope is a *range* ending with a character 'F'. The numbers in the range refer to the index+1 of a *Inputlist* array.
