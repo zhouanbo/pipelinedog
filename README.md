@@ -28,10 +28,10 @@ A expression system that describe the conversion from a *Inputlist* to a pipelin
 ***Elements***
 
 The components that used to assemble a *LEASH* expression, including:
-- Indicator: indicates the start and end of an expression using double percentage sign (eg: %%).
-- Range: a range of numbers resembling that used in the linux cut command (eg: '1-5' or '2-' or '1,3,7'). The character '-' means to select all.
-- String: a singe quoted string (eg: '.bam' or '.vcf' or '-b')
-- Symbols: Other characters specifying the structure of the expression (eg: ':' or 'L' or 'E').
+  - Indicator: indicates the start and end of an expression using double percentage sign (eg: %%).
+  - Range: a range of numbers resembling that used in the linux cut command (eg: '1-5' or '2-' or '1,3,7'). The character '-' means to select all.
+  - String: a singe quoted string (eg: '.bam' or '.vcf' or '-b')
+  - Symbols: Other characters specifying the structure of the expression (eg: ':' or 'L' or 'E').
 
 ***Segments***
 
@@ -45,8 +45,8 @@ a range ends with a character 'L', selecting what lines of inputs to be used in 
 
 3. **Subtraction**: 
 a segment that trims inputs from the *selection*. This step pipes an array of trimmed inputs to the next segment.
-- Starting with or without a character 'P' to indicate to include the entire file path or just the file names in the input.
-- Following that, a *Range* ending with the character 'B' is used to specify which (from right to left) base (parts of the file name separated by dots) of the file name to keep. For example, given the file name 'NA12877.sort.rmdup.chr20.bam', a *Reconstruction* segment of '2-4B' would return 'sort.rmdup.chr20'.
+  - Starting with or without a character 'P' to indicate to include the entire file path or just the file names in the input.
+  - Following that, a *Range* ending with the character 'B' is used to specify which (from right to left) base (parts of the file name separated by dots) of the file name to keep. For example, given the file name 'NA12877.sort.rmdup.chr20.bam', a *Reconstruction* segment of '2-4B' would return 'sort.rmdup.chr20'.
 
 4. **Extension**
 a segment that extends file paths from the *subtraction*. This step pipes an array of extended file names or path to the next segment.
@@ -54,11 +54,11 @@ A *String* was then given to specify the file extension to be added after the se
 
 5. **Arrangement (optional)**: 
 leaded  by a *String* that indicates how to arrange the i from the inputs previous segments. After this segments, the return of the expression would become a string that available for the pipeline step to use.
-- if 'c' (comma) or 's' (spcae) is given, then all the inputs are separated by comma or space in between. 
-- if an option name (a string beginning with a dash) is given, then the return will begin with this option plus a space before each input. 
-- if 'l' is given, then the pipeline step will be looped through each of the input within the input expression and output expression. In this case, both of the *input_option* and *output_option*  and should be given 'l' as *Arrangement*. When giving 'l', only one expression inside *input_option* and *output_option* are allowed, and each *output_option* will be arranged according to each *input_option* (if *output_option* is more than *input_option*, the rest is ignored, if *output_option* is less than *input_option*, some of the run would have empty *output_option*).
-- if 'n' is given, no arrangement will be made, a string with paths directly next to each other will be returned.
-- if the *Arrangement* segment is omitted, an array of inputs prior to this segment will be returned. This array can be used as the value of the "output_file" key. 
+  - if 'c' (comma) or 's' (spcae) is given, then all the inputs are separated by comma or space in between. 
+  - if an option name (a string beginning with a dash) is given, then the return will begin with this option plus a space before each input. 
+  - if 'l' is given, then the pipeline step will be looped through each of the input within the input expression and output expression. In this case, both of the *input_option* and *output_option*  and should be given 'l' as *Arrangement*. When giving 'l', only one expression inside *input_option* and *output_option* are allowed, and each *output_option* will be arranged according to each *input_option* (if *output_option* is more than *input_option*, the rest is ignored, if *output_option* is less than *input_option*, some of the run would have empty *output_option*).
+  - if 'n' is given, no arrangement will be made, a string with paths directly next to each other will be returned.
+  - if the *Arrangement* segment is omitted, an array of inputs prior to this segment will be returned. This array can be used as the value of the "output_file" key. 
 
 ***Step Definition***
 
