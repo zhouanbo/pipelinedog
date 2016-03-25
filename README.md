@@ -117,7 +117,7 @@ test3.bam
 	"options": ["-h", "%INPUT%", "%OUTPUT%"],
 	"input_option": "%1F:-L:-B:''E:'l'A%",
 	"output_option": "%1F:-L:1B:'.sam'E:'l'A%",
-	"output_files": [“%1F:-L:P1B:'.sam’E%”]
+	"output_files": ["%1F:-L:P1B:'.sam’E%"]
 }
 ```
 **Command Generated**
