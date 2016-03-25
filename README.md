@@ -65,14 +65,14 @@ leaded  by a *String* that indicates how to arrange the i from the inputs previo
 A pipeline step is defined by a JSON object. Taking advantage of the JSON format, each step can be exported when the definition is finished and can be used again in the future. Also, different combinations of steps can be assembled to defined new pipelines.
 ```JSON
 {
-"name": "bam2sam",
-"description": "convert bam files to sam files",
-"invoke": "samtools view",
-"Inputlists": ["INPUT.list.txt"],
-"options": ["-h", "%INPUT%", "%OUTPUT%"],
-"input_option": "%1F:-L:-B:''E:'l'A%",
-"output_option": "%1F:-L:1B:'.sam'E:'l'A%",
-"output_files": "%1F:-L:1B:'.sam'E%"
+	"name": "bam2sam",
+	"description": "convert bam files to sam files",
+	"invoke": "samtools view",
+	"Inputlists": ["INPUT.list.txt"],
+	"options": ["-h", "%INPUT%", "%OUTPUT%"],
+	"input_option": "%1F:-L:-B:''E:'l'A%",
+	"output_option": "%1F:-L:1B:'.sam'E:'l'A%",
+	"output_files": "%1F:-L:1B:'.sam'E%"
 }
 ```
 The keys of the object are defined as following:
@@ -110,14 +110,14 @@ test3.bam
 **Tool definition**
 ```JSON
 {
-"name": "bam2sam",
-"description": "convert bam files to sam files",
-"invoke": "samtools view",
-"Inputlists": ["INPUT.list.txt"],
-"options": ["-h", "%INPUT%", "%OUTPUT%"],
-"input_option": "%1F:-L:-B:''E:'l'A%",
-"output_option": "%1F:-L:1B:'.sam'E:'l'A%",
-"output_files": "%1F:-L:P1B:'.sam'E%"
+	"name": "bam2sam",
+	"description": "convert bam files to sam files",
+	"invoke": "samtools view",
+	"Inputlists": ["INPUT.list.txt"],
+	"options": ["-h", "%INPUT%", "%OUTPUT%"],
+	"input_option": "%1F:-L:-B:''E:'l'A%",
+	"output_option": "%1F:-L:1B:'.sam'E:'l'A%",
+	"output_files": "%1F:-L:P1B:'.sam'E%"
 }
 ```
 **Command Generated**
@@ -154,28 +154,28 @@ INPUT.list.txt:
 **Tool Definition**
 ```JSON
 {
-"name": "Cuffdiff",
-"description": "Summerize gene expresiion difference",
-"invoke": "cuffdiff",
-"inputlists": [
-"/Users/zhouanbo/ElectronProjects/pipelinedog/examples/cuffdiff/INPUT.list.txt"
-],
-"options": [
-"%OUTPUT%",
-"%LABEL%",
-"--multi-read-correct",
-"-p 16",
-"--verbose",
-"--dispersion-method bind",
-"/mnt/input/statics/mm9/mm9_genes_archive_2014.gtf",
-"%INPUT%"
-],
-"input_option": "%1F:1-3L:P-B:''E:'c'A% %1F:4,5L:P-B:''E:'c'A% %1F:6,7L:P-B:''E:'c'A% %1F:8,9L:P-B:''E:'c'A% %1F:10L:P-B:''E:'c'A%",
-"output_option": "-o /mnt/working/cuffidff",
-"label_option": "-L %1F:1,4,6,10L:1B:''E:'c'A%",
-"output_files": [
-"/mnt/working/cuffdiff/gene_exp.diff"
-]
+  "name": "Cuffdiff",
+  "description": "Summerize gene expresiion difference",
+  "invoke": "cuffdiff",
+  "inputlists": [
+    "/Users/zhouanbo/ElectronProjects/pipelinedog/examples/cuffdiff/INPUT.list.txt"
+  ],
+  "options": [
+    "%OUTPUT%",
+    "%LABEL%",
+    "--multi-read-correct",
+    "-p 16",
+    "--verbose",
+    "--dispersion-method bind",
+    "/mnt/input/statics/mm9/mm9_genes_archive_2014.gtf",
+    "%INPUT%"
+  ],
+  "input_option": "%1F:1-3L:P-B:''E:'c'A% %1F:4,5L:P-B:''E:'c'A% %1F:6,7L:P-B:''E:'c'A% %1F:8,9L:P-B:''E:'c'A% %1F:10L:P-B:''E:'c'A%",
+  "output_option": "-o /mnt/working/cuffidff",
+  "label_option": "-L %1F:1,4,6,10L:1B:''E:'c'A%",
+  "output_files": [
+    "/mnt/working/cuffdiff/gene_exp.diff"
+  ]
 }
 ```
 **Command Generated**
