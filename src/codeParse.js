@@ -12,7 +12,7 @@ var CodeParse = {
   "name": "New Step",
   "description": "A new step you just created",
   "invoke": "",
-  "filelists": [
+  "inputlists": [
     
   ],
   "options": [
@@ -141,16 +141,20 @@ var CodeParse = {
     var outfilesArray = []; //process output_files array
     tool.codeobj.output_files.map(function(s) {
       var a = s.split(scope);
-      for (var i=1; i<a.length-1; i+=2) {
-        outfilesArray.push(this.parseLEASH(a[i], tool, segment, fs, this.parseRange));
-      }  
+      if(a.length>=3){
+        for (var i=1; i<a.length-1; i+=2) {
+          outfilesArray.push(this.parseLEASH(a[i], tool, segment, fs, this.parseRange));
+        }
+      } else {
+        outfilesArray.push(s);
+      }
     }, this);     
     tool.output_files = _.flattenDeep(outfilesArray);
     
   },
   
-  parseLEASH: function(expression, tool, segment, fs, parseRange) { //parse LEASH expression and process filelists
-    var filelists = tool.codeobj.filelists;
+  parseLEASH: function(expression, tool, segment, fs, parseRange) { //parse LEASH expression and process inputlists
+    var inputlists = tool.codeobj.inputlists;
     var segs = expression.split(segment);
     var filelines = [];
     var f = [], l = [], b = [], e = [], a = "";
@@ -159,9 +163,9 @@ var CodeParse = {
       switch(s.slice(-1)) {
         
         case 'F':
-          var filelistArray = parseRange(s.slice(0,-1), filelists.length); 
-          filelistArray.map(function(fl, i) {
-            fs.readFileSync(filelists[fl-1], 'utf8').split('\n').map(function(fline) {
+          var inputlistArray = parseRange(s.slice(0,-1), inputlists.length); 
+          inputlistArray.map(function(fl, i) {
+            fs.readFileSync(inputlists[fl-1], 'utf8').split('\n').map(function(fline) {
               f.push(fline);
             }, this);
           }, this);
@@ -211,6 +215,8 @@ var CodeParse = {
             a = e.join(',');
           } else if(arrangeString == 's') {
             a = e.join(' ');
+          } else if(arrangeString == 'n') {
+            a = e.join('');
           } else if(arrangeString == 'l') {
             tool.looping = true;
             a = e.join('^LOOP^');

@@ -8,7 +8,6 @@
   },
   "dependencies": {
     "brace": "^0.7.0",
-    "flux": "^2.1.1",
     "jquery": "^2.2.1",
     "lodash": "^4.6.1",
     "mkdirp": "^0.5.1",
