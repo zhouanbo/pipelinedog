@@ -15,11 +15,11 @@ A list of inputs with each input per line. This is the input of the entire pipel
 
 ***Dynamic inputs and static inputs***
 
-Inputs are categorized into dynamic inputs and static inputs. Dynamic inputs are different in each run of the pipeline (eg: bam files). Static inputs remain the same each run (eg: reference files or "--cpu-cores 8"). Static inputs can be specified directly as how one would normally run a program. However, dynamic inputs need processing before it can be used as the input for a pipeline step since extra flexibility are required.
+Inputs are categorized into dynamic inputs and static inputs. Dynamic inputs are different in each run of the pipeline (eg: bam files). Static inputs remain the same each run (eg: reference files or "--cpu-cores 8"). Static inputs can be specified directly as how one would normally run a program. However, dynamic inputs need processing before it can be used as the input for a pipeline step since extra flexibility is required.
 
 ***Hierarchy***
 
-The input and output of a pipeline step are both *Inputlists*, so that upstream and downstream pipeline step can be connected. Downstream pipeline steps are at lower hierarchy than the upstream steps. Lower hierarchy steps can only see the output of higher hierarchy steps to avoid truncated inputs, and steps at the highest hierarchy can only use the initial Inputlist.txt specified by PipelineDog.
+The input and output of a pipeline step are both *Inputlists*, so that upstream and downstream pipeline steps can be connected. Downstream pipeline steps are at lower hierarchy than the upstream steps. Lower hierarchy steps can only see the output of higher hierarchy steps to avoid truncated inputs, and steps at the highest hierarchy can only use the initial *INPUT.list.txt* specified by PipelineDog.
 
 ***LEASH***
 
@@ -35,7 +35,7 @@ The components that used to assemble a *LEASH* expression, including:
 
 ***Segments***
 
-An *LEASH* expression consists of 5 segments. Segments are indicated by colons. The 4 segments in a LEASH expression are:
+An *LEASH* expression consists of 5 segments. Segments are indicated by colons. The 5 segments in a LEASH expression are:
 
 1. **Scope**: 
 the first segment of the expression, specifying which Inputlist the expression should execute upon. This step pipes the *Inputlists* to the next segment. Scope is a *range* ending with a character 'F'. The numbers in the range refer to the index+1 of a *Inputlist* array.
