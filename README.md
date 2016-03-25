@@ -68,7 +68,7 @@ A pipeline step is defined by a JSON object. Taking advantage of the JSON format
 	"name": "bam2sam",
 	"description": "convert bam files to sam files",
 	"invoke": "samtools view",
-	"Inputlists": ["INPUT.list.txt"],
+	“inputlists": ["INPUT.list.txt"],
 	"options": ["-h", "%INPUT%", "%OUTPUT%"],
 	"input_option": "%1F:-L:-B:''E:'l'A%",
 	"output_option": "%1F:-L:1B:'.sam'E:'l'A%",
@@ -83,7 +83,7 @@ The keys of the object are defined as following:
 
 **invoke**: The command to invoke the pipeline step.
 
-**Inputlists**: An array containing *Inputlists*, which is later selected by *LEASH* expressions.
+**inputlists**: An array containing *Inputlists*, which is later selected by *LEASH* expressions.
 
 **options**: An array of strings that correspond to each of the static input that is normally used in the pipeline step. The places that the dynamic inputs (input, output or label) come in should each be indicated by %INPUT%, %OUTPUT% and %LABEL%.
 
@@ -93,7 +93,7 @@ The keys of the object are defined as following:
 
 **label_option**: A string containing a *LEASH* expression that could be used to replace %LABEL% placeholder in the option.
 
-**output_files**: A array containing the actually output of the pipeline step. Notice the difference between *output_files* and *output_option*: *output_option* is required by the pipeline step, and is supplied to it directly; *output_option*, however, is required by PipelineDog and used to generate the *Inputlist* for the next pipeline step. In cases that files as the *output_option*, the two keys are relatively the same,  a removal of the *Arrangement* segment from *output_option* expression can return an array for *output_files*. In cases that folders as the *output_option*, one need to specify the files inside the folder that needed by next pipeline step to have them generated in the *Inputlist*.
+**output_files**: A array containing the actual output of the pipeline step. Notice the difference between *output_files* and *output_option*: *output_option* is required by the pipeline step, and is supplied to it directly; *output_option*, however, is required by PipelineDog and used to generate the *Inputlist* for the next pipeline step. In cases that files as the *output_option*, the two keys are relatively the same,  a removal of the *Arrangement* segment from *output_option* expression can return an array for *output_files*. In cases that folders as the *output_option*, one need to specify the files inside the folder that needed by next pipeline step to have them generated in the *Inputlist*.
 
 
 ## Use Cases
@@ -113,11 +113,11 @@ test3.bam
 	"name": "bam2sam",
 	"description": "convert bam files to sam files",
 	"invoke": "samtools view",
-	"Inputlists": ["INPUT.list.txt"],
+	“inputlists": ["INPUT.list.txt"],
 	"options": ["-h", "%INPUT%", "%OUTPUT%"],
 	"input_option": "%1F:-L:-B:''E:'l'A%",
 	"output_option": "%1F:-L:1B:'.sam'E:'l'A%",
-	"output_files": "%1F:-L:P1B:'.sam'E%"
+	"output_files": [“%1F:-L:P1B:'.sam’E%”]
 }
 ```
 **Command Generated**
@@ -155,7 +155,7 @@ INPUT.list.txt:
 ```JSON
 {
   "name": "Cuffdiff",
-  "description": "Summerize gene expresiion difference",
+  "description": "Summerize gene expression difference",
   "invoke": "cuffdiff",
   "inputlists": [
     "/Users/zhouanbo/ElectronProjects/pipelinedog/examples/cuffdiff/INPUT.list.txt"
