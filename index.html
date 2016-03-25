@@ -68,9 +68,27 @@
       width: 800px;
       margin-top: 150px;
     }
-    h2 {
-      text-align: center;
-      width: 100%;
+    .row {
+      width: 800px;
+      height: 200px;
+      display:flex;
+      justify-content: center;
+    }
+    .box.left {
+      flex: 1 1 50%;
+      text-align: right;
+      align-self: center;
+    }
+    .box.right {
+      flex: 1 1 50%;
+      text-align: left;
+    }
+    .box-img {
+      display: block;
+      height: 128px;
+      width: 128px;
+      margin-left: auto;
+      margin-right: auto;
     }
     </style>
     
@@ -86,7 +104,30 @@
         <button class="btn btn-default btn-lg btn-tutorial">Tutorial</button>
       </div>
       <div class="intro">
-        <h2>Coming Soon.</h2>
+        <div class="row">
+          <div class="box left">
+            <img class="img-icon" src="icon.png">
+          </div>
+          <div class="box right">
+            <h2>Build pipelines in a modern graphical interface.</h2>
+          </div>
+        </div>
+        <div class="row">
+          <div class="box left">
+            <img class="img-icon" src="icon.png">
+          </div>
+          <div class="box right">
+            <h2>An expression designed specifically to connect pipelines.</h2>
+          </div>
+        </div>
+        <div class="row">
+          <div class="box left">
+            <img class="img-icon" src="icon.png">
+          </div>
+          <div class="box right">
+            <h2>Maintain each pipeline step in an organized JSON format.</h2>
+          </div>
+        </div>
       </div>
     </div>
   </body>
