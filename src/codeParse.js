@@ -72,7 +72,7 @@ var CodeParse = {
       
       tool.parsedOptions = tool.codeobj.options.map(function(s, i) { //replace placeholders with the translated expressions
         var a = s.split(scope);
-        for (var i=1; i<a.length-1; i+=2) {
+        for (var i=1; i < a.length-1; i+=2) {
           if(a[i] == "INPUT"){
             a[i] = tool.expressions[0];
           }
@@ -101,7 +101,7 @@ var CodeParse = {
         var array = a;
         tool.parsedOptions = tool.codeobj.options.map(function(s, i) { //overwrite the placeholder replacement to assign one filename to parsed options a time
           var a = s.split(scope);
-          for (var i=1; i<a.length-1; i+=2) {
+          for (var i=1; i < a.length-1; i+=2) {
             if(a[i] == "INPUT"){
               a[i] = inputLoopArray[index];
             }
@@ -132,7 +132,7 @@ var CodeParse = {
     tool.expressions = tool.expressions.map(function(s, i) { //translate each LEASH expressions
       if(!s) {return;}
       var a = s.split(scope);
-      for (var i=1; i<a.length-1; i+=2) {
+      for (var i=1; i < a.length-1; i+=2) {
         a[i] = this.parseLEASH(a[i], tool, segment, fs, this.parseRange);
       }
       return a.join("");
@@ -142,7 +142,7 @@ var CodeParse = {
     tool.codeobj.output_files.map(function(s) {
       var a = s.split(scope);
       if(a.length>=3){
-        for (var i=1; i<a.length-1; i+=2) {
+        for (var i=1; i < a.length-1; i+=2) {
           outfilesArray.push(this.parseLEASH(a[i], tool, segment, fs, this.parseRange));
         }
       } else {
