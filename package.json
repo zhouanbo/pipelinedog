@@ -6,6 +6,10 @@
   "scripts": {
     "start": "electron main.js"
   },
+  "babel": {
+    "presets": ["react"],
+    "plugins": []
+  },
   "dependencies": {
     "brace": "^0.7.0",
     "jquery": "^2.2.1",
