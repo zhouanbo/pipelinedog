@@ -63,7 +63,8 @@ leaded  by a *String* that indicates how to arrange the i from the inputs previo
 ***Step Definition***
 
 A pipeline step is defined by a JSON object. Taking advantage of the JSON format, each step can be exported when the definition is finished and can be used again in the future. Also, different combinations of steps can be assembled to defined new pipelines.
-```JSON
+
+```json
 {
 	"name": "bam2sam",
 	"description": "convert bam files to sam files",
@@ -75,6 +76,7 @@ A pipeline step is defined by a JSON object. Taking advantage of the JSON format
 	"output_files": "%1F:-L:1B:'.sam'E%"
 }
 ```
+
 The keys of the object are defined as following:
 
 **name**: A string containing the name of the pipeline step.
@@ -102,13 +104,16 @@ The keys of the object are defined as following:
 
 **Inputlist**
 INPUT.list.txt:
+
 ```
 test1.bam
 test2.bam
 test3.bam
 ```
+
 **Tool definition**
-```JSON
+
+```json
 {
 	"name": "bam2sam",
 	"description": "convert bam files to sam files",
@@ -120,14 +125,18 @@ test3.bam
 	"output_files": ["%1F:-L:P1B:'.sam’E%"]
 }
 ```
+
 **Command Generated**
+
 ```bash
 samtools view -h test1.bam test1.sam
 samtools view -h test2.bam test2.sam
 samtools view -h test3.bam test3.sam
 ```
+
 **Output Inputlist**
 bam2sam.txt:
+
 ```
 bam2sam/test1.sam
 bam2sam/test2.sam
@@ -138,6 +147,7 @@ bam2sam/test3.sam
 
 **Flielist**
 INPUT.list.txt:
+
 ```
 /home/cuffquant/ControlCr.Rep1.cxb
 /home/cuffquant/ControlCr.Rep2.cxb 
@@ -152,6 +162,7 @@ INPUT.list.txt:
 ```
 
 **Tool Definition**
+
 ```JSON
 {
   "name": "Cuffdiff",
@@ -179,11 +190,14 @@ INPUT.list.txt:
 }
 ```
 **Command Generated**
+
 ```bash
 cuffdiff -o /mnt/working/march2016/RNA/cuffdiff/result -L ControlCr,Cdx2koCr,BrafHetCr,Cdx2BrafHetCr,smadBrafHetCr --multi-read-correct -p 16 --verbose --dispersion-method blind /mnt/input/statics/mm9/mm9_genes_archive_2014.gtf /home/cuffquant/ControlCr.Rep1.cxb,/home/cuffquant/ControlCr.Rep2.cxb,/home/cuffquant/ControlCr.Rep3.cxb /home/cuffquant/Cdx2koCr.rep1.cxb,/home/cuffquant/Cdx2koCr.rep2.cxb /home/cuffquant/BrafHetCr.ATCACG.cxb,/home/cuffquant/BrafHetCr.GATCAG.cxb /home/cuffquant/Cdx2BrafHetCr.TAGCTT.cxb,/home/cuffquant/Cdx2BrafHetCr.TTAGGC.cxb /home/cuffquant/smadBrafHetCr.ACTTGA.cxb
 ```
+
 **Output Inputlist**
 cuffdiff.txt:
+
 ```
 /mnt/working/march2016/RNA/cuffdiff/result/gene_exp.diff
 ```
