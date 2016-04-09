@@ -43,8 +43,6 @@ var CodePanel = React.createClass({
               <input type="text" name="description" className="form-control" placeholder="Description" value={tool.description} onChange={this.props.inputChange}/>
             </div>
           </div>
-        </div>
-        <div className="codepane" onClick={this.focusEditor}>
           <ul className="list-group">
             <li className="list-group-header">
               <strong>Code</strong>
@@ -59,6 +57,8 @@ var CodePanel = React.createClass({
               </div>
             </li>
           </ul>
+        </div>
+        <div className="codepane" onClick={this.focusEditor}> 
           <AceEditor
             mode="json"
             theme="chrome"
