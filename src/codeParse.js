@@ -68,8 +68,7 @@ var CodeParse = {
     
     var tool = Util.filterByProperty(app.state.tools, "id", app.state.currentTool);
     this.convertExpressions(app, scope, segment);
-    if(!tool.looping) { //if the tool is not looping
-      
+    if(!tool.looping) { //if the tool is not looping     
       tool.parsedOptions = tool.codeobj.options.map(function(s, i) { //replace placeholders with the translated expressions
         var a = s.split(scope);
         for (var i=1; i < a.length-1; i+=2) {
@@ -85,16 +84,13 @@ var CodeParse = {
         }
         return a.join('');
       }, this);
-      tool.parsedCommand = tool.codeobj.invoke + " " + tool.parsedOptions.join(" ") + "&";
-      
-    } else { //if the tool is looping
-      
+      tool.parsedCommand = tool.codeobj.invoke + " " + tool.parsedOptions.join(" ") + "&";  
+    } else { //if the tool is looping  
       tool.parsedCommand = "";
       var inputLoopArray = [], outputLoopArray = [], labelLoopArray = [];
       if(tool.expressions[0]) inputLoopArray = tool.expressions[0].split('^LOOP^');
       if(tool.expressions[1]) outputLoopArray = tool.expressions[1].split('^LOOP^');
-      if(tool.expressions[2]) labelLoopArray = tool.expressions[2].split('^LOOP^');
-      
+      if(tool.expressions[2]) labelLoopArray = tool.expressions[2].split('^LOOP^');    
       inputLoopArray.map(function(fn, i, a) {
         var index = i;
         var filename = fn;
@@ -119,9 +115,9 @@ var CodeParse = {
         } else {
           tool.parsedCommand += tool.codeobj.invoke + " " + tool.parsedOptions.join(" ") + "&";
         }
-      }, this);
-      
+      }, this);     
     }
+    
     tool.code = tool.parsedCommand;
   },
   
@@ -155,9 +151,41 @@ var CodeParse = {
   
   parseLEASH: function(expression, tool, segment, fs, parseRange) { //parse LEASH expression and process inputlists
     var inputlists = tool.codeobj.inputlists;
-    var segs = expression.split(segment);
-    var filelines = [];
+    var segs = [];
     var f = [], l = [], b = [], e = [], a = "";
+    
+    expression.split(segment).map(function(s, i) {
+      if(s.slice(-1) == 'F') {
+        segs[0] = s;
+      }
+      if(s.slice(-1) == 'L') {
+        segs[1] = s;
+      }
+      if(s.slice(-1) == 'B') {
+        segs[2] = s;
+      }
+      if(s.slice(-1) == 'E') {
+        segs[3] = s;
+      }
+      if(s.slice(-1) == 'A') {
+        segs[4] = s;
+      }
+    });
+    if(!segs[0]) {
+      segs[0] = "-F";
+    }
+    if(!segs[1]) {
+      segs[1] = "-L";
+    }
+    if(!segs[2]) {
+      segs[2] = "P-B";
+    }
+    if(!segs[3]) {
+      segs[3] = "''E";
+    }
+    if(!segs[4]) {
+      segs[4] = "'n'A";
+    }
     
     segs.map(function(s, i) {
       switch(s.slice(-1)) {
@@ -215,6 +243,8 @@ var CodeParse = {
             a = e.join(',');
           } else if(arrangeString == 's') {
             a = e.join(' ');
+          } else if(arrangeString == 'a') {
+            a = e;
           } else if(arrangeString == 'n') {
             a = e.join('');
           } else if(arrangeString == 'l') {
@@ -231,7 +261,7 @@ var CodeParse = {
           console.log("illegal LEASE expression.")
       }
     }, this);
-    return a === "" ? e : a;
+    return a;
   },
   
   parseRange: function(s, length) {
