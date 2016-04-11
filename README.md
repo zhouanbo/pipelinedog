@@ -29,7 +29,7 @@ A expression system that describe the conversion from a *Inputlist* to a pipelin
 
 The components that used to assemble a *LEASH* expression, including:
   - Indicator: indicates the start and end of an expression using double percentage sign (eg: '{}').
-  - Range: a range of numbers resembling that used in the linux cut command (eg: '1-5' or '2-' or '1,3,7'). The character '-' means to select all.
+  - Range: a regular expression, or a range of numbers resembling that used in the linux cut command (eg: '1-5' or '2-' or '1,3,7'). The character '-' means to select all.
   - String: a singe quoted string (eg: '.bam' or '.vcf' or '-b')
   - Symbols: Other characters specifying the structure of the expression (eg: '|' or 'L' or 'E').
 
