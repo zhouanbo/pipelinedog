@@ -63,8 +63,8 @@ var CodeParse = {
   
   parseToolCommand: function(app) { //replace placeholders and generate command for each tool
     
-    var scope = '%';
-    var segment = ':';
+    var scope = /[\{\}]/;
+    var segment = '|';
     
     var tool = Util.filterByProperty(app.state.tools, "id", app.state.currentTool);
     this.convertExpressions(app, scope, segment);
@@ -267,13 +267,11 @@ var CodeParse = {
   },
   
   parseRange: function(s, length, arr) {
-    var r = [];
-    
+    var r = [];    
     if(s.indexOf('/') > -1) {
       //parse regex range
       var regex = new RegExp(s.replace(/\/+/g, ''));
       arr.map(function(string, i) {
-        console.log(string.search(regex))
         if(string.search(regex) > -1) {
           r.push(i+1);
         };
