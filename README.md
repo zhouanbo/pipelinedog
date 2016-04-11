@@ -123,7 +123,7 @@ test3.bam
 	"options": ["-h", "{INPUT}", "{OUTPUT}"],
 	"input_option": "{-B|'l'A}",
 	"output_option": "{1B|'.sam'E|'l'A}",
-	"output_files": ["{P1B|'.sam’E}"]
+	"output_files": ["{P1B|'.sam’E|'a'A}"]
 }
 ```
 
@@ -150,16 +150,16 @@ bam2sam/test3.sam
 INPUT.list.txt:
 
 ```
-/home/cuffquant/ControlCr.Rep1.cxb
-/home/cuffquant/ControlCr.Rep2.cxb 
-/home/cuffquant/ControlCr.Rep3.cxb
+/home/cuffquant/ControlCr.rep1.cxb
+/home/cuffquant/ControlCr.rep2.cxb
+/home/cuffquant/ControlCr.rep3.cxb
 /home/cuffquant/Cdx2koCr.rep1.cxb
 /home/cuffquant/Cdx2koCr.rep2.cxb
-/home/cuffquant/BrafHetCr.ATCACG.cxb
-/home/cuffquant/BrafHetCr.GATCAG.cxb
-/home/cuffquant/Cdx2BrafHetCr.TAGCTT.cxb
-/home/cuffquant/Cdx2BrafHetCr.TTAGGC.cxb
-/home/cuffquant/smadBrafHetCr.ACTTGA.cxb
+/home/cuffquant/BrafHetCr.rep1.cxb
+/home/cuffquant/BrafHetCr.rep2.cxb
+/home/cuffquant/Cdx2BrafCr.rep1.cxb
+/home/cuffquant/Cdx2BrafCr.rep2.cxb
+/home/cuffquant/SmadBrafCr.rep1.cxb
 ```
 
 **Tool Definition**
@@ -182,7 +182,7 @@ INPUT.list.txt:
     "/mnt/input/statics/mm9/mm9_genes_archive_2014.gtf",
     "%INPUT%"
   ],
-  "input_option": "{1-3L|'c'A} {4,5L|'c'A} {6,7L|'c'A} {8,9L|'c'A} {10L|'c'A}",
+  "input_option": "{/Control/L|'c'A} {/Cdx2ko/L|'c'A} {/BrafHet/L|'c'A} {/Cdx2Braf/L|'c'A} {/SmadBraf/L|'c'A}",
   "output_option": "-o /mnt/working/cuffidff",
   "label_option": "-L {1,4,6,10L|1B|'c'A}",
   "output_files": [
@@ -193,7 +193,7 @@ INPUT.list.txt:
 **Command Generated**
 
 ```bash
-cuffdiff -o /mnt/working/march2016/RNA/cuffdiff/result -L ControlCr,Cdx2koCr,BrafHetCr,Cdx2BrafHetCr,smadBrafHetCr --multi-read-correct -p 16 --verbose --dispersion-method blind /mnt/input/statics/mm9/mm9_genes_archive_2014.gtf /home/cuffquant/ControlCr.Rep1.cxb,/home/cuffquant/ControlCr.Rep2.cxb,/home/cuffquant/ControlCr.Rep3.cxb /home/cuffquant/Cdx2koCr.rep1.cxb,/home/cuffquant/Cdx2koCr.rep2.cxb /home/cuffquant/BrafHetCr.ATCACG.cxb,/home/cuffquant/BrafHetCr.GATCAG.cxb /home/cuffquant/Cdx2BrafHetCr.TAGCTT.cxb,/home/cuffquant/Cdx2BrafHetCr.TTAGGC.cxb /home/cuffquant/smadBrafHetCr.ACTTGA.cxb
+cuffdiff -o /mnt/working/cuffidff -L ControlCr,Cdx2koCr,BrafHetCr,Cdx2BrafCr,SmadBrafCr --multi-read-correct -p 16 --verbose --dispersion-method bind /mnt/input/statics/mm9/mm9_genes_archive_2014.gtf /home/cuffquant/ControlCr.rep1.cxb,/home/cuffquant/ControlCr.rep2.cxb,/home/cuffquant/ControlCr.rep3.cxb /home/cuffquant/Cdx2koCr.rep1.cxb,/home/cuffquant/Cdx2koCr.rep2.cxb /home/cuffquant/BrafHetCr.rep1.cxb,/home/cuffquant/BrafHetCr.rep2.cxb /home/cuffquant/Cdx2BrafCr.rep1.cxb,/home/cuffquant/Cdx2BrafCr.rep2.cxb /home/cuffquant/SmadBrafCr.rep1.cxb&
 ```
 
 **Output Inputlist**
