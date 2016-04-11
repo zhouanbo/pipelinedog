@@ -118,7 +118,6 @@ var CodeParse = {
       }, this);     
     }
     
-    tool.code = tool.parsedCommand;
   },
   
   convertExpressions: function(app, scope, segment) { //recognize LEASH expressions, also update output_files info

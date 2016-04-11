@@ -4,16 +4,32 @@ var AceEditor = require('react-ace');
 var Util = require('./util');
 
 require('brace/mode/json');
+require('brace/mode/sh');
 require('brace/theme/chrome');
 
 var CodePanel = React.createClass({
 
   refreshEditor: function() {
     this.refs.ace.editor.getSession().setUseWrapMode(true);
+    this.refs.aceparsed.editor.getSession().setUseWrapMode(true);
+    if(this.props.showingParsed){
+      document.getElementById('code').style.display = 'none';
+      document.getElementById('codeparsed').style.display = 'block';
+    } else {
+      document.getElementById('code').style.display = 'block';
+      document.getElementById('codeparsed').style.display = 'none';
+    }
   },
 
   componentDidMount: function() {
     this.refreshEditor();
+    //A hack to fix ace editor's undo to empty bug
+    var undo_manager = this.refs.ace.editor.getSession().getUndoManager();
+    undo_manager.reset();
+    this.refs.ace.editor.getSession().setUndoManager(undo_manager);
+    var undo_manager_parsed = this.refs.aceparsed.editor.getSession().getUndoManager();
+    undo_manager_parsed.reset();
+    this.refs.aceparsed.editor.getSession().setUndoManager(undo_manager_parsed);
   },
   componentDidUpdate: function() {
     this.refreshEditor();
@@ -69,6 +85,17 @@ var CodePanel = React.createClass({
             ref="ace"
             value={tool.code}
             onChange={this.props.editorChange}
+            editorProps={{$blockScrolling: Infinity}}
+          />
+          <AceEditor
+            mode="sh"
+            theme="chrome"
+            name="codeparsed"
+            width="100%"
+            maxLines={100}
+            fontSize={14}
+            ref="aceparsed"
+            value={tool.parsedCommand}
             editorProps={{$blockScrolling: Infinity}}
           />
         </div>

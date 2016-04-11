@@ -399,14 +399,12 @@ var MainComponent = React.createClass({
     this.state.showingParsed = true;
     CodeParse.parseToolCommand(this);
     FileOperation.newParse(this);
-    this.refs.codePanel.refs.ace.editor.setReadOnly(true);
     this.setState(this.state);
     console.log("parsing.");
   },
   editCode: function() {
     this.state.showingParsed = false;
     CodeParse.syncStateToEditor(this);
-    this.refs.codePanel.refs.ace.editor.setReadOnly(false);
     this.setState(this.state);
     console.log("editing.");
   },
@@ -446,6 +444,7 @@ var MainComponent = React.createClass({
                 <CodePanel
                   currentTool={this.state.currentTool}
                   tools={this.state.tools}
+                  showingParsed={this.state.showingParsed}
                   inputChange={this.inputChange}
                   editorChange={this.editorChange}
                   parseCode={this.parseCode}
