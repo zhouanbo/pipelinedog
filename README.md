@@ -173,14 +173,14 @@ INPUT.list.txt:
     "INPUT.list.txt"
   ],
   "options": [
-    "%OUTPUT%",
-    "%LABEL%",
+    "{OUTPUT}",
+    "{LABEL}",
     "--multi-read-correct",
     "-p 16",
     "--verbose",
     "--dispersion-method bind",
     "/mnt/input/statics/mm9/mm9_genes_archive_2014.gtf",
-    "%INPUT%"
+    "{INPUT}"
   ],
   "input_option": "{/Control/L|'c'A} {/Cdx2ko/L|'c'A} {/BrafHet/L|'c'A} {/Cdx2Braf/L|'c'A} {/SmadBraf/L|'c'A}",
   "output_option": "-o /mnt/working/cuffidff",
