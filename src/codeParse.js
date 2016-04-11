@@ -257,9 +257,7 @@ var CodeParse = {
             }).join(' ');
           }
         break;
-          
-        default:
-          console.log("illegal LEASE expression.");
+ 
       }
     }, this);
     return a;

@@ -24,12 +24,8 @@ var CodePanel = React.createClass({
   componentDidMount: function() {
     this.refreshEditor();
     //A hack to fix ace editor's undo to empty bug
-    var undo_manager = this.refs.ace.editor.getSession().getUndoManager();
-    undo_manager.reset();
-    this.refs.ace.editor.getSession().setUndoManager(undo_manager);
-    var undo_manager_parsed = this.refs.aceparsed.editor.getSession().getUndoManager();
-    undo_manager_parsed.reset();
-    this.refs.aceparsed.editor.getSession().setUndoManager(undo_manager_parsed);
+    this.refs.ace.editor.getSession().setUndoManager(this.refs.ace.editor.getSession().getUndoManager().reset());
+    this.refs.aceparsed.editor.getSession().setUndoManager(this.refs.aceparsed.editor.getSession().getUndoManager().reset());
   },
   componentDidUpdate: function() {
     this.refreshEditor();
@@ -80,7 +76,7 @@ var CodePanel = React.createClass({
             theme="chrome"
             name="code"
             width="100%"
-            maxLines={100}
+            maxLines={500}
             fontSize={14}
             ref="ace"
             value={tool.code}
@@ -92,7 +88,7 @@ var CodePanel = React.createClass({
             theme="chrome"
             name="codeparsed"
             width="100%"
-            maxLines={100}
+            maxLines={500}
             fontSize={14}
             ref="aceparsed"
             value={tool.parsedCommand}
