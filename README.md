@@ -164,7 +164,7 @@ INPUT.list.txt:
 
 **Tool Definition**
 
-```JSON
+```json
 {
   "name": "Cuffdiff",
   "description": "Summerize gene expression difference",

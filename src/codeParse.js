@@ -230,7 +230,9 @@ var CodeParse = {
           e = b.map(function(filename, i) {
             var extensionString = s.replace(/['"]+/g, '').slice(0,-1);
             if(extensionString.substr(0,1) == '-') {
-              return extensionString.slice(1) + filename;
+              var basen = path.basename(filename);
+              var dirn = path.dirname(filename);
+              return dirn + "/" + extensionString.slice(1) + basen;
             } else {
               return filename + extensionString;
             }
