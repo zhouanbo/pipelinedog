@@ -13,15 +13,15 @@ To download the lastest release of PipelineDog for you operating system, go to h
 
 **Linux**: For linux users, unzip the folder downloaded and double click the "PipelineDog" executable. Notice that for Centos/RHEL, only version 7 or later are supported.
 
-As soon as you execute PipelineDog, you are greeted be a welcome screen. You can click either "New Project" to create a new pipeline project, or "Open Project" to open an existing pipeline project. 
+As soon as you execute PipelineDog, you are greeted be a welcome screen where you can click either "New Project" to create a new pipeline project, or "Open Project" to open an existing pipeline project. 
 
 > In the "examples" folder in the github repository or in the later part of this doc you can find examples of a few pipelines to help you get started.
 
 If you chose to create a new project, a typcial empty project screen in the map mode will be shown which contains:
 - ***Top***: header panel
 - ***Left***: tool panel
-- ***center***: map / code panel
-- ***right***: file panel
+- ***Center***: map / code panel
+- ***Right***: file panel
 
 When a new project is started, we have a default tool created for you already. There are serveral actions you can perform:
 - ***Open or save project***: Click "Open Project" button in the header panel (or CmdOrCtrl+O) to open a new project. Click the "Save Project" (or CmdOrCtrl+S) button to save the project.
@@ -64,13 +64,13 @@ The components that used to assemble a *LEASH* expression, including:
 
 ***Segments***
 
-An *LEASH* expression consists of 5 segments. Segments are indicated by '|'. The 5 segments in a LEASH expression are: (all of these are optional, but the it's necessary to maintain the ordering):
+An *LEASH* expression consists of 5 segments. Segments are indicated by '|'. The 5 segments in a LEASH expression are: (all of these are optional, however correct ordering is required):
 
 1. **Scope**: 
 the first segment of the expression, specifying which Inputlist the expression should execute upon. This step pipes the *Inputlists* to the next segment. Scope is a *range* ending with a character 'F'. The numbers in the range refer to the index+1 of a *Inputlist* array. If this segment is omitted, the default value '-' is used.
 
 2. **Selection**: 
-a range ends with a character 'L', selecting what lines of inputs to be used in the Inputlist specified in *Scope*. This step pipes an array of inputs to the next segment. If this segment is omitted, the default value '-' is used.
+a *Range* ends with a character 'L', selecting what lines of inputs to be used in the Inputlist specified in *Scope*. This step pipes an array of inputs to the next segment. If this segment is omitted, the default value '-' is used.
 
 3. **Subtraction**: 
 a segment that trims inputs from the *selection*. This step pipes an array of trimmed inputs to the next segment. If this segment is omitted, a default value 'P-' is used.
