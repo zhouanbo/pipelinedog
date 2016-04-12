@@ -6,6 +6,35 @@
 
 This is the documentation of PipelineDog, a tool that helps you better construct and maintain your scientific pipelines.
 
+##Quick start
+To download the lastest release of PipelineDog for you operating system, go to http://pipeline.dog and click respective buttons.
+
+**OSX**: For mac users, the folder downloaded should be automatically unzipped. Move the "PipelineDog.app" executable to your "Application" folder, and we are good to go.
+
+**Linux**: For linux users, unzip the folder downloaded and double click the "PipelineDog" executable. Notice that for Centos/RHEL, only version 7 or later are supported.
+
+As soon as you execute PipelineDog, you are greeted be a welcome screen. You can click either "New Project" to create a new pipeline project, or "Open Project" to open an existing pipeline project. 
+
+> In the "examples" folder in the github repository or in the later part of this doc you can find examples of a few pipelines to help you get started.
+
+If you chose to create a new project, a typcial empty project screen in the map mode will be shown which contains:
+- ***Top***: header panel
+- ***Left***: tool panel
+- ***center***: map / code panel
+- ***right***: file panel
+
+When a new project is started, we have a default tool created for you already. There are serveral actions you can perform:
+- ***Open or save project***: Click "Open Project" button in the header panel (or CmdOrCtrl+O) to open a new project. Click the "Save Project" (or CmdOrCtrl+S) button to save the project.
+- ***Create new tool***: Click arrows next to the tool in the map to create a new tool in the same or lower hierarchy. 
+- ***Switch modes***: Doulbe click the tool in the map or in the tool panel to enter the code editing mode. Click the "Map / Code" button in the header panel to switch back and forth.
+- ***Define tool***: In code editing mode, you can define the tool using a JSON syntax code.
+- ***Parse tool***:  In code editing mode, click "Parse" button right above the code to parse it into BASH commands, and click "Edit" button to continue editing the code.
+- ***Quick insert file path***: While defining the tool, click the file names in the file panel to insert the file path to your editing. 
+- ***View file content***: View the file content anytime by clicking the "eye" icon in the file panel.
+- ***Export command***: Click the "Export" button in the header panel to export the final parsed pipeline command to a BASH code file.
+- ***Run command***: Click the "Run" button in the header panel to directly run the final parsed pipeline command.
+
+A tool is defined in the JSON syntax code. To quickly understand details about how to define a tool, please refer to the examples or even better, do some further readings.
 
 ## Concepts
 
