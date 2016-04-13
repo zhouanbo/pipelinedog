@@ -3,6 +3,7 @@ var ReactDOM = require('react-dom');
 var remote = require('remote');
 var dialog = remote.require('dialog');
 var Menu = remote.Menu;
+var spwan = require('child_process').spawn;
 var path = require('path');
 
 var Util = require('./lib/util');
