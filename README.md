@@ -127,11 +127,11 @@ The keys of the object are defined as following:
 
 **output_files**: A array containing the actual output of the pipeline step. Notice the difference between *output_files* and *output_option*: *output_option* is required by the pipeline step, and is supplied to it directly; *output_option*, however, is required by PipelineDog and used to generate the *Inputlist* for the next pipeline step. In cases that files as the *output_option*, the two keys are relatively the same,  a removal of the *Arrangement* segment from *output_option* expression can return an array for *output_files*. In cases that folders as the *output_option*, one need to specify the files inside the folder that needed by next pipeline step to have them generated in the *Inputlist*.
 
-***Note for pipes:*** To implement direct pipes between tools, there are two ways:
+>***Note for pipes:*** To implement direct pipes between tools, there are two ways:
 - Defining the pipe in *invoke* by using process substitution "`< <()`" syntax from BASH
 - Defining the pipe as an option by using pipe "`|`" syntax from BASH
 
-Details of implementation are shown in the examples.
+>Details of implementation are shown in the examples.
 
 
 ## Use Cases
