@@ -6,7 +6,7 @@
 
 This is the documentation of PipelineDog, a tool that helps you better construct and maintain your scientific pipelines.
 
-##Quick start
+## Quick start
 To download the lastest release of PipelineDog for you operating system, go to http://pipeline.dog and click respective buttons.
 
 **OSX**: For mac users, the folder downloaded should be automatically unzipped. Move the "PipelineDog.app" executable to your "Application" folder, and we are good to go.
@@ -64,15 +64,15 @@ The components that used to assemble a *LEASH* expression, including:
 
 ***Segments***
 
-An *LEASH* expression consists of 5 segments. Segments are indicated by '|'. The 5 segments in a LEASH expression are: (all of these are optional, however correct ordering is required):
+An *LEASH* expression consists of 5 segments. Segments are indicated by '|'. The 5 segments in a LEASH expression are: (all of these are optional, however, correct ordering is required):
 
-1. **Scope**: 
+1. **File Selection**: 
 the first segment of the expression, specifying which Inputlist the expression should execute upon. This step pipes the *Inputlists* to the next segment. Scope is a *range* ending with a character 'F'. The numbers in the range refer to the index+1 of a *Inputlist* array. If this segment is omitted, the default value '-' is used.
 
-2. **Selection**: 
+2. **Line Selection**: 
 a *Range* ends with a character 'L', selecting what lines of inputs to be used in the Inputlist specified in *Scope*. This step pipes an array of inputs to the next segment. If this segment is omitted, the default value '-' is used.
 
-3. **Subtraction**: 
+3. **Base Selection**: 
 a segment that trims inputs from the *selection*. This step pipes an array of trimmed inputs to the next segment. If this segment is omitted, a default value 'P-' is used.
   - Starting with or without a character 'P' to indicate to include the entire file path or just the file names in the input.
   - Following that, a *Range* ending with the character 'B' is used to specify which (from right to left) base (parts of the file name separated by dots) of the file name to keep. For example, given the file name 'NA12877.sort.rmdup.chr20.bam', a *Reconstruction* segment of '2-4B' would return 'sort.rmdup.chr20'.
@@ -127,6 +127,12 @@ The keys of the object are defined as following:
 
 **output_files**: A array containing the actual output of the pipeline step. Notice the difference between *output_files* and *output_option*: *output_option* is required by the pipeline step, and is supplied to it directly; *output_option*, however, is required by PipelineDog and used to generate the *Inputlist* for the next pipeline step. In cases that files as the *output_option*, the two keys are relatively the same,  a removal of the *Arrangement* segment from *output_option* expression can return an array for *output_files*. In cases that folders as the *output_option*, one need to specify the files inside the folder that needed by next pipeline step to have them generated in the *Inputlist*.
 
+***Note for pipes:*** To implement direct pipes between tools, there are two ways:
+- Defining the pipe in *invoke* by using process substitution "`< <()`" syntax from BASH
+- Defining the pipe as an option by using pipe "`|`" syntax from BASH
+
+Details of implementation are shown in the examples.
+
 
 ## Use Cases
 
@@ -136,9 +142,9 @@ The keys of the object are defined as following:
 INPUT.list.txt:
 
 ```
-test1.bam
-test2.bam
-test3.bam
+/home/bam2sam/test1.bam
+/home/bam2sam/test2.bam
+/home/bam2sam/test3.bam
 ```
 
 **Tool definition**
@@ -168,9 +174,9 @@ samtools view -h test3.bam test3.sam
 bam2sam.txt:
 
 ```
-bam2sam/test1.sam
-bam2sam/test2.sam
-bam2sam/test3.sam
+/home/bam2sam/test1.sam
+/home/bam2sam/test2.sam
+/home/bam2sam/test3.sam
 ```
 
 ***Case 2: Cuffdiff (Advanced)***

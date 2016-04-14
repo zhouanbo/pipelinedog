@@ -94,7 +94,7 @@ var CodeParse = {
         return a.join('');
       }, this);
       tool.parsedCommand = tool.codeobj.invoke + " " + tool.parsedOptions.join(" ") + "&";  
-    } else { //if the tool is looping  
+    } else { //if the tool is looping
       tool.parsedCommand = "";
       var inputLoopArray = [], outputLoopArray = [], labelLoopArray = [];
       if(tool.expressions[0]) inputLoopArray = tool.expressions[0].split('^LOOP^');
