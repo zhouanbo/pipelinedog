@@ -72,10 +72,12 @@ var CodeParse = {
   
   parseToolCommand: function(app) { //replace placeholders and generate command for each tool
     
+    //if these symbols are changed, the police class need to change accordingly.
     var scope = /[\{\}]/;
     var segment = '|';
-    
+
     var tool = Util.filterByProperty(app.state.tools, "id", app.state.currentTool);
+    
     this.convertExpressions(app, scope, segment);
     if(!tool.looping) { //if the tool is not looping     
       tool.parsedOptions = tool.codeobj.options.map(function(s, i) { //replace placeholders with the translated expressions

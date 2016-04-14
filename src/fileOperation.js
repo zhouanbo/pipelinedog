@@ -26,23 +26,23 @@ var FileOperation = {
   },
 
   saveProject: function(app) {
-    var writeState = JSON.stringify(app.state);
-    
     if(app.state.lastSaved == ""){
       var filepath = dialog.showSaveDialog({
         title: "Save Project",
-        defaultPath: path.join(app.state.workDir, "defaultProject.JSON")
+        defaultPath: path.join(app.state.workDir, "defaultProject.json")
       }, function(filepath) {
         if (!filepath) {return;}
+        app.state.lastSaved = filepath;
+        var writeState = JSON.stringify(app.state);
         fs.writeFile(filepath, writeState, function(err) {
           if(err) {
               return console.log(err);
           }
-          app.state.lastSaved = filepath;
           console.log("Project saved!");
         });
       });
     } else {
+      var writeState = JSON.stringify(app.state);
       fs.writeFile(app.state.lastSaved, writeState, function(err) {
           if(err) {
               return console.log(err);
@@ -56,9 +56,10 @@ var FileOperation = {
   saveAsProject: function(app) {
     var filepath = dialog.showSaveDialog({
       title: "Save Project",
-      defaultPath: path.join(app.state.workDir, "defaultProject.JSON")
+      defaultPath: path.join(app.state.workDir, "defaultProject.json")
     }, function(filepath) {
       if (!filepath) {return;}
+      app.state.lastSaved = filepath;
       var writeState = JSON.stringify(app.state);
       fs.writeFile(filepath, writeState, function(err) {
         if(err) {
@@ -67,6 +68,7 @@ var FileOperation = {
         console.log("Project saved!");
       });
     });
+    app.setState(app.state);
   },
 
   importFile: function(app) {

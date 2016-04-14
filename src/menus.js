@@ -1,9 +1,11 @@
 var remote = require('remote');
 var application = remote.app;
 var shell = remote.shell;
+var FileOperation = require('./fileOperation');
  
 var Menus = {
-  macMenu: [
+  macMenu: function(app) {
+    return [
     {
       label: "PipelineDog",
       submenu: [
@@ -190,9 +192,11 @@ var Menus = {
         },
       ]
     },
-  ],
+  ];
+  },
 
-  winMenu: [
+  winMenu: function(app) {
+    return [
     {
       label: 'File',
       submenu: [
@@ -344,8 +348,8 @@ var Menus = {
         },
       ]
     },
-  ],
-  
+  ];
+  },
 }
 
 module.exports = Menus;
