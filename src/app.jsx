@@ -201,8 +201,9 @@ var MainComponent = React.createClass({
   //Code parsing
   parseCode: function() { 
     if(!Police.checkToolDefinition(this)){
+      this.refs.codePanel.refs.ace.editor.focus();
       return;
-    }  
+    }
     this.state.showingParsed = true;
     CodeParse.parseToolCommand(this);
     FileOperation.newParse(this);

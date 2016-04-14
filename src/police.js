@@ -14,9 +14,11 @@ var Police = {
     
     var rfalse = false;
     expressions.map(function(s, i) {
-      if(!this.checkLEASH(s)) {
-        rfalse = true;
-      }    
+      if(s){
+        if(!this.checkLEASH(s)) {
+          rfalse = true;
+        }
+      }
     }, this);
     
     tool.codeobj.output_files.map(function(s, i) {
@@ -37,37 +39,43 @@ var Police = {
     //'l'A in both input, output option
     var inputLoop = false, outputLoop = false, labelLoop = false;
     var ltOne = false;
-    var inputArray = tool.codeobj.input_option.split(/[\{\}]/);
-    for (var i=1; i < inputArray.length-1; i+=2) {
-      inputArray[i].split('|').map(function(s, i){
-        if(s == "'l'A") {
-          inputLoop = true;
+    if(tool.codeobj.input_option) {
+      var inputArray = tool.codeobj.input_option.split(/[\{\}]/);
+      for (var i=1; i < inputArray.length-1; i+=2) {
+        inputArray[i].split('|').map(function(s, i){
+          if(s == "'l'A") {
+            inputLoop = true;
+          }
+        });
+        if (i > 1) {
+          ltOne = true;
         }
-      });
-      if (i > 1) {
-        ltOne = true;
       }
     }
-    var outputArray = tool.codeobj.output_option.split(/[\{\}]/);
-    for (var i=1; i < outputArray.length-1; i+=2) {
-      outputArray[i].split('|').map(function(s, i){
-        if(s == "'l'A") {
-          outputLoop = true;
+    if(tool.codeobj.output_option) {
+      var outputArray = tool.codeobj.output_option.split(/[\{\}]/);
+      for (var i=1; i < outputArray.length-1; i+=2) {
+        outputArray[i].split('|').map(function(s, i){
+          if(s == "'l'A") {
+            outputLoop = true;
+          }
+        });
+        if (i > 1) {
+          ltOne = true;
         }
-      });
-      if (i > 1) {
-        ltOne = true;
       }
     }
-    var labelArray = tool.codeobj.label_option.split(/[\{\}]/);
-    for (var i=1; i < labelArray.length-1; i+=2) {
-      labelArray[i].split('|').map(function(s, i){
-        if(s == "'l'A") {
-          labelLoop = true;
+    if(tool.codeobj.label_option) {
+      var labelArray = tool.codeobj.label_option.split(/[\{\}]/);
+      for (var i=1; i < labelArray.length-1; i+=2) {
+        labelArray[i].split('|').map(function(s, i){
+          if(s == "'l'A") {
+            labelLoop = true;
+          }
+        });
+        if (i > 1) {
+          ltOne = true;
         }
-      });
-      if (i > 1) {
-        ltOne = true;
       }
     }
     if(inputLoop || outputLoop || labelLoop){
@@ -121,38 +129,38 @@ var Police = {
     var legalSeg = true;
     var legalType = true;
     var leashArray = leashString.split(/[\{\}]/);
-    var lastIndex = -1; wrongOrder = false;
+    var lastSeg = -1; wrongOrder = false;
     for (var i=1; i < leashArray.length-1; i+=2) {
       leashArray[i].split("|").map(function(s, i) {
         var si = s.slice(-1);
         var ss = s.slice(0,-1);
         if(si == 'F') {
-          if(lastIndex > i) wrongOrder = true;
-          lastIndex = i;
+          if(lastSeg > 0) wrongOrder = true;
+          lastSeg = 0;
           if(ss.search(/^\/.*\/$/) == -1 && ss.search(/[^\d\,\-]+/) != -1) {
             legalType = false;
           }
         } else if(si == 'L') {
-          if(lastIndex > i) wrongOrder = true;
-          lastIndex = i;
+          if(lastSeg > 1) wrongOrder = true;
+          lastSeg = 1;
           if(ss.search(/^\/.*\/$/) == -1 && ss.search(/[^\d\,\-]+/) != -1) {
             legalType = false;
           }
         } else if(si == 'B') {
-          if(lastIndex > i) wrongOrder = true;
-          lastIndex = i;
+          if(lastSeg > 2) wrongOrder = true;
+          lastSeg = 2;
           if((ss.indexOf('/') != -1 && ss.search(/^P*\/.*\/$/)) == -1 && (ss.indexOf('/') == -1 && (ss.search(/[^P\d\,\-]+/) != -1 || ss.indexOf('P') != 0))) {
             legalType = false;
           }
         } else if(si == 'E') {
-          if(lastIndex > i) wrongOrder = true;
-          lastIndex = i;
+          if(lastSeg > 3) wrongOrder = true;
+          lastSeg = 3;
           if(ss.search(/^\-*\'.*\'$/) == -1) {
             legalType = false;
           }
         } else if(si == 'A') {
-          if(lastIndex > i) wrongOrder = true;
-          lastIndex = i;
+          if(lastSeg > 4) wrongOrder = true;
+          lastSeg = 4;
           if(ss.search(/^\'.*\'$/) == -1) {
             legalType = false;
           }

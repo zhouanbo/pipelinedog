@@ -158,7 +158,7 @@ INPUT.list.txt:
 	"options": ["-h", "{INPUT}", "{OUTPUT}"],
 	"input_option": "{-B|'l'A}",
 	"output_option": "{1B|'.sam'E|'l'A}",
-	"output_files": ["{P1B|'.sam’E|'a'A}"]
+	"output_files": ["{P1B|'.sam'E|'a'A}"]
 }
 ```
 
