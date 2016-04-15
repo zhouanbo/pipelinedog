@@ -36,7 +36,7 @@ var MainComponent = React.createClass({
           expressions: [], //direct LEASH parsing result
           parsedCommnad: "", //the command to finally run
           valid: true, //if the JSON is valid
-          output_files: [] //the array of predicted output files path
+          output_files: [], //the array of predicted output files path
         }],
       ],
       lastId: 0,

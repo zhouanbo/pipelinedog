@@ -9,36 +9,32 @@ require('brace/theme/chrome');
 
 var CodePanel = React.createClass({
 
-  refreshEditor: function() {
-    var tool = Util.filterByProperty(this.props.tools, "id", this.props.currentTool);
-    
-    this.refs.ace.editor.getSession().setUseWrapMode(true);
-    this.refs.aceparsed.editor.getSession().setUseWrapMode(true);
-    this.refs.aceparsed.editor.setValue(tool.parsedCommand, 1);
-    if(this.props.showingParsed){
-      document.getElementById('code').style.display = 'none';
-      document.getElementById('codeparsed').style.display = 'block';
-    } else {
-      document.getElementById('code').style.display = 'block';
-      document.getElementById('codeparsed').style.display = 'none';
-    }
+  refreshEditor: function() {    
+    if(!this.props.showingParsed) this.refs.ace.editor.getSession().setUseWrapMode(true);
+    if(this.props.showingParsed) this.refs.aceparsed.editor.getSession().setUseWrapMode(true);
   },
 
   componentDidMount: function() {
     this.refreshEditor();
-    //A hack to fix ace editor's undo to empty bug
-    var undo_manager = this.refs.ace.editor.getSession().getUndoManager();
-    undo_manager.reset();
-    this.refs.ace.editor.getSession().setUndoManager(undo_manager);
-    var undo_manager_parsed = this.refs.aceparsed.editor.getSession().getUndoManager();
-    undo_manager_parsed.reset();
-    this.refs.aceparsed.editor.getSession().setUndoManager(undo_manager_parsed);
+    this.clearHistory();
   },
   componentDidUpdate: function() {
     this.refreshEditor();
   },
   foucsEditor: function() {
     this.refs.ace.editor.focus();
+  },
+  clearHistory: function() {
+    //A hack to fix ace editor's undo to empty bug
+    if(!this.props.showingParsed) {
+      var undo_manager = this.refs.ace.editor.getSession().getUndoManager();
+      undo_manager.reset();
+      this.refs.ace.editor.getSession().setUndoManager(undo_manager);
+    } else {
+      var undo_manager_parsed = this.refs.aceparsed.editor.getSession().getUndoManager();
+      undo_manager_parsed.reset();
+      this.refs.aceparsed.editor.getSession().setUndoManager(undo_manager_parsed);
+    }
   },
 
   render: function() {
@@ -78,7 +74,10 @@ var CodePanel = React.createClass({
           </ul>
         </div>
         <div className="codepane" onClick={this.focusEditor}> 
+        {
+          !this.props.showingParsed ?
           <AceEditor
+            key={tool.id}
             mode="json"
             theme="chrome"
             name="code"
@@ -88,18 +87,21 @@ var CodePanel = React.createClass({
             ref="ace"
             value={tool.code}
             onChange={this.props.editorChange}
-            editorProps={{$blockScrolling: Infinity}}
-          />
+            onFocus={this.clearHistory}
+          /> :
           <AceEditor
+            key={tool.id}
             mode="sh"
             theme="chrome"
             name="codeparsed"
             width="100%"
             maxLines={500}
             fontSize={14}
+            value={tool.parsedCommand}
             ref="aceparsed"
-            editorProps={{$blockScrolling: Infinity}}
+            onFocus={this.clearHistory}
           />
+        }
         </div>
       </div>
     );
