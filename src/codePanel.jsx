@@ -10,8 +10,11 @@ require('brace/theme/chrome');
 var CodePanel = React.createClass({
 
   refreshEditor: function() {
+    var tool = Util.filterByProperty(this.props.tools, "id", this.props.currentTool);
+    
     this.refs.ace.editor.getSession().setUseWrapMode(true);
     this.refs.aceparsed.editor.getSession().setUseWrapMode(true);
+    this.refs.aceparsed.editor.setValue(tool.parsedCommand, 1);
     if(this.props.showingParsed){
       document.getElementById('code').style.display = 'none';
       document.getElementById('codeparsed').style.display = 'block';

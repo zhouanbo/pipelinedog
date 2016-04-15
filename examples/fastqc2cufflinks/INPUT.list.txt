@@ -1,0 +1,5 @@
+/home/f1.fastq
+/home/f2.fastq
+/home/f3.fastq
+/home/f4.fastq
+/home/f5.fastq
