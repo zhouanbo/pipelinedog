@@ -40,6 +40,59 @@ var Police = {
       return false;
     }
     
+    //'l'A in both input, output option
+    var inputLoop = false, outputLoop = false, labelLoop = false;
+    var ltOne = false;
+    if(tool.codeobj.input_option) {
+      var inputArray = tool.codeobj.input_option.split(/[\{\}]/);
+      for (var i=1; i < inputArray.length-1; i+=2) {
+        inputArray[i].split('|').map(function(s, i){
+          if(s == "'l'A") {
+            inputLoop = true;
+          }
+        });
+        if (i > 1) {
+          ltOne = true;
+        }
+      }
+    }
+    if(tool.codeobj.output_option) {
+      var outputArray = tool.codeobj.output_option.split(/[\{\}]/);
+      for (var i=1; i < outputArray.length-1; i+=2) {
+        outputArray[i].split('|').map(function(s, i){
+          if(s == "'l'A") {
+            outputLoop = true;
+          }
+        });
+        if (i > 1) {
+          ltOne = true;
+        }
+      }
+    }
+    if(tool.codeobj.label_option) {
+      var labelArray = tool.codeobj.label_option.split(/[\{\}]/);
+      for (var i=1; i < labelArray.length-1; i+=2) {
+        labelArray[i].split('|').map(function(s, i){
+          if(s == "'l'A") {
+            labelLoop = true;
+          }
+        });
+        if (i > 1) {
+          ltOne = true;
+        }
+      }
+    }
+    if(inputLoop || outputLoop || labelLoop){
+      if(!(inputLoop && outputLoop)) {
+        dialog.showErrorBox("Tool Parse Error", "'l'A need to be in both input and output option in "+tool.name+".");
+        return false;
+      }
+      if(ltOne) {
+        dialog.showErrorBox("Tool Parse Error", "Looping arrangement only allow one LEASH per option in "+tool.name+".");
+        return false;
+      }
+    }
+    
     //can only use lower hierarchy output
     var isLowerHierarchy = false;
     var h = Util.getHierarchy(app.state.tools, tool.id)

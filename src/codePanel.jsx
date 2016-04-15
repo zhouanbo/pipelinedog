@@ -98,7 +98,6 @@ var CodePanel = React.createClass({
             maxLines={500}
             fontSize={14}
             ref="aceparsed"
-            value={tool.parsedCommand}
             editorProps={{$blockScrolling: Infinity}}
           />
         </div>
