@@ -4,6 +4,7 @@ var _ = require('lodash');
 
 var Util = require('./util');
 var FileOperation = require('./fileOperation');
+var Police = require('./police');
 
 var CodeParse = {
     initCode: function () {
@@ -55,6 +56,9 @@ var CodeParse = {
     var originalTool = app.state.currentTool;
     for (var i = 0; i <= app.state.lastId; i++){
       app.state.currentTool=i;
+      if(!Police.checkToolDefinition(app)){
+        return false;
+      }
       this.parseToolCommand(app);
       FileOperation.newParse(app);
     }
@@ -68,6 +72,8 @@ var CodeParse = {
       }, this)
       app.state.command += "\nwait";
     })
+    
+    return true;
   },
   
   parseToolCommand: function(app) { //replace placeholders and generate command for each tool

@@ -35,9 +35,7 @@ var FilePanel = React.createClass({
                 <tr key={index}>
                   <td style={{textAlign: "center"}}>
                     <span onClick={this.props.openFile.bind(null, file.path)} className="icon icon-eye" style={{marginRight: '5px'}}></span>
-                    {file.type=="generated" ? <span></span> :
-                      <span onClick={this.props.deleteFile.bind(null, index)} className="icon icon-cancel-circled"></span>
-                    }
+                    <span onClick={this.props.deleteFile.bind(null, index)} className="icon icon-cancel-circled"></span>
                   </td>
                   <td onClick={this.props.onFileClick.bind(null, file.path)}>{file.name}</td>
                   <td>{file.type}</td>
