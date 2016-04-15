@@ -21,6 +21,17 @@ var Util = {
       }
     }
   },
+  
+  getHierarchyByName: function(array, toolname) {
+    for (var i = 0; i < array.length; i++) {
+      for (var j = 0; j < array[i].length; j++) {
+        var obj = array[i][j];
+        if(obj["name"] == toolname) {
+          return i;
+        }
+      }
+    }
+  },
 
   deleteById: function(array, id) {
     var toolid = id;

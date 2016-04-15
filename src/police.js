@@ -1,9 +1,13 @@
 var remote = require('remote');
 var dialog = remote.require('dialog');
+var Util = require('./util');
+var path = require('path');
 
 var Police = {
   
-  checkToolDefinition: function(app) {
+  checkToolDefinition: function(appParam) {
+    
+    var app = appParam;
     
     var tool = Util.filterByProperty(app.state.tools, "id", app.state.currentTool);
     var expressions = [
@@ -90,7 +94,18 @@ var Police = {
     }
     
     //can only use lower hierarchy output
-    //dialog.showErrorBox("LEASH Parse Error", "Output of higher hierarchy used.");   
+    var isLowerHierarchy = false;
+    var h = Util.getHierarchy(app.state.tools, tool.id)
+    tool.codeobj.inputlists.map(function(il, i){
+      var hil = Util.getHierarchyByName(app.state.tools, path.basename(il).slice(0, -9))
+      if(hil <= h) {
+        isLowerHierarchy = true;
+      }
+    }, this);
+    if(isLowerHierarchy) {
+      dialog.showErrorBox("LEASH Parse Error", "You can't use output list from same or lower hierarchy because they are not exist by this step.");
+      return false;
+    }
     
     return true;
   },
