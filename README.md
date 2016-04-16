@@ -79,7 +79,7 @@ a segment that trims inputs from the *selection*. This step pipes an array of tr
 
 4. **Extension**
 a segment that extends file paths from the *subtraction*. This step pipes an array of extended file names or path to the next segment.
-A *String* was then given to specify the file extension to be added after the selected base names. A minus sign before the extension means adding it before the selected base names. A character 'E' is always followed. If this segment is omitted, a empty string is used.
+A *String* was then given to specify the file extension to be added after the selected base names. A minus sign before the extension means adding it before the selected base names. You can add extensions before and after the base at the same time. A character 'E' is always followed. If this segment is omitted, a empty string is used.
 
 5. **Arrangement**: 
 leaded  by a *String* that indicates how to arrange the i from the inputs previous segments. After this segments, the return of the expression would become a string that available for the pipeline step to use.

@@ -71,7 +71,7 @@ var CodeParse = {
       level.map(function(tool, i) {
         app.state.command += "\n"+tool.parsedCommand;
       }, this)
-      app.state.command += "\nwait";
+      app.state.command += "\nwait\n";
     })
     
     return true;
@@ -259,19 +259,23 @@ var CodeParse = {
         break;
           
         case 'E':
+          var r = '';
           e = b.map(function(filename, i) {
-            var extensionString = s.replace(/['"]+/g, '').slice(0,-1);
-            if(extensionString.substr(0,1) == '-') {
-              var basen = path.basename(filename);
-              var dirn = path.dirname(filename);
-              if(dirn == ".") {
-                return extensionString.slice(1) + basen;
+            s.slice(0,-1).split(/'\-*'/).map(function(ss, i){
+              var extensionString = ss.replace(/['"]+/g, '');
+              if(extensionString.substr(0,1) == '-') {
+                var basen = path.basename(filename);
+                var dirn = path.dirname(filename);
+                if(dirn == ".") {
+                  filename = extensionString.slice(1) + basen;
+                } else {
+                  filename = dirn + "/" + extensionString.slice(1) + basen;
+                }
               } else {
-                return dirn + "/" + extensionString.slice(1) + basen;
+                filename = filename + extensionString;
               }
-            } else {
-              return filename + extensionString;
-            }
+            })      
+            return filename;     
           });
         break;
           
