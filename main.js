@@ -3,8 +3,10 @@
 const electron = require('electron');
 const app = electron.app;
 const BrowserWindow = electron.BrowserWindow;
+const ipcMain = require('electron').ipcMain;
 
 let mainWindow;
+let runWindow;
 
 function createWindow () {
   mainWindow = new BrowserWindow({
@@ -35,7 +37,25 @@ app.on('activate', function () {
   if (mainWindow === null) {
     createWindow();
   }
-  
-  
-   
 });
+
+ipcMain.on('createRun', createRunWindow);
+
+function createRunWindow () {
+  runWindow = new BrowserWindow({ width: 600, height: 300, alwaysOnTop: true });  
+  runWindow.loadURL('file://' + __dirname + '/run.html');
+  
+  runWindow.on('closed', function() {
+    if(mainWindow) mainWindow.webContents.send('runclosed');
+    runWindow = null;
+  });
+      
+  runWindow.webContents.on('did-finish-load', function() {
+    mainWindow.webContents.send('winloaded');
+  });
+  
+  ipcMain.on('ondata', function(event, msg) {
+    if(runWindow) runWindow.webContents.send('senddata', msg);
+  });
+  
+}

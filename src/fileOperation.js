@@ -141,13 +141,14 @@ var FileOperation = {
   },
   
   runCommand: function(app) {
-    fs.writeFileSync(path.join(app.state.workDir, ".piplinecommand.sh"), app.state.command);
+    fs.writeFileSync(path.join(app.state.workDir, ".pipelinecommand.sh"), app.state.command);
   },
   
   openFile: function(filepath)
   {
     open(filepath);
   },
+
 };
 
 module.exports = FileOperation;

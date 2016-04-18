@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Run Commands</title>
+    <link rel="stylesheet" href="css/photon.min.css">
+    <style>
+      #content {
+        display: flex;
+        flex-direction: column;
+        padding: 20px;
+        width: 100%;
+      }
+      #content div {
+        flex: 1 1 auto;
+      }
+      #content div{
+        color: lightgrey;
+      }
+      #content div:nth-of-type(1) {
+        color: black;
+      }
+      #content div:nth-of-type(2) {
+        color: dimgrey;
+      }
+      #content div:nth-of-type(3) {
+        color: grey;
+      }
+      #content div:nth-of-type(4) {
+        color: darkgrey;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="window">
+      <div class="window-content" id="content">
+      </div>
+    </div>
+    <script>
+      require('electron').ipcRenderer.on('senddata', function(event, output) {
+        var line = `<div>${output}</div>`;
+        document.getElementById('content').innerHTML = line + document.getElementById('content').innerHTML;
+      });
+    </script>
+  </body>
+</html>
