@@ -20,17 +20,30 @@ var Police = {
     var rfalse = false;
     expressions.map(function(s, i) {
       if(s){
-        if(!this.checkLEASH(s)) {
-          rfalse = true;
+        if(typeof(s) != "object"){
+          if(!this.checkLEASH(s)) {
+            rfalse = true;
+          }
+        } else {
+          if(!this.checkObject(s)) {
+            rfalse = true;
+          }
         }
       }
     }, this);
     
-    tool.codeobj.output_files.map(function(s, i) {
-      if(!this.checkLEASH(s)) {
+    if(Array.isArray(tool.codeobj.output_files)){
+      tool.codeobj.output_files.map(function(s, i) {       
+        if(!this.checkLEASH(s)) {
+          rfalse = true;
+        }
+      }, this);
+    } else {
+      if(!this.checkObject(tool.codeobj.output_files)) {
         rfalse = true;
       }
-    }, this);
+    }
+    
     if (rfalse) {
       return false;
     }
@@ -45,54 +58,78 @@ var Police = {
     var inputLoop = false, outputLoop = false, labelLoop = false, logLoop = false;
     var ltOne = false;
     if(tool.codeobj.input_option) {
-      var inputArray = tool.codeobj.input_option.split(/[\{\}]/);
-      for (var i=1; i < inputArray.length-1; i+=2) {
-        inputArray[i].split('|').map(function(s, i){
-          if(s == "'l'A") {
-            inputLoop = true;
+      if(typeof(tool.codeobj.input_option) != "object") {
+        var inputArray = tool.codeobj.input_option.split(/[\{\}]/);
+        for (var i=1; i < inputArray.length-1; i+=2) {
+          inputArray[i].split('|').map(function(s, i){
+            if(s == "'l'A") {
+              inputLoop = true;
+            }
+          });
+          if (i > 1) {
+            ltOne = true;
           }
-        });
-        if (i > 1) {
-          ltOne = true;
+        }
+      } else {
+        if(tool.codeobj.input_option.arrangement == "'l'") {
+          inputLoop = true;
         }
       }
     }
     if(tool.codeobj.output_option) {
-      var outputArray = tool.codeobj.output_option.split(/[\{\}]/);
-      for (var i=1; i < outputArray.length-1; i+=2) {
-        outputArray[i].split('|').map(function(s, i){
-          if(s == "'l'A") {
-            outputLoop = true;
+      if(typeof(tool.codeobj.output_option) != "object") {
+        var outputArray = tool.codeobj.output_option.split(/[\{\}]/);
+        for (var i=1; i < outputArray.length-1; i+=2) {
+          outputArray[i].split('|').map(function(s, i){
+            if(s == "'l'A") {
+              outputLoop = true;
+            }
+          });
+          if (i > 1) {
+            ltOne = true;
           }
-        });
-        if (i > 1) {
-          ltOne = true;
+        }
+      } else {
+        if(tool.codeobj.output_option.arrangement == "'l'") {
+          outputLoop = true;
         }
       }
     }
     if(tool.codeobj.label_option) {
-      var labelArray = tool.codeobj.label_option.split(/[\{\}]/);
-      for (var i=1; i < labelArray.length-1; i+=2) {
-        labelArray[i].split('|').map(function(s, i){
-          if(s == "'l'A") {
-            labelLoop = true;
+      if(typeof(tool.codeobj.label_option) != "object") {
+        var labelArray = tool.codeobj.label_option.split(/[\{\}]/);
+        for (var i=1; i < labelArray.length-1; i+=2) {
+          labelArray[i].split('|').map(function(s, i){
+            if(s == "'l'A") {
+              labelLoop = true;
+            }
+          });
+          if (i > 1) {
+            ltOne = true;
           }
-        });
-        if (i > 1) {
-          ltOne = true;
+        }
+      } else {
+        if(tool.codeobj.label_option.arrangement == "'l'") {
+          labelLoop = true;
         }
       }
     }
     if(tool.codeobj.log_option) {
-      var logArray = tool.codeobj.log_option.split(/[\{\}]/);
-      for (var i=1; i < logArray.length-1; i+=2) {
-        logArray[i].split('|').map(function(s, i){
-          if(s == "'l'A") {
-            logLoop = true;
+      if(typeof(tool.codeobj.log_option) != "object") {
+        var logArray = tool.codeobj.log_option.split(/[\{\}]/);
+        for (var i=1; i < logArray.length-1; i+=2) {
+          logArray[i].split('|').map(function(s, i){
+            if(s == "'l'A") {
+              logLoop = true;
+            }
+          });
+          if (i > 1) {
+            ltOne = true;
           }
-        });
-        if (i > 1) {
-          ltOne = true;
+        }
+      } else {
+        if(tool.codeobj.log_option.arrangement == "'l'") {
+          logLoop = true;
         }
       }
     }
@@ -142,11 +179,11 @@ var Police = {
       if(c == "'") depthQuote++;
     });
     if(depthBracket != 0) {
-      dialog.showErrorBox("LEASH Parse Error", "Open and close brackets don't match in expression "+leashString+".");
+      dialog.showErrorBox("LEASH Parse Error", "Open and close brackets don't match in expression: "+leashString+".");
       return false;
     }
     if(depthQuote % 2 != 0) {
-      dialog.showErrorBox("LEASH Parse Error", "Quotes don't match in expression "+leashString+".");
+      dialog.showErrorBox("LEASH Parse Error", "Quotes don't match in expression: "+leashString+".");
       return false;
     }
     
@@ -196,19 +233,63 @@ var Police = {
     }
     //Illegal segment indicator
     if(!legalSeg){
-      dialog.showErrorBox("LEASH Parse Error", "Illegal Segment indicator in LEASH expression "+leashString+".");
+      dialog.showErrorBox("LEASH Parse Error", "Illegal Segment indicator in LEASH expression: "+leashString+".");
       return false;
     }
     //Segment type
     if(!legalType){
-      dialog.showErrorBox("LEASH Parse Error", "Illegal Segment format in LEASH expression "+leashString+".");
+      dialog.showErrorBox("LEASH Parse Error", "Illegal Segment format in LEASH expression: "+leashString+".");
       return false;
     }
     //Segment ordering
     if(wrongOrder) {
-      dialog.showErrorBox("LEASH Parse Error", "Segments not correctly ordered in LEASH expression "+leashString+".");
+      dialog.showErrorBox("LEASH Parse Error", "Segments not correctly ordered in LEASH expression: "+leashString+".");
       return false;
     }  
+    
+    return true;
+  },
+  
+  checkObject: function(obj) {
+    
+    var legalKey = true;
+    var legalType = true;
+    
+    for (var key in obj) {
+      if(key == 'file') {
+        if(obj[key].search(/^\/.*\/$/) == -1 && obj[key].search(/[^\d\,\-]+/) != -1) {
+          legalType = false;
+        }
+      } else if(key == 'line') {
+        if(obj[key].search(/^\/.*\/$/) == -1 && obj[key].search(/[^\d\,\-]+/) != -1) {
+          legalType = false;
+        }
+      } else if(key == 'base') {
+        if((obj[key].indexOf('/') != -1 && obj[key].search(/^P*\/.*\/$/)) == -1 && (obj[key].indexOf('/') == -1 && (obj[key].search(/[^P\d\,\-]+/) != -1 || obj[key].indexOf('P') != 0))) {
+          legalType = false;
+        }
+      } else if(key == 'extension') {
+        if(obj[key].search(/([(PRE)(SUF)]\'.*\')+/) == -1) {
+          legalType = false;
+        }
+      } else if(key == 'arrangement') {
+        if(obj[key].search(/^\'.*\'$/) == -1) {
+          legalType = false;
+        }
+      } else {
+        legalKey = false;
+      }     
+    }
+    
+    if(!legalKey){
+      dialog.showErrorBox("Object Parse Error", "Unrecognized key name in Object: "+JSON.stringify(obj)+".");
+      return false;
+    }
+    //Segment type
+    if(!legalType){
+      dialog.showErrorBox("Object Parse Error", "Illegal Segment format in Object: "+JSON.stringify(obj)+".");
+      return false;
+    }
     
     return true;
   }
