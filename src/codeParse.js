@@ -179,18 +179,19 @@ var CodeParse = {
         return e;
       }    
     }.bind(this));
-    console.log(tool.expressions)
-    tool.expressions = tool.expressions.map(function(s, i) { //translate each LEASH expressions
-      if(!s || typeof(s) == "object") {return;}
-      var a = s.split(scope);
-      for (var i=1; i < a.length-1; i+=2) {
-        a[i] = this.parseLEASH(a[i], tool, segment);
+
+    for (var j=0; j < 4; j++){ //translate each LEASH expressions
+      if(tool.expressions[j] && typeof(tool.expressions[j]) != "object") {
+        var a = tool.expressions[j].split(scope);
+        for (var i=1; i < a.length-1; i+=2) {
+          a[i] = this.parseLEASH(a[i], tool, segment);
+        }
+        tool.expressions[j] = a.join("");
       }
-      return a.join("");
-    }.bind(this));
+    }
     
     var outfilesArray = []; //process output_files array
-    tool.codeobj.output_files.map(function(s) {
+    tool.expressions[4].map(function(s) {
       var a = s.split(scope);
       if(a.length>=3){
         for (var i=1; i < a.length-1; i+=2) {
@@ -200,9 +201,7 @@ var CodeParse = {
         outfilesArray.push(s);
       }
     }.bind(this));
-    tool.output_files = _.flattenDeep(outfilesArray);
-    
-    tool.expressions[4] = tool.output_files;
+    tool.expressions[4] = _.flattenDeep(outfilesArray);
     
   },
   
