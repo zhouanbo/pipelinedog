@@ -21,6 +21,7 @@ var CodeParse = {
   ],
   "input_option": "",
   "output_option": "",
+  "log_option": "",
   "label_option": "",
   "output_files": [
 
@@ -99,16 +100,20 @@ var CodeParse = {
           if(a[i] == "LABEL"){
             a[i] = tool.expressions[2];
           }
+          if(a[i] == "LOG"){
+            a[i] = tool.expressions[3];
+          }
         }
         return a.join('');
       }, this);
       tool.parsedCommand = tool.codeobj.invoke + " " + tool.parsedOptions.join(" ") + "&";  
     } else { //if the tool is looping
       tool.parsedCommand = "";
-      var inputLoopArray = [], outputLoopArray = [], labelLoopArray = [];
+      var inputLoopArray = [], outputLoopArray = [], labelLoopArray = [], logLoopArray = [];
       if(tool.expressions[0]) inputLoopArray = tool.expressions[0].split('^LOOP^');
       if(tool.expressions[1]) outputLoopArray = tool.expressions[1].split('^LOOP^');
       if(tool.expressions[2]) labelLoopArray = tool.expressions[2].split('^LOOP^');
+      if(tool.expressions[3]) logLoopArray = tool.expressions[3].split('^LOOP^');
       inputLoopArray.map(function(fn, i, a) {
         var index = i;
         var filename = fn;
@@ -125,6 +130,9 @@ var CodeParse = {
             if(a[i] == "LABEL"){
               a[i] = labelLoopArray[index];
             }
+            if(a[i] == "LOG"){
+              a[i] = logLoopArray[index];
+            }
           }
           return a.join('');
         }, this);
@@ -135,15 +143,15 @@ var CodeParse = {
         }
         
         //process looping for output files
-        if(tool.expressions[3]) {
-          tool.expressions[3] = tool.expressions[3].map(function(of, i) {
+        if(tool.expressions[4]) {
+          tool.expressions[4] = tool.expressions[4].map(function(of, i) {
             if(of.indexOf('^LOOP^') == -1) {
               return of;
             } else {
               return of.split('^LOOP^');
             }
           }, this)
-          tool.output_files = _.flattenDeep(tool.expressions[3]);   
+          tool.output_files = _.flattenDeep(tool.expressions[4]);   
         }
         
       }, this);     
@@ -153,35 +161,35 @@ var CodeParse = {
   
   convertExpressions: function(app, scope, segment) { //recognize LEASH expressions, also update output_files info
     var tool = Util.filterByProperty(app.state.tools, "id", app.state.currentTool);
-    tool.expressions = [tool.codeobj.input_option, tool.codeobj.output_option, tool.codeobj.label_option];
+    tool.expressions = [tool.codeobj.input_option, tool.codeobj.output_option, tool.codeobj.label_option, tool.codeobj.log_option];
     
     tool.expressions = tool.expressions.map(function(s, i) { //translate each LEASH expressions
       if(!s) {return;}
       var a = s.split(scope);
       for (var i=1; i < a.length-1; i+=2) {
-        a[i] = this.parseLEASH(a[i], tool, segment, fs, this.parseRange);
+        a[i] = this.parseLEASH(a[i], tool, segment);
       }
       return a.join("");
-    }, this);
+    }.bind(this));
     
     var outfilesArray = []; //process output_files array
     tool.codeobj.output_files.map(function(s) {
       var a = s.split(scope);
       if(a.length>=3){
         for (var i=1; i < a.length-1; i+=2) {
-          outfilesArray.push(this.parseLEASH(a[i], tool, segment, fs, this.parseRange));
+          outfilesArray.push(this.parseLEASH(a[i], tool, segment));
         }
       } else {
         outfilesArray.push(s);
       }
-    }, this);
+    }.bind(this));
     tool.output_files = _.flattenDeep(outfilesArray);
     
-    tool.expressions.push(tool.output_files);
+    tool.expressions[4] = tool.output_files;
     
   },
   
-  parseLEASH: function(expression, tool, segment, fs, parseRange) { //parse LEASH expression and process inputlists
+  parseLEASH: function(expression, tool, segment) { //parse LEASH expression and process inputlists
     var inputlists = tool.codeobj.inputlists;
     var segs = [];
     var f = [], l = [], b = [], e = [], a = "";
@@ -223,7 +231,7 @@ var CodeParse = {
       switch(s.slice(-1)) {
         
         case 'F':
-          var inputlistArray = parseRange(s.slice(0,-1), inputlists.length, inputlists); 
+          var inputlistArray = this.parseRange(s.slice(0,-1), inputlists.length, inputlists); 
           inputlistArray.map(function(fl, i) {
             fs.readFileSync(inputlists[fl-1], 'utf8').split('\n').map(function(fline) {
               f.push(fline);
@@ -232,7 +240,7 @@ var CodeParse = {
         break;
           
         case 'L':
-          var lineArray = parseRange(s.slice(0,-1), f.length, f);
+          var lineArray = this.parseRange(s.slice(0,-1), f.length, f);
           lineArray.map(function(line, i) {
             l.push(f[line-1]);
           }, this);
@@ -247,9 +255,9 @@ var CodeParse = {
             var bases = basename.split('.');
             
             if(s.slice(0, 1) == 'P'){
-              baseArray = parseRange(s.slice(1,-1), bases.length, bases);
+              baseArray = this.parseRange(s.slice(1,-1), bases.length, bases);
             } else {
-              baseArray = parseRange(s.slice(0,-1), bases.length, bases);
+              baseArray = this.parseRange(s.slice(0,-1), bases.length, bases);
             }
             baseArray.map(function(base, i) {
               name.push(bases[base-1]);
@@ -261,20 +269,22 @@ var CodeParse = {
         case 'E':
           var r = '';
           e = b.map(function(filename, i) {
-            s.slice(0,-1).split(/'\-*'/).map(function(ss, i){
-              var extensionString = ss.replace(/['"]+/g, '');
-              if(extensionString.substr(0,1) == '-') {
+            var arr = s.slice(0,-1).split("'");
+            for (var i=0; i < arr.length-1; i+=2) {
+              var extensionString = arr[i+1];
+              if(arr[i] == 'PRE') {
                 var basen = path.basename(filename);
                 var dirn = path.dirname(filename);
                 if(dirn == ".") {
-                  filename = extensionString.slice(1) + basen;
+                  filename = extensionString + basen;
                 } else {
-                  filename = dirn + "/" + extensionString.slice(1) + basen;
+                  filename = dirn + "/" + extensionString + basen;
                 }
               } else {
                 filename = filename + extensionString;
               }
-            })      
+            }
+     
             return filename;     
           });
         break;

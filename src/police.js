@@ -13,7 +13,8 @@ var Police = {
     var expressions = [
       tool.codeobj.input_option, 
       tool.codeobj.output_option, 
-      tool.codeobj.label_option
+      tool.codeobj.label_option,
+      tool.codeobj.log_option
     ];
     
     var rfalse = false;
@@ -41,7 +42,7 @@ var Police = {
     }
     
     //'l'A in both input, output option
-    var inputLoop = false, outputLoop = false, labelLoop = false;
+    var inputLoop = false, outputLoop = false, labelLoop = false, logLoop = false;
     var ltOne = false;
     if(tool.codeobj.input_option) {
       var inputArray = tool.codeobj.input_option.split(/[\{\}]/);
@@ -82,7 +83,20 @@ var Police = {
         }
       }
     }
-    if(inputLoop || outputLoop || labelLoop){
+    if(tool.codeobj.log_option) {
+      var logArray = tool.codeobj.log_option.split(/[\{\}]/);
+      for (var i=1; i < logArray.length-1; i+=2) {
+        logArray[i].split('|').map(function(s, i){
+          if(s == "'l'A") {
+            logLoop = true;
+          }
+        });
+        if (i > 1) {
+          ltOne = true;
+        }
+      }
+    }
+    if(inputLoop || outputLoop || labelLoop || logLoop){
       if(!(inputLoop && outputLoop)) {
         dialog.showErrorBox("Tool Parse Error", "'l'A need to be in both input and output option in "+tool.name+".");
         return false;
@@ -166,7 +180,7 @@ var Police = {
         } else if(si == 'E') {
           if(lastSeg > 3) wrongOrder = true;
           lastSeg = 3;
-          if(ss.search(/(\-*\'.*\')+/) == -1) {
+          if(ss.search(/([(PRE)(SUF)]\'.*\')+/) == -1) {
             legalType = false;
           }
         } else if(si == 'A') {

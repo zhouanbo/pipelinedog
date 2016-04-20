@@ -70,16 +70,16 @@ An *LEASH* expression consists of 5 segments. Segments are indicated by '|'. The
 the first segment of the expression, specifying which Inputlist the expression should execute upon. This step pipes the *Inputlists* to the next segment. Scope is a *range* ending with a character 'F'. The numbers in the range refer to the index+1 of a *Inputlist* array. If this segment is omitted, the default value '-' is used.
 
 2. **Line Selection**: 
-a *Range* ends with a character 'L', selecting what lines of inputs to be used in the Inputlist specified in *Scope*. This step pipes an array of inputs to the next segment. If this segment is omitted, the default value '-' is used.
+a *Range* ends with a character 'L', selecting what lines of inputs to be used in the Inputlist specified in *File Selection*. This step pipes an array of inputs to the next segment. If this segment is omitted, the default value '-' is used.
 
 3. **Base Selection**: 
-a segment that trims inputs from the *selection*. This step pipes an array of trimmed inputs to the next segment. If this segment is omitted, a default value 'P-' is used.
+a *Range* ends with a character 'B', trimming inputs from the result of *Line Selection*. This step pipes an array of trimmed inputs to the next segment. If this segment is omitted, a default value 'P-' is used.
   - Starting with or without a character 'P' to indicate to include the entire file path or just the file names in the input.
   - Following that, a *Range* ending with the character 'B' is used to specify which (from right to left) base (parts of the file name separated by dots) of the file name to keep. For example, given the file name 'NA12877.sort.rmdup.chr20.bam', a *Reconstruction* segment of '2-4B' would return 'sort.rmdup.chr20'.
 
 4. **Extension**
-a segment that extends file paths from the *subtraction*. This step pipes an array of extended file names or path to the next segment.
-A *String* was then given to specify the file extension to be added after the selected base names. A minus sign before the extension means adding it before the selected base names. You can add extensions before and after the base at the same time. A character 'E' is always followed. If this segment is omitted, a empty string is used.
+a segment that extends file paths from the *subtraction*. This step pipes an array of extended inputs to the next segment and always end with a character 'E'.
+First, a 3 charactor notation "PRE" or "SUF" is given to indicate whether to extend the input toward left or right. Then, a *String* was then given to specify the extension to be added to the selected base names. You can add extensions before and after the base at the same time by using both "PRE" and "SUF" notations in the segments. If this segment is omitted, a empty string is used.
 
 5. **Arrangement**: 
 leaded  by a *String* that indicates how to arrange the i from the inputs previous segments. After this segments, the return of the expression would become a string that available for the pipeline step to use.
@@ -117,11 +117,11 @@ The keys of the object are defined as following:
 
 **inputlists**: An array containing *Inputlists*, which is later selected by *LEASH* expressions.
 
-**options**: An array of strings that correspond to each of the static input that is normally used in the pipeline step. The places that the dynamic inputs (input, output or label) come in should each be indicated by %INPUT%, %OUTPUT% and %LABEL%.
+**options**: An array of strings that correspond to each of the static input that is normally used in the pipeline step. The places that the dynamic inputs (input, output or label) come in should each be indicated by {INPUT}, {OUTPUT} and {LABEL}.
 
 **input_option**: A string containing a *LEASH* expression that return the dynamic input option of the pipeline step. The %INPUT% placeholder in the option key will be replaced by the return of the *LEASH* expression.
 
-**output_option**: A string containing a *LEASH* expression whose return will replace the %OUTPUT% placeholder in the option key. When the expression has 'l' as the arrangement method, the return should be the same length as the expression return in *input_option*. Sometimes the *output_option* can be a static input (eg: a pipeline step that needs a output folder and the folder needs be somewhere else than the default "project_folder/pipeline_step_name/" path), in which case a string can be used instead of an expression. 
+**output_option**: A string containing a *LEASH* expression whose return will replace the {OUTPUT} placeholder in the option key. When the expression has 'l' as the arrangement method, the return should be the same length as the expression return in *input_option*. Sometimes the *output_option* can be a static input (eg: a pipeline step that needs a output folder and the folder needs be somewhere else than the default "project_folder/pipeline_step_name/" path), in which case a string can be used instead of an expression. 
 
 **label_option**: A string containing a *LEASH* expression that could be used to replace %LABEL% placeholder in the option.
 
