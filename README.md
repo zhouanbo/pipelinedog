@@ -64,7 +64,9 @@ The components that used to assemble a *LEASH* expression, including:
 
 ***Segments***
 
-An *LEASH* expression consists of 5 segments. Segments are indicated by '|'. The 5 segments in a LEASH expression are: (all of these are optional, however, correct ordering is required):
+There are two different formats to write an LEASH expression. In long format, a LEASH expression is specified as an object and segments are properties of the object. In short format, a LEASH expression is specified as a string wrapped by curly brackets and segments are indicated by '|'. 
+
+An *LEASH* expression typically consists of 5 segments, which are: (all of these are optional, however, correct ordering is required):
 
 1. **File Selection**: 
 the first segment of the expression, specifying which Inputlist the expression should execute upon. This step pipes the *Inputlists* to the next segment. Scope is a *range* ending with a character 'F'. The numbers in the range refer to the index+1 of a *Inputlist* array. If this segment is omitted, the default value '-' is used.
@@ -94,6 +96,7 @@ leaded  by a *String* that indicates how to arrange the i from the inputs previo
 
 A pipeline step is defined by a JSON object. Taking advantage of the JSON format, each step can be exported when the definition is finished and can be used again in the future. Also, different combinations of steps can be assembled to defined new pipelines.
 
+**Short format:**
 ```json
 {
 	"name": "bam2sam",
@@ -107,7 +110,23 @@ A pipeline step is defined by a JSON object. Taking advantage of the JSON format
 }
 ```
 
-The keys of the object are defined as following:
+**Long format:**
+```json
+{
+	"name": "bam2sam",
+	"description": "convert bam files to sam files",
+	"invoke": "samtools view",
+	"inputlists": ["INPUT.list.txt"],
+	"options": ["-h", "{INPUT}", "{OUTPUT}"],
+	"input_option": {
+    -B|'l'A
+    },
+	"output_option": {1B|'.sam'E|'l'A},
+	"output_files": {1B|'.sam'E}
+}
+```
+
+The properties of the object are defined as following:
 
 **name**: A string containing the name of the pipeline step.
 
@@ -117,21 +136,29 @@ The keys of the object are defined as following:
 
 **inputlists**: An array containing *Inputlists*, which is later selected by *LEASH* expressions.
 
-**options**: An array of strings that correspond to each of the static input that is normally used in the pipeline step. The places that the dynamic inputs (input, output or label) come in should each be indicated by {INPUT}, {OUTPUT} and {LABEL}.
+**options**: An array of strings that correspond to each of the static input that is normally used in the pipeline step. The places you wish to be replaced by a LEASH expression should each be marked by uppercase keywords wrapped by curly brackets. For example: {INPUT}, {OUTPUT}, {LABEL} or {LOG}.
 
-**input_option**: A string containing a *LEASH* expression that return the dynamic input option of the pipeline step. The %INPUT% placeholder in the option key will be replaced by the return of the *LEASH* expression.
+**[keyword]_option**: A series of options that defined by LEASH expressions. The naming of these options should follow the convention of [a lowercase keyword]_option, so that the outcome of the expression will replace the uppercase [keyword] marks in the previous *options*. Some suggested keyword options are listed below:
 
-**output_option**: A string containing a *LEASH* expression whose return will replace the {OUTPUT} placeholder in the option key. When the expression has 'l' as the arrangement method, the return should be the same length as the expression return in *input_option*. Sometimes the *output_option* can be a static input (eg: a pipeline step that needs a output folder and the folder needs be somewhere else than the default "project_folder/pipeline_step_name/" path), in which case a string can be used instead of an expression. 
+- *input_option*: specify the dynamic input of the pipeline step. 
 
-**label_option**: A string containing a *LEASH* expression that could be used to replace %LABEL% placeholder in the option.
+- *output_option*: specify the output of the pipeline step.
 
-**output_files**: A array containing the actual output of the pipeline step. Notice the difference between *output_files* and *output_option*: *output_option* is required by the pipeline step, and is supplied to it directly; *output_option*, however, is required by PipelineDog and used to generate the *Inputlist* for the next pipeline step. In cases that files as the *output_option*, the two keys are relatively the same,  a removal of the *Arrangement* segment from *output_option* expression can return an array for *output_files*. In cases that folders as the *output_option*, one need to specify the files inside the folder that needed by next pipeline step to have them generated in the *Inputlist*.
+- *label_option*: specify labels of experimental conditions that some tools may require.
 
->***Note for pipes:*** To implement direct pipes between tools, there are two ways:
+- *log_option*: specify the path of logs.
+
+**output_files**: An array containing the actual file output of the pipeline step. LEASH expression can be used as a string in the array with the LEASH 'a'A *Arrangement*, it will later be converted into multiple parsed files. If both dynamic outputs and static outputs need to be specified, a short format is necessary since long format (specifying the output files as an LEASH object) will block you from specifying other static file paths.
+
+>Notice the difference between *output_files* and suggested *output_option*: *output_option* is required by the pipeline step and supplied to it directly; *output_option*, however, is required by PipelineDog and used to generate the *Inputlist* for the next pipeline step.
+
+***Direct Pipe***
+
+To implement direct pipes between tools, there are two ways:
 - Defining the pipe in *invoke* by using process substitution "`< <()`" syntax from BASH
 - Defining the pipe as an option by using pipe "`|`" syntax from BASH
 
->Details of implementation are shown in the examples.
+Details of implementation are shown in the examples.
 
 
 ## Use Cases
