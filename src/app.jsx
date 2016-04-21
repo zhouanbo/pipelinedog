@@ -27,19 +27,7 @@ var MainComponent = React.createClass({
       workDir: "",
       lastSaved: "",
       tools: [
-        [{
-          id: 0,
-          name: "New Step",
-          description: "A new step you just created",
-          code: CodeParse.initCode(), //the JSON code
-          codeobj: {}, //JOSN object parsed from the code
-          parsedOptions: {}, //LEASH converted options of the tool
-          looping: false, //if the command is to run as a loop, or the values to loop
-          expressions: [], //direct LEASH parsing result
-          parsedCommnad: "", //the command to finally run
-          valid: true, //if the JSON is valid
-          output_files: [], //the array of predicted output files path
-        }],
+        [this.getNewTool(0)],
       ],
       lastId: 0,
       files: [],
@@ -50,6 +38,23 @@ var MainComponent = React.createClass({
       choosing: 0,
       command: "",
     };
+  },
+  
+  getNewTool: function(index) {
+    return {
+          id: index,
+          name: "New Step",
+          description: "A new step you just created",
+          code: CodeParse.initCode(), //the JSON code
+          codeobj: {}, //JOSN object parsed from the code
+          parsedOptions: {}, //LEASH converted options of the tool
+          looping: false, //if the command is to run as a loop, or the values to loop
+          expressions: [], //direct LEASH parsing result
+          options: [], //keys for options
+          parsedCommnad: "", //the command to finally run
+          valid: true, //if the JSON is valid
+          output_files: [], //the array of predicted output files path
+        };
   },
 
   componentDidMount: function() {
@@ -157,7 +162,7 @@ var MainComponent = React.createClass({
     if(!this.state.tools[hierarchy]) {
       this.state.tools[hierarchy]=[];
     }
-    this.state.tools[hierarchy].push({id: this.state.lastId, name: "New Step", description: "A new step you just created", code: CodeParse.initCode(), codeobj: {}, output:[]});
+    this.state.tools[hierarchy].push(this.getNewTool(this.state.lastId));
     this.setState(this.state);
   },
   deleteTool: function(chose, toolid) {
