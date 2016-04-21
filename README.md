@@ -64,51 +64,59 @@ The components that used to assemble a *LEASH* expression, including:
 
 ***Segments***
 
-There are two different formats to write an LEASH expression. In long format, a LEASH expression is specified as an object and segments are properties of the object. In short format, a LEASH expression is specified as a string wrapped by curly brackets and segments are indicated by '|'. 
-
 An *LEASH* expression typically consists of 5 segments, which are: (all of these are optional, however, correct ordering is required):
 
 1. **File Selection**: 
-the first segment of the expression, specifying which Inputlist the expression should execute upon. This step pipes the *Inputlists* to the next segment. Scope is a *range* ending with a character 'F'. The numbers in the range refer to the index+1 of a *Inputlist* array. If this segment is omitted, the default value '-' is used.
+the first segment of the expression, specifying which Inputlist the expression should execute upon. This step is a *range* pipes the *Inputlists* to the next segment. If this segment is omitted, the default value '-' is used.
 
 2. **Line Selection**: 
-a *Range* ends with a character 'L', selecting what lines of inputs to be used in the Inputlist specified in *File Selection*. This step pipes an array of inputs to the next segment. If this segment is omitted, the default value '-' is used.
+a *Range* selecting what lines of inputs to be used in the Inputlist specified in *File Selection*. This step pipes an array of inputs to the next segment. If this segment is omitted, the default value '-' is used.
 
 3. **Base Selection**: 
-a *Range* ends with a character 'B', trimming inputs from the result of *Line Selection*. This step pipes an array of trimmed inputs to the next segment. If this segment is omitted, a default value 'P-' is used.
+a *Range* trimming inputs from the result of *Line Selection*. This step pipes an array of trimmed inputs to the next segment. If this segment is omitted, a default value 'P-' is used.
   - Starting with or without a character 'P' to indicate to include the entire file path or just the file names in the input.
   - Following that, a *Range* ending with the character 'B' is used to specify which (from right to left) base (parts of the file name separated by dots) of the file name to keep. For example, given the file name 'NA12877.sort.rmdup.chr20.bam', a *Reconstruction* segment of '2-4B' would return 'sort.rmdup.chr20'.
 
 4. **Extension**
-a segment that extends file paths from the *subtraction*. This step pipes an array of extended inputs to the next segment and always end with a character 'E'.
+a segment that extends file paths from the *subtraction*. This step pipes an array of extended inputs to the next segment.
 First, a 3 charactor notation "PRE" or "SUF" is given to indicate whether to extend the input toward left or right. Then, a *String* was then given to specify the extension to be added to the selected base names. You can add extensions before and after the base at the same time by using both "PRE" and "SUF" notations in the segments. If this segment is omitted, a empty string is used.
 
 5. **Arrangement**: 
-leaded  by a *String* that indicates how to arrange the i from the inputs previous segments. After this segments, the return of the expression would become a string that available for the pipeline step to use.
+leaded by a *String* that indicates how to arrange the inputs from previous segments.
   - if 'c' (comma) or 's' (spcae) is given, then all the inputs are separated by comma or space in between. 
   - if an option name (a string beginning with a dash) is given, then the return will begin with this option plus a space before each input. 
-  - if 'l' is given, then the pipeline step will be looped through each of the input within the input expression and output expression. In this case, both of the *input_option* and *output_option*  and should be given 'l' as *Arrangement*. When giving 'l', only one expression inside *input_option* and *output_option* are allowed, and each *output_option* will be arranged according to each *input_option* (if *output_option* is more than *input_option*, the rest is ignored, if *output_option* is less than *input_option*, some of the run would have empty *output_option*).
+  - if 'l' is given, then the pipeline step is looped through each of the input. The number of loop is determined by the line numbers of the first keyword option.
   - if 'n' is given, no arrangement will be made, a string with paths directly next to each other will be returned.
-  - if 'a' is given, an array of inputs prior to this segment will be returned. This array can be used as the value of the "output_file" key.
+  - if 'a' is given, an array of inputs prior to this segment will be returned. This array can be used as the value of the "output_file" property.
   - if the *Arrangement* segment is omitted, the defualt value 'n' will be used. 
+
+***Short & Long Format***
+
+There are two different formats to write an LEASH expression. In *long format*, a LEASH expression is specified as an object and segments are properties of the object. In *short format*, a LEASH expression is specified as a string wrapped by curly brackets and the segments are separated by '|'.
+The segment identifiers in *long format* are properties of an object:
+
+|Segment Name|Object Property|
+|---|---|
+|File Selection|"file"|
+|Line Selection|"line"|
+|Base Selection|"base"|
+|Extension|"extension"|
+|Arrangement|"arrangement"|
+
+The segment identifiers in *short format* are single uppercase characters at the end of each segment:
+
+|Segment Name|Single Character|
+|---|---|
+|File Selection|F|
+|Line Selection|L|
+|Base Selection|B|
+|Extension|E|
+|Arrangement|A|
+
 
 ***Step Definition***
 
 A pipeline step is defined by a JSON object. Taking advantage of the JSON format, each step can be exported when the definition is finished and can be used again in the future. Also, different combinations of steps can be assembled to defined new pipelines.
-
-**Short format:**
-```json
-{
-	"name": "bam2sam",
-	"description": "convert bam files to sam files",
-	"invoke": "samtools view",
-	"inputlists": ["INPUT.list.txt"],
-	"options": ["-h", "{INPUT}", "{OUTPUT}"],
-	"input_option": "{-B|'l'A}",
-	"output_option": "{1B|'.sam'E|'l'A}",
-	"output_files": "{1B|'.sam'E}"
-}
-```
 
 **Long format:**
 ```json
@@ -116,13 +124,47 @@ A pipeline step is defined by a JSON object. Taking advantage of the JSON format
 	"name": "bam2sam",
 	"description": "convert bam files to sam files",
 	"invoke": "samtools view",
-	"inputlists": ["INPUT.list.txt"],
-	"options": ["-h", "{INPUT}", "{OUTPUT}"],
+	"inputlists": [
+    "INPUT.list.txt"
+  ],
+	"options": [
+    "-h", 
+    "{INPUT}", 
+    "{OUTPUT}"
+  ],
 	"input_option": {
-    -B|'l'A
-    },
-	"output_option": {1B|'.sam'E|'l'A},
-	"output_files": {1B|'.sam'E}
+    "base": "-",
+    "arrangement": "'l'",
+  },
+	"output_option": {
+    "base": "1",
+    "extension": "SUF'.sam'",
+    "arrangement": "'l'"
+  },
+	"output_files": {
+    "base": "1",
+    "extension": "SUF'.sam'"
+  }
+}
+```
+
+**Short format:**
+```json
+{
+	"name": "bam2sam",
+	"description": "convert bam files to sam files",
+	"invoke": "samtools view",
+	"inputlists": [
+    "INPUT.list.txt"
+  ],
+	"options": [
+    "-h", 
+    "{INPUT}", 
+    "{OUTPUT}"
+  ],
+	"input_option": "{-B|'l'A}",
+	"output_option": "{1B|SUF'.sam'E|'l'A}",
+	"output_files": "{1B|SUF'.sam'E}"
 }
 ```
 
@@ -138,7 +180,7 @@ The properties of the object are defined as following:
 
 **options**: An array of strings that correspond to each of the static input that is normally used in the pipeline step. The places you wish to be replaced by a LEASH expression should each be marked by uppercase keywords wrapped by curly brackets. For example: {INPUT}, {OUTPUT}, {LABEL} or {LOG}.
 
-**[keyword]_option**: A series of options that defined by LEASH expressions. The naming of these options should follow the convention of [a lowercase keyword]_option, so that the outcome of the expression will replace the uppercase [keyword] marks in the previous *options*. Some suggested keyword options are listed below:
+**[keyword]_option**: A series of options that defined by LEASH expressions. The naming of these options should follow the convention of [a lowercase keyword]_option, so that the outcome of the expression will replace the uppercase keyword marks in the previous *options*. Some suggested keyword options are listed below:
 
 - *input_option*: specify the dynamic input of the pipeline step. 
 
@@ -181,11 +223,27 @@ INPUT.list.txt:
 	"name": "bam2sam",
 	"description": "convert bam files to sam files",
 	"invoke": "samtools view",
-	"inputlists": ["INPUT.list.txt"],
-	"options": ["-h", "{INPUT}", "{OUTPUT}"],
-	"input_option": "{-B|'l'A}",
-	"output_option": "{1B|'.sam'E|'l'A}",
-	"output_files": ["{P1B|'.sam'E|'a'A}"]
+	"inputlists": [
+    "INPUT.list.txt"
+  ],
+	"options": [
+    "-h", 
+    "{INPUT}", 
+    "{OUTPUT}"
+  ],
+	"input_option": {
+    "base": "-",
+    "arrangement": "'l'",
+  },
+	"output_option": {
+    "base": "1",
+    "extension": "SUF'.sam'",
+    "arrangement": "'l'"
+  },
+	"output_files": {
+    "base": "1",
+    "extension": "SUF'.sam'"
+  }
 }
 ```
 
@@ -198,7 +256,7 @@ samtools view -h test3.bam test3.sam
 ```
 
 **Output Inputlist**
-bam2sam.txt:
+bam2sam.list.txt:
 
 ```
 /home/bam2sam/test1.sam
@@ -206,7 +264,7 @@ bam2sam.txt:
 /home/bam2sam/test3.sam
 ```
 
-***Case 2: Cuffdiff (Advanced)***
+***Case 2: Cuffdiff***
 
 **Flielist**
 INPUT.list.txt:
@@ -255,11 +313,22 @@ INPUT.list.txt:
 **Command Generated**
 
 ```bash
-cuffdiff -o /mnt/working/cuffidff -L ControlCr,Cdx2koCr,BrafHetCr,Cdx2BrafCr,SmadBrafCr --multi-read-correct -p 16 --verbose --dispersion-method bind /mnt/input/statics/mm9/mm9_genes_archive_2014.gtf /home/cuffquant/ControlCr.rep1.cxb,/home/cuffquant/ControlCr.rep2.cxb,/home/cuffquant/ControlCr.rep3.cxb /home/cuffquant/Cdx2koCr.rep1.cxb,/home/cuffquant/Cdx2koCr.rep2.cxb /home/cuffquant/BrafHetCr.rep1.cxb,/home/cuffquant/BrafHetCr.rep2.cxb /home/cuffquant/Cdx2BrafCr.rep1.cxb,/home/cuffquant/Cdx2BrafCr.rep2.cxb /home/cuffquant/SmadBrafCr.rep1.cxb&
+cuffdiff -o /mnt/working/cuffidff \
+  -L ControlCr,Cdx2koCr,BrafHetCr,Cdx2BrafCr,SmadBrafCr \
+  --multi-read-correct \
+  -p 16 \
+  --verbose 
+  --dispersion-method bind \
+  /mnt/input/statics/mm9/mm9_genes_archive_2014.gtf \
+  /home/cuffquant/ControlCr.rep1.cxb,/home/cuffquant/ControlCr.rep2.cxb,/home/cuffquant/ControlCr.rep3.cxb \
+  /home/cuffquant/Cdx2koCr.rep1.cxb,/home/cuffquant/Cdx2koCr.rep2.cxb \
+  /home/cuffquant/BrafHetCr.rep1.cxb,/home/cuffquant/BrafHetCr.rep2.cxb \
+  /home/cuffquant/Cdx2BrafCr.rep1.cxb,/home/cuffquant/Cdx2BrafCr.rep2.cxb \
+  /home/cuffquant/SmadBrafCr.rep1.cxb&
 ```
 
 **Output Inputlist**
-cuffdiff.txt:
+cuffdiff.list.txt:
 
 ```
 /mnt/working/march2016/RNA/cuffdiff/result/gene_exp.diff
