@@ -29,7 +29,8 @@ var FileOperation = {
     if(app.state.lastSaved == ""){
       var filepath = dialog.showSaveDialog({
         title: "Save Project",
-        defaultPath: path.join(app.state.workDir, "defaultProject.json")
+        defaultPath: path.join(app.state.workDir, "defaultProject.json"),
+        properties: ['createDirectory']
       }, function(filepath) {
         if (!filepath) {return;}
         app.state.lastSaved = filepath;
@@ -56,7 +57,8 @@ var FileOperation = {
   saveAsProject: function(app) {
     var filepath = dialog.showSaveDialog({
       title: "Save Project",
-      defaultPath: path.join(app.state.workDir, "defaultProject.json")
+      defaultPath: path.join(app.state.workDir, "defaultProject.json"),
+      properties: ['createDirectory']
     }, function(filepath) {
       if (!filepath) {return;}
       app.state.lastSaved = filepath;
@@ -97,9 +99,24 @@ var FileOperation = {
     var filepath = dialog.showOpenDialog({
       title: "New Project",
       defaultPath: process.env.HOME,
-      properties: ['openDirectory']
+      properties: ['openDirectory', 'createDirectory']
     }, function(filepath) {
       if (!filepath) {return;}
+      app.state = {
+        workDir: "",
+        lastSaved: "",
+        tools: [
+          [app.getNewTool(0)],
+        ],
+        lastId: 0,
+        files: [],
+        action: "map",
+        showingParsed: false,
+        currentTool: 0,
+        chose: false,
+        choosing: 0,
+        command: "",
+      };
       touchFile(path.join(filepath[0], "INPUT.list.txt"));
       app.state.files.push({name: "INPUT.list.txt", type: "generated", path: path.join(filepath[0], "INPUT.list.txt")});
       app.state.workDir = filepath[0];

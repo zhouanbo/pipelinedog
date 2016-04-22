@@ -52,6 +52,13 @@ var Menus = {
       label: 'File',
       submenu: [
         {
+          label: 'New Project',
+          accelerator: 'CmdOrCtrl+N',
+          click: function(item, focusedWindow) {
+            FileOperation.newProject(app);
+          }
+        },
+        {
           label: 'Open Project',
           accelerator: 'CmdOrCtrl+O',
           click: function(item, focusedWindow) {

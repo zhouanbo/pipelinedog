@@ -254,25 +254,36 @@ var Police = {
     
     var legalKey = true;
     var legalType = true;
+    var lastSeg = -1; wrongOrder = false;
     
     for (var key in obj) {
       if(key == 'file') {
+        if(lastSeg > 0) wrongOrder = true;
+        lastSeg = 0;
         if(obj[key].search(/^\/.*\/$/) == -1 && obj[key].search(/[^\d\,\-]+/) != -1) {
           legalType = false;
         }
       } else if(key == 'line') {
+        if(lastSeg > 1) wrongOrder = true;
+        lastSeg = 1;
         if(obj[key].search(/^\/.*\/$/) == -1 && obj[key].search(/[^\d\,\-]+/) != -1) {
           legalType = false;
         }
       } else if(key == 'base') {
+        if(lastSeg > 2) wrongOrder = true;
+        lastSeg = 2;
         if((obj[key].indexOf('/') != -1 && obj[key].search(/^P*\/.*\/$/)) == -1 && (obj[key].indexOf('/') == -1 && (obj[key].search(/[^P\d\,\-]+/) != -1 || obj[key].indexOf('P') != 0))) {
           legalType = false;
         }
       } else if(key == 'extension') {
+        if(lastSeg > 3) wrongOrder = true;
+        lastSeg = 3;
         if(obj[key].search(/([(PRE)(SUF)]\'.*\')+/) == -1) {
           legalType = false;
         }
       } else if(key == 'arrangement') {
+        if(lastSeg > 4) wrongOrder = true;
+        lastSeg = 4;
         if(obj[key].search(/^\'.*\'$/) == -1) {
           legalType = false;
         }
@@ -290,6 +301,11 @@ var Police = {
       dialog.showErrorBox("Object Parse Error", "Illegal Segment format in Object: "+JSON.stringify(obj)+".");
       return false;
     }
+    
+    if(wrongOrder) {
+      dialog.showErrorBox("LEASH Parse Error", "Segments not correctly ordered in LEASH object: "+JSON.stringify(obj)+".");
+      return false;
+    } 
     
     return true;
   }

@@ -168,8 +168,8 @@ var MainComponent = React.createClass({
   deleteTool: function(chose, toolid) {
     var id = toolid;
     if(chose) {
-      if(Number(id) === 0) {
-        dialog.showErrorBox("Deletion Error", "Root node cannot be deleted.");
+      if(this.state.tools[0].length === 1 && this.state.tools.length === 1) {
+        dialog.showErrorBox("Deletion Error", "Cannot delete the last node.");
       } else {
         dialog.showMessageBox({
           type: "warning",
@@ -179,6 +179,11 @@ var MainComponent = React.createClass({
         }, function(r){
           if(Number(r) === 0) {
             Util.deleteById(this.state.tools, id);
+            for(var i=0; i < this.state.tools.length; i++) {
+              if(this.state.tools[i].length == 0) {
+                this.state.tools.splice(i, 1);
+              }
+            }
             this.state.chose = false;
             if(this.state.currentTool == id){
               this.state.currentTool = 0;
@@ -257,6 +262,7 @@ var MainComponent = React.createClass({
       this.state.workDir !== "" ?
         <div className="window">
           <HeaderPanel
+            newProject={this.newProject}
             openProject={this.openProject}
             saveProject={this.saveProject}
             saveAsProject={this.saveAsProject}

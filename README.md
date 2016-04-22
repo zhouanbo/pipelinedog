@@ -126,25 +126,25 @@ A pipeline step is defined by a JSON object. Taking advantage of the JSON format
 	"invoke": "samtools view",
 	"inputlists": [
     "INPUT.list.txt"
-  ],
+    ],
 	"options": [
     "-h", 
     "{INPUT}", 
     "{OUTPUT}"
-  ],
+    ],
 	"input_option": {
     "base": "-",
     "arrangement": "'l'",
-  },
+    },
 	"output_option": {
     "base": "1",
     "extension": "SUF'.sam'",
     "arrangement": "'l'"
-  },
+    },
 	"output_files": {
     "base": "1",
     "extension": "SUF'.sam'"
-  }
+    }
 }
 ```
 
@@ -156,12 +156,12 @@ A pipeline step is defined by a JSON object. Taking advantage of the JSON format
 	"invoke": "samtools view",
 	"inputlists": [
     "INPUT.list.txt"
-  ],
+    ],
 	"options": [
     "-h", 
     "{INPUT}", 
     "{OUTPUT}"
-  ],
+    ],
 	"input_option": "{-B|'l'A}",
 	"output_option": "{1B|SUF'.sam'E|'l'A}",
 	"output_files": "{1B|SUF'.sam'E}"
@@ -180,7 +180,7 @@ The properties of the object are defined as following:
 
 **options**: An array of strings that correspond to each of the static input that is normally used in the pipeline step. The places you wish to be replaced by a LEASH expression should each be marked by uppercase keywords wrapped by curly brackets. For example: {INPUT}, {OUTPUT}, {LABEL} or {LOG}.
 
-**[keyword]_option**: A series of options that defined by LEASH expressions. The naming of these options should follow the convention of [a lowercase keyword]_option, so that the outcome of the expression will replace the uppercase keyword marks in the previous *options*. Some suggested keyword options are listed below:
+**[keyword]_option**: A series of options that defined by LEASH expressions. The naming of these options should follow the convention of [a lowercase keyword]_option, so that the outcome of the expression will replace the uppercase keyword marks in the previous *options*. If multiple LEASH expression need to be used in a single option, using the short format is necessary. Some suggested keyword options are listed below:
 
 - *input_option*: specify the dynamic input of the pipeline step. 
 
@@ -208,6 +208,7 @@ Details of implementation are shown in the examples.
 ***Case 1: bam to sam***
 
 **Inputlist**
+
 INPUT.list.txt:
 
 ```
@@ -225,25 +226,25 @@ INPUT.list.txt:
 	"invoke": "samtools view",
 	"inputlists": [
     "INPUT.list.txt"
-  ],
+    ],
 	"options": [
     "-h", 
     "{INPUT}", 
     "{OUTPUT}"
-  ],
+    ],
 	"input_option": {
     "base": "-",
     "arrangement": "'l'",
-  },
+    },
 	"output_option": {
     "base": "1",
     "extension": "SUF'.sam'",
     "arrangement": "'l'"
-  },
+    },
 	"output_files": {
     "base": "1",
     "extension": "SUF'.sam'"
-  }
+    }
 }
 ```
 
@@ -256,6 +257,7 @@ samtools view -h test3.bam test3.sam
 ```
 
 **Output Inputlist**
+
 bam2sam.list.txt:
 
 ```
@@ -267,6 +269,7 @@ bam2sam.list.txt:
 ***Case 2: Cuffdiff***
 
 **Flielist**
+
 INPUT.list.txt:
 
 ```
@@ -291,7 +294,7 @@ INPUT.list.txt:
   "invoke": "cuffdiff",
   "inputlists": [
     "INPUT.list.txt"
-  ],
+    ],
   "options": [
     "{OUTPUT}",
     "{LABEL}",
@@ -301,13 +304,13 @@ INPUT.list.txt:
     "--dispersion-method bind",
     "/mnt/input/statics/mm9/mm9_genes_archive_2014.gtf",
     "{INPUT}"
-  ],
+    ],
   "input_option": "{/Control/L|'c'A} {/Cdx2ko/L|'c'A} {/BrafHet/L|'c'A} {/Cdx2Braf/L|'c'A} {/SmadBraf/L|'c'A}",
   "output_option": "-o /mnt/working/cuffidff",
   "label_option": "-L {1,4,6,10L|1B|'c'A}",
   "output_files": [
     "/mnt/working/cuffdiff/gene_exp.diff"
-  ]
+    ]
 }
 ```
 **Command Generated**
@@ -328,6 +331,7 @@ cuffdiff -o /mnt/working/cuffidff \
 ```
 
 **Output Inputlist**
+
 cuffdiff.list.txt:
 
 ```
