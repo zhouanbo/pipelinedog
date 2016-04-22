@@ -38,6 +38,10 @@ var HeaderPanel = React.createClass({
             <span className="icon icon-export icon-text"></span>
             Export
           </button>
+          <button className="btn btn-large btn-default pull-right" onClick={this.props.parseAll}>
+            <span className="icon icon-code icon-text"></span>
+            Parse All
+          </button>
           <button className="btn btn-large btn-default pull-right" onClick={this.props.mapCode}>
             <span className="icon icon-arrows-ccw icon-text"></span>
             Map / Tool

@@ -19,8 +19,12 @@ var FileOperation = {
           return console.log(err);
         }
         var readState = JSON.parse(data);
-        app.state = readState;
-        app.setState(app.state);
+        if(readState.workDir) {
+          app.state = readState;
+          app.setState(app.state);
+        } else {
+          dialog.showErrorBox("Open Project Error", "Malformatted project file.");
+        }
       });
     });
   },
@@ -165,6 +169,47 @@ var FileOperation = {
   {
     open(filepath);
   },
+  
+  exportTool: function(app) {
+    var tool = Util.filterByProperty(app.state.tools, "id", app.state.currentTool);
+    var filepath = dialog.showSaveDialog({
+      title: "Export Tool",
+      defaultPath: path.join(app.state.workDir, tool.name+".pdt.json")
+    }, function(filepath) {
+      if (!filepath) {return;}
+      var writeState = tool.code;
+      fs.writeFile(filepath, writeState, function(err) {
+        if(err) {
+            return console.log(err);
+        }
+        console.log("Tool exported!");
+      });
+    });
+  },
+  importTool: function(app) {
+    var tool = Util.filterByProperty(app.state.tools, "id", app.state.currentTool);
+    var filepath = dialog.showOpenDialog({
+      title: "Import Tool",
+      properties: ['openFile']
+    }, function(filepath) {
+      if (!filepath) {return;}
+      fs.readFile(filepath[0], 'utf8', function(err, data) {
+        if (err) {
+          return console.log(err);
+        }
+        var readState = JSON.parse(data);
+        if(readState.name) {
+        tool.name = readState.name;
+        tool.description = readState.description;
+        tool.code = data;
+        tool.codeobj = readState;
+        app.setState(app.state);
+        } else {
+          dialog.showErrorBox("Import Tool Error", "Malformatted tool file.");
+        }
+      });
+    });
+  }
 
 };
 

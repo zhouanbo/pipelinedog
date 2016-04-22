@@ -255,6 +255,28 @@ var MainComponent = React.createClass({
     this.setState(this.state);
     console.log("editing.");
   },
+  exportTool: function() {
+    FileOperation.exportTool(this);
+  },
+  importTool: function() {
+    FileOperation.importTool(this);
+    CodeParse.syncEditorToState(this);
+    CodeParse.syncStateToEditor(this);
+    this.setState(this.state);
+  },
+  shareTool: function() {
+    
+  },
+  parseAll: function() {
+    if(CodeParse.generateCommand(this)) {
+      dialog.showMessageBox({
+          type: "info",
+          buttons: ["OK"],
+          title: "Parse Success",
+          message: "All tools successfully parsed.",
+      });
+    }
+  },
 
 
   render: function() {
@@ -268,6 +290,7 @@ var MainComponent = React.createClass({
             saveAsProject={this.saveAsProject}
             importFile={this.importFile}
             mapCode={this.mapCode}
+            parseAll={this.parseAll}
             exportCode={this.exportCode}
             runCode={this.runCode}
           />
@@ -297,6 +320,9 @@ var MainComponent = React.createClass({
                   editorChange={this.editorChange}
                   parseCode={this.parseCode}
                   editCode={this.editCode}
+                  exportTool={this.exportTool}
+                  importTool={this.importTool}
+                  shareTool={this.shareTool}
                   ref="codePanel"
                 />
               }

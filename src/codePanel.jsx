@@ -63,12 +63,25 @@ var CodePanel = React.createClass({
               <strong>Code</strong>
               {tool.valid ? <strong style={{color: '#016936', float: 'right'}}><span style={{color: "black"}}>JSON: </span>Valid</strong> : <strong style={{color: '#B03060', float: 'right'}}><span style={{color: "black"}}>JSON: </span>Invalid</strong>}
               <div style={{marginRight: '10px'}} className="btn-group pull-right">
-                <button className="btn btn-mini btn-default" onClick={this.props.parseCode}>
+                {!this.props.showingParsed ?
+                <span className="codebutton" onClick={this.props.parseCode}>
+                  <span className="icon icon-code icon-text"></span>&nbsp;
                   Parse
-                </button>
-                <button className="btn btn-mini btn-default" onClick={this.props.editCode}>
+                </span> :
+                <span className="codebutton" onClick={this.props.editCode}>
+                  <span className="icon icon-tools icon-text"></span>&nbsp;
                   Edit
-                </button>
+                </span>
+                }
+                <span className="codebutton" onClick={this.props.exportTool}>
+                  <span className="icon icon-upload icon-text"></span>&nbsp;
+                  Export
+                </span>
+                <span className="codebutton" onClick={this.props.importTool}>
+                  <span className="icon icon-download icon-text"></span>&nbsp;
+                  Import
+                </span>
+                
               </div>
             </li>
           </ul>

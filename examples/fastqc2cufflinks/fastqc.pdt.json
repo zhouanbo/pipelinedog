@@ -1,0 +1,23 @@
+{
+  "name": "fastqc",
+  "description": "Quality control of fastq files",
+  "invoke": "fastqc",
+  "inputlists": [
+    "/Users/zhouanbo/ElectronProjects/pipelinedog/examples/fastqc2cufflinks/INPUT.list.txt"
+  ],
+  "options": [
+    "-o {OUTPUT}",
+    "{INPUT}",
+    "{PLAY}"
+  ],
+  "input_option": {
+    "arrangement": "'l'"
+  },
+  "output_option": {
+    "base": "/[^(fastq)]/",
+    "extension": "PRE'fastqc/'",
+    "arrangement": "'l'"
+  },
+  "play_option": "{'c'A}",
+  "output_files": []
+}
