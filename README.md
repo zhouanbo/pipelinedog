@@ -143,7 +143,8 @@ A pipeline step is defined by a JSON object. Taking advantage of the JSON format
     },
 	"output_files": {
     "base": "1",
-    "extension": "SUF'.sam'"
+    "extension": "SUF'.sam'",
+    "arrangement": "'a'"
     }
 }
 ```
@@ -164,7 +165,7 @@ A pipeline step is defined by a JSON object. Taking advantage of the JSON format
     ],
 	"input_option": "{-B|'l'A}",
 	"output_option": "{1B|SUF'.sam'E|'l'A}",
-	"output_files": "{1B|SUF'.sam'E}"
+	"output_files": "{1B|SUF'.sam'E|'a'A}"
 }
 ```
 
@@ -172,7 +173,7 @@ The properties of the object are defined as following:
 
 **name**: A string containing the name of the pipeline step.
 
-**description**: A string that contains a functioanl description of what the step does.
+**description**: A string that contains a functional description of what the step does.
 
 **invoke**: The command to invoke the pipeline step.
 
@@ -180,7 +181,7 @@ The properties of the object are defined as following:
 
 **options**: An array of strings that correspond to each of the static input that is normally used in the pipeline step. The places you wish to be replaced by a LEASH expression should each be marked by uppercase keywords wrapped by curly brackets. For example: {INPUT}, {OUTPUT}, {LABEL} or {LOG}.
 
-**[keyword]_option**: A series of options that defined by LEASH expressions. The naming of these options should follow the convention of [a lowercase keyword]_option, so that the outcome of the expression will replace the uppercase keyword marks in the previous *options*. If multiple LEASH expression need to be used in a single option, using the short format is necessary. Some suggested keyword options are listed below:
+**[keyword]_option**: A series of options that defined by LEASH expressions. The naming of these options should follow the convention of a lowercase keyword_option, so that the outcome of the expression will replace the uppercase {KEYWORD} marks in the previous *options*. If multiple LEASH expression need to be used in a single option, using the short format is necessary. Some suggested keyword options are listed below:
 
 - *input_option*: specify the dynamic input of the pipeline step. 
 
@@ -243,7 +244,8 @@ INPUT.list.txt:
     },
 	"output_files": {
     "base": "1",
-    "extension": "SUF'.sam'"
+    "extension": "SUF'.sam'",
+    "arrangement": "'a'"
     }
 }
 ```
