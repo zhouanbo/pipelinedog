@@ -70,7 +70,7 @@ var CodePanel = React.createClass({
                 </span> :
                 <span className="codebutton" onClick={this.props.editCode}>
                   <span className="icon icon-tools icon-text"></span>&nbsp;
-                  Edit
+                  Editor
                 </span>
                 }
                 <span className="codebutton" onClick={this.props.exportTool}>

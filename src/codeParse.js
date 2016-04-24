@@ -15,17 +15,15 @@ var CodeParse = {
   "invoke": "",
   "inputlists": [
     
-  ],
+    ],
   "options": [
     
-  ],
+    ],
   "input_option": "",
   "output_option": "",
-  "log_option": "",
-  "label_option": "",
   "output_files": [
-
-  ]
+    
+    ]
 }`);
   },
 
