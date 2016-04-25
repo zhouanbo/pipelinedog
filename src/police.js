@@ -2,6 +2,7 @@ var remote = require('remote');
 var dialog = remote.require('dialog');
 var Util = require('./util');
 var path = require('path');
+var fs = require('fs');
 
 var Police = {
   
@@ -45,6 +46,31 @@ var Police = {
     }
     
     if (rfalse) {
+      return false;
+    }
+    
+    //inputlists must exsit
+    var flexist = true;
+    var flempty = false;
+    tool.codeobj.inputlists.map(function(fl, i) {
+      var fstat;
+      try {
+        fstat = fs.statSync(fl);
+      } catch (e) {
+        console.log(e);
+        flexist = false;
+        return;
+      }
+      if(fstat.size == 0) {
+        flempty = true;
+      }
+    }.bind(this));
+    if(!flexist) {
+      dialog.showErrorBox("Tool Parse Error", "Inputlist does not exist in "+tool.name+".");
+      return false;
+    }
+    if(flempty) {
+      dialog.showErrorBox("Tool Parse Error", "Inputlist empty in "+tool.name+".");
       return false;
     }
     

@@ -214,6 +214,7 @@ var MainComponent = React.createClass({
   toolClick: function(id) {
     this.state.currentTool = id;
     this.state.action = "code";
+    this.state.showingParsed = false;
     CodeParse.syncEditorToState(this); //validate JSON
     this.setState(this.state);
   },
