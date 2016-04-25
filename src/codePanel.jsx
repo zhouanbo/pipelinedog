@@ -11,7 +11,10 @@ var CodePanel = React.createClass({
 
   refreshEditor: function() {    
     if(!this.props.showingParsed) this.refs.ace.editor.getSession().setUseWrapMode(true);
+    if(!this.props.showingParsed) this.refs.ace.editor.setReadOnly(false);
+    
     if(this.props.showingParsed) this.refs.aceparsed.editor.getSession().setUseWrapMode(true);
+    if(this.props.showingParsed) this.refs.aceparsed.editor.setReadOnly(true);
   },
 
   componentDidMount: function() {
@@ -90,7 +93,7 @@ var CodePanel = React.createClass({
         {
           !this.props.showingParsed ?
           <AceEditor
-            key={tool.id}
+            key={tool.id+"editor"}
             mode="json"
             theme="chrome"
             name="code"
@@ -103,7 +106,7 @@ var CodePanel = React.createClass({
             onFocus={this.clearHistory}
           /> :
           <AceEditor
-            key={tool.id}
+            key={tool.id+"parsed"}
             mode="sh"
             theme="chrome"
             name="codeparsed"
