@@ -80,6 +80,12 @@ var Police = {
       return false;
     }
     
+    //check if JSON is valid
+    if(!tool.valid) {
+      dialog.showErrorBox("Tool Parse Error", "JSON syntax not valid in "+tool.name+".");
+      return false;
+    }
+    
     //'l'A in both input, output option
     var inputLoop = false, outputLoop = false, labelLoop = false, logLoop = false;
     var ltOne = false;
