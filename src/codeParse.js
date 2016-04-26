@@ -159,7 +159,7 @@ var CodeParse = {
     tool.expressions.push(tool.codeobj.output_files);
     
     tool.expressions = tool.expressions.map(function(e, i, a) { //convert objects to standard LEASH
-      if(typeof(e) == "object") { //Long(object) format
+      if(typeof(e) == "object" && !Array.isArray(e)) { //Long(object) format
         var pseudoString = "{";
         if(e.file) pseudoString += `${e.file}F|`;
         if(e.line) pseudoString += `${e.line}L|`;
