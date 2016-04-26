@@ -1,1 +1,5 @@
-}
+tophat2/f1/accepted_hits.bam
+tophat2/f2/accepted_hits.bam
+tophat2/f3/accepted_hits.bam
+tophat2/f4/accepted_hits.bam
+tophat2/f5/accepted_hits.bam

@@ -7,6 +7,8 @@ var dialog = remote.require('dialog');
 var Menu = remote.Menu;
 var spawn = require('child_process').spawn;
 var path = require('path');
+var GitHubApi = require("github");
+var open = require("open");
 
 var Util = require('./lib/util');
 var Menus = require('./lib/menus')
@@ -266,7 +268,41 @@ var MainComponent = React.createClass({
     this.setState(this.state);
   },
   shareTool: function() {
-    
+    if(!Police.checkToolDefinition(this)){
+      this.refs.codePanel.refs.ace.editor.focus();
+      return;
+    }
+    dialog.showMessageBox({
+      type: "warning",
+      buttons: ["Confirm", "Cancel"],
+      title: "Gist creating confirmation",
+      message: "This will upload your code as a public gist snippet.",
+    }, function(r){
+      if(Number(r) === 0) {
+        var tool = Util.filterByProperty(this.state.tools, "id", this.state.currentTool);
+        var file = {};
+        file[tool.name+".json"] = {
+          "content": tool.code
+        };   
+        var github = new GitHubApi({
+          version: "3.0.0",
+          protocol: "https",
+          host: "api.github.com",
+          timeout: 5000
+        });
+        github.gists.create({
+          description: tool.description,
+          public: true,
+          files: file
+        }, function(err, res) {
+          if(err) {
+            console.log(err);
+          } else {
+            open(res.html_url);
+          }
+        }.bind(this));
+      }
+    }.bind(this));
   },
   parseAll: function() {
     if(CodeParse.generateCommand(this)) {

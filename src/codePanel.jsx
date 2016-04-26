@@ -84,6 +84,10 @@ var CodePanel = React.createClass({
                   <span className="icon icon-download icon-text"></span>&nbsp;
                   Import
                 </span>
+                <span className="codebutton" onClick={this.props.shareTool}>
+                  <span className="icon icon-share icon-text"></span>&nbsp;
+                  Share
+                </span>
                 
               </div>
             </li>
