@@ -2,7 +2,7 @@ var remote = require('remote');
 var application = remote.app;
 var shell = remote.shell;
 var FileOperation = require('./fileOperation');
- 
+
 var Menus = {
   macMenu: function(app) {
     return [
@@ -86,7 +86,7 @@ var Menus = {
             app.exportCode();
           }
         },
-        
+
       ]
     },
     {
@@ -235,7 +235,7 @@ var Menus = {
             app.exportCode();
           }
         },
-        
+
       ]
     },
     {
