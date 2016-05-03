@@ -12,7 +12,8 @@ function createWindow () {
   mainWindow = new BrowserWindow({
     width: 1024,
     height: 600,
-    title: "PipelineDog"
+    title: "PipelineDog",
+    icon: __dirname + "/img/icon_256x256.png"
   });
 
   mainWindow.loadURL('file://' + __dirname + '/index.html');
