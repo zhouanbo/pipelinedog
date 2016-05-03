@@ -86,7 +86,6 @@ var CodeParse = {
 
     this.convertExpressions(app, scope, segment);
 
-    console.log(tool.options);
     if(!tool.looping) { //if the tool is not looping
 
       tool.parsedOptions = tool.codeobj.options.map(function(s, index) { //replace placeholders with the translated expressions
@@ -246,7 +245,11 @@ var CodeParse = {
         case 'F':
           var inputlistArray = this.parseRange(s.slice(0,-1), inputlists.length, inputlists);
           inputlistArray.map(function(fl, i) {
-            fs.readFileSync(inputlists[fl-1], 'utf8').split('\n').map(function(fline) {
+            var readdata = fs.readFileSync(inputlists[fl-1], 'utf8');
+            if(readdata.slice(-1) == "\n") {
+              readdata = readdata.slice(0, -1);
+            }
+            readdata.split('\n').map(function(fline) {
               f.push(fline);
             }, this);
           }, this);

@@ -1,5 +1,5 @@
 <img src="http://pipeline.dog/icon.png" alt="pipelinedog logo" height="128" >
-# PiplineDog Docs
+# PipelineDog Docs
 
 ## Overview
 
