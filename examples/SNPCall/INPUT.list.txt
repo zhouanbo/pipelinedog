@@ -1,3 +1,0 @@
-/home/f1.bam
-/home/f2.bam
-/home/f3.bam
