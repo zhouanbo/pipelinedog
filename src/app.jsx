@@ -41,7 +41,7 @@ var MainComponent = React.createClass({
       command: "",
     };
   },
-  
+
   getNewTool: function(index) {
     return {
           id: index,
@@ -62,7 +62,7 @@ var MainComponent = React.createClass({
   componentDidMount: function() {
     var app = this;
     var template = {};
-    //App menu  
+    //App menu
     if (process.platform == 'darwin') {
       template = Menus.macMenu(app);
     } else {
@@ -108,9 +108,9 @@ var MainComponent = React.createClass({
   runCode: function() {
     if(CodeParse.generateCommand(this)) {
       var pipeline;
-      
+
       ipcRenderer.send('createRun');
-      
+
       ipcRenderer.on('winloaded', function(event) {
         console.log("loaded");
         FileOperation.runCommand(this);
@@ -118,7 +118,7 @@ var MainComponent = React.createClass({
         pipeline.stdout.on('data', function(data) {
           ipcRenderer.send('ondata', data);
         });
-        
+
         pipeline.stderr.on('data', function(data) {
           ipcRenderer.send('ondata', data);
         });
@@ -126,15 +126,15 @@ var MainComponent = React.createClass({
         pipeline.on('close', function(code) {
           ipcRenderer.send('ondata', `child process exited with code ${code}`);
         });
-      
+
       }.bind(this));
-      
+
       ipcRenderer.on('runclosed', function(event) {
         pipeline.kill('SIGHUP');
-      }.bind(this));   
+      }.bind(this));
     }
-    
-    
+
+
   },
 
   exportCode: function() {
@@ -142,8 +142,8 @@ var MainComponent = React.createClass({
       FileOperation.exportCommand(this);
     }
   },
-  
-  onFileClick: function(path) {
+
+  insertFile: function(path) {
     if(!this.state.showingParsed) {
       this.refs.codePanel.refs.ace.editor.insert('"'+path+'"');
       this.refs.codePanel.refs.ace.editor.focus();
@@ -239,9 +239,9 @@ var MainComponent = React.createClass({
     CodeParse.syncEditorToState(this);
     this.setState(this.state);
   },
-  
+
   //Code parsing
-  parseCode: function() { 
+  parseCode: function() {
     if(!Police.checkToolDefinition(this)){
       this.refs.codePanel.refs.ace.editor.focus();
       return;
@@ -283,7 +283,7 @@ var MainComponent = React.createClass({
         var file = {};
         file[tool.name+".json"] = {
           "content": tool.code
-        };   
+        };
         var github = new GitHubApi({
           version: "3.0.0",
           protocol: "https",
@@ -365,7 +365,7 @@ var MainComponent = React.createClass({
               }
               <FilePanel
                 files={this.state.files}
-                onFileClick={this.onFileClick}
+                insertFile={this.insertFile}
                 openFile={this.openFile}
                 deleteFile={this.deleteFile}
               />

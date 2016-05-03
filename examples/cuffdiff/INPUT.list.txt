@@ -1,10 +1,1 @@
 /home/cuffquant/ControlCr.rep1.cxb
-/home/cuffquant/ControlCr.rep2.cxb
-/home/cuffquant/ControlCr.rep3.cxb
-/home/cuffquant/Cdx2koCr.rep1.cxb
-/home/cuffquant/Cdx2koCr.rep2.cxb
-/home/cuffquant/BrafHetCr.rep1.cxb
-/home/cuffquant/BrafHetCr.rep2.cxb
-/home/cuffquant/Cdx2BrafCr.rep1.cxb
-/home/cuffquant/Cdx2BrafCr.rep2.cxb
-/home/cuffquant/SmadBrafCr.rep1.cxb

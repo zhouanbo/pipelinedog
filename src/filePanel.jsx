@@ -24,9 +24,9 @@ var FilePanel = React.createClass({
         <table className="table-striped">
           <thead>
             <tr>
-              <th>Action</th>
+              <th>Actions</th>
               <th>Name</th>
-              <th>Type</th>              
+              <th>Type</th>
             </tr>
           </thead>
           <tbody>
@@ -34,10 +34,11 @@ var FilePanel = React.createClass({
               return (
                 <tr key={index}>
                   <td style={{textAlign: "center"}}>
-                    <span onClick={this.props.openFile.bind(null, file.path)} className="icon icon-eye" style={{marginRight: '5px'}}></span>
+                    <span onClick={this.props.openFile.bind(null, file.path)} className="icon icon-pencil" style={{marginRight: '5px'}}></span>
+                    <span onClick={this.props.insertFile.bind(null, file.path)} className="icon icon-publish" style={{marginRight: '5px'}}></span>
                     <span onClick={this.props.deleteFile.bind(null, index)} className="icon icon-cancel-circled"></span>
                   </td>
-                  <td onClick={this.props.onFileClick.bind(null, file.path)}>{file.name}</td>
+                  <td onClick={this.props.openFile.bind(null, file.path)}>{file.name}</td>
                   <td>{file.type}</td>
                 </tr>
               );

@@ -1,0 +1,3 @@
+/home/file1.gz
+/home/file2.gz
+/home/file3.gz

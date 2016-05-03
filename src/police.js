@@ -5,19 +5,19 @@ var path = require('path');
 var fs = require('fs');
 
 var Police = {
-  
+
   checkToolDefinition: function(appParam) {
-    
+
     var app = appParam;
-    
+
     var tool = Util.filterByProperty(app.state.tools, "id", app.state.currentTool);
     var expressions = [
-      tool.codeobj.input_option, 
-      tool.codeobj.output_option, 
+      tool.codeobj.input_option,
+      tool.codeobj.output_option,
       tool.codeobj.label_option,
       tool.codeobj.log_option
     ];
-    
+
     var rfalse = false;
     expressions.map(function(s, i) {
       if(s){
@@ -32,9 +32,9 @@ var Police = {
         }
       }
     }, this);
-    
+
     if(Array.isArray(tool.codeobj.output_files)){
-      tool.codeobj.output_files.map(function(s, i) {       
+      tool.codeobj.output_files.map(function(s, i) {
         if(!this.checkLEASH(s)) {
           rfalse = true;
         }
@@ -44,11 +44,11 @@ var Police = {
         rfalse = true;
       }
     }
-    
+
     if (rfalse) {
       return false;
     }
-    
+
     //inputlists must exsit
     var flexist = true;
     var flempty = false;
@@ -73,109 +73,68 @@ var Police = {
       dialog.showErrorBox("Tool Parse Error", "Inputlist empty in "+tool.name+".");
       return false;
     }
-    
+
     //must have a name, description and invoke command
     if(tool.codeobj.name == "" || tool.codeobj.description == "" || tool.codeobj.invoke == "") {
       dialog.showErrorBox("Tool Parse Error", "Missing required definition in "+tool.name+".");
       return false;
     }
-    
+
     //check if JSON is valid
     if(!tool.valid) {
       dialog.showErrorBox("Tool Parse Error", "JSON syntax not valid in "+tool.name+".");
       return false;
     }
-    
+
     //'l'A in both input, output option
-    var inputLoop = false, outputLoop = false, labelLoop = false, logLoop = false;
+    var looping = false;
     var ltOne = false;
-    if(tool.codeobj.input_option) {
-      if(typeof(tool.codeobj.input_option) != "object") {
-        var inputArray = tool.codeobj.input_option.split(/[\{\}]/);
-        for (var i=1; i < inputArray.length-1; i+=2) {
-          inputArray[i].split('|').map(function(s, i){
-            if(s == "'l'A") {
-              inputLoop = true;
-            }
-          });
-          if (i > 1) {
-            ltOne = true;
-          }
-        }
-      } else {
-        if(tool.codeobj.input_option.arrangement == "'l'") {
-          inputLoop = true;
-        }
+    var notlooping = false;
+    var expressions=[];
+    for (var key in tool.codeobj) {
+      if(key.slice(-5) == '_expr') {
+        expressions.push(tool.codeobj[key]);
       }
     }
-    if(tool.codeobj.output_option) {
-      if(typeof(tool.codeobj.output_option) != "object") {
-        var outputArray = tool.codeobj.output_option.split(/[\{\}]/);
-        for (var i=1; i < outputArray.length-1; i+=2) {
-          outputArray[i].split('|').map(function(s, i){
-            if(s == "'l'A") {
-              outputLoop = true;
+    tool.expressions.push(tool.codeobj.output_files);
+
+    expressions.map(function(e, i) {
+      if(e) {
+        if(typeof(e) != "object") {
+          var array = e.split(/[\{\}]/);
+          for (var i=1; i < array.length-1; i+=2) {
+            array[i].split('|').map(function(s, i){
+              if(s == "'l'A") {
+                looping = true;
+              } else {
+                notlooping = true;
+              }
+            });
+            if (i > 1) {
+              ltOne = true;
             }
-          });
-          if (i > 1) {
-            ltOne = true;
+          }
+        } else {
+          if(e.arrangement == "'l'") {
+            looping = true;
+          } else {
+            notlooping = true;
           }
         }
-      } else {
-        if(tool.codeobj.output_option.arrangement == "'l'") {
-          outputLoop = true;
-        }
       }
-    }
-    if(tool.codeobj.label_option) {
-      if(typeof(tool.codeobj.label_option) != "object") {
-        var labelArray = tool.codeobj.label_option.split(/[\{\}]/);
-        for (var i=1; i < labelArray.length-1; i+=2) {
-          labelArray[i].split('|').map(function(s, i){
-            if(s == "'l'A") {
-              labelLoop = true;
-            }
-          });
-          if (i > 1) {
-            ltOne = true;
-          }
-        }
-      } else {
-        if(tool.codeobj.label_option.arrangement == "'l'") {
-          labelLoop = true;
-        }
-      }
-    }
-    if(tool.codeobj.log_option) {
-      if(typeof(tool.codeobj.log_option) != "object") {
-        var logArray = tool.codeobj.log_option.split(/[\{\}]/);
-        for (var i=1; i < logArray.length-1; i+=2) {
-          logArray[i].split('|').map(function(s, i){
-            if(s == "'l'A") {
-              logLoop = true;
-            }
-          });
-          if (i > 1) {
-            ltOne = true;
-          }
-        }
-      } else {
-        if(tool.codeobj.log_option.arrangement == "'l'") {
-          logLoop = true;
-        }
-      }
-    }
-    if(inputLoop || outputLoop || labelLoop || logLoop){
-      if(!(inputLoop && outputLoop)) {
-        dialog.showErrorBox("Tool Parse Error", "'l'A need to be in both input and output option in "+tool.name+".");
+    });
+
+    if(looping){
+      if(notlooping) {
+        dialog.showErrorBox("Tool Parse Error", "'l'A need to be in all LEASHs in "+tool.name+".");
         return false;
       }
       if(ltOne) {
-        dialog.showErrorBox("Tool Parse Error", "Looping arrangement only allow one LEASH per option in "+tool.name+".");
+        dialog.showErrorBox("Tool Parse Error", "Looping arrangement only allow one LEASH in "+tool.name+".");
         return false;
       }
     }
-    
+
     //can only use lower hierarchy output
     var isLowerHierarchy = false;
     var h = Util.getHierarchy(app.state.tools, tool.id)
@@ -191,16 +150,16 @@ var Police = {
       dialog.showErrorBox("Tool Parse Error", "You can't use output list from same or lower hierarchy in "+tool.name+", because they are not exist by that step.");
       return false;
     }
-    
+
     return true;
   },
-  
+
   checkLEASH: function(leashString) {
     //if not leash, return true
     if(leashString.indexOf('{') == -1 && leashString.indexOf('}') == -1) {
       return true;
     }
-    
+
     //Open and close symbols
     var depthBracket = 0;
     var depthQuote = 0;
@@ -218,7 +177,7 @@ var Police = {
       dialog.showErrorBox("LEASH Parse Error", "Quotes don't match in expression: "+leashString+".");
       return false;
     }
-    
+
     //Segments
     var legalSeg = true;
     var legalType = true;
@@ -277,17 +236,17 @@ var Police = {
     if(wrongOrder) {
       dialog.showErrorBox("LEASH Parse Error", "Segments not correctly ordered in LEASH expression: "+leashString+".");
       return false;
-    }  
-    
+    }
+
     return true;
   },
-  
+
   checkObject: function(obj) {
-    
+
     var legalKey = true;
     var legalType = true;
     var lastSeg = -1; wrongOrder = false;
-    
+
     for (var key in obj) {
       if(key == 'file') {
         if(lastSeg > 0) wrongOrder = true;
@@ -321,9 +280,9 @@ var Police = {
         }
       } else {
         legalKey = false;
-      }     
+      }
     }
-    
+
     if(!legalKey){
       dialog.showErrorBox("Object Parse Error", "Unrecognized key name in Object: "+JSON.stringify(obj)+".");
       return false;
@@ -333,16 +292,16 @@ var Police = {
       dialog.showErrorBox("Object Parse Error", "Illegal Segment format in Object: "+JSON.stringify(obj)+".");
       return false;
     }
-    
+
     if(wrongOrder) {
       dialog.showErrorBox("LEASH Parse Error", "Segments not correctly ordered in LEASH object: "+JSON.stringify(obj)+".");
       return false;
-    } 
-    
+    }
+
     return true;
   }
-  
-  
+
+
 }
 
 module.exports = Police;

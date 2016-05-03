@@ -1,10 +1,1 @@
-/home/cuffquant/ControlCr.sam
-/home/cuffquant/ControlCr.sam
-/home/cuffquant/ControlCr.sam
-/home/cuffquant/Cdx2koCr.sam
-/home/cuffquant/Cdx2koCr.sam
-/home/cuffquant/BrafHetCr.sam
-/home/cuffquant/BrafHetCr.sam
-/home/cuffquant/Cdx2BrafCr.sam
-/home/cuffquant/Cdx2BrafCr.sam
-/home/cuffquant/SmadBrafCr.sam
+/home/cuffquant/ControlCr.rep1.cxb
