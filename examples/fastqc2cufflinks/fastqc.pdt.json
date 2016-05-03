@@ -1,23 +1,33 @@
 {
-  "name": "fastqc",
-  "description": "Quality control of fastq files",
-  "invoke": "fastqc",
+  "name": "tophat2",
+  "description": "Align reads",
+  "invoke": "tophat2",
   "inputlists": [
     "/Users/zhouanbo/ElectronProjects/pipelinedog/examples/fastqc2cufflinks/INPUT.list.txt"
   ],
   "options": [
-    "-o {OUTPUT}",
+    "{OUTPUT}",
+    "--num-threads 16",
+    "/mnt/input/ref/Mus_musculus/UCSC/mm9/Sequence/Bowtie2Index/genome",
     "{INPUT}",
-    "{PLAY}"
+    "{LOG}"
   ],
-  "input_option": {
+  "input_expr": {
     "arrangement": "'l'"
   },
-  "output_option": {
+  "output_expr": {
     "base": "/[^(fastq)]/",
-    "extension": "PRE'fastqc/'",
+    "extension": "PRE'--output-dir tophat2/'",
     "arrangement": "'l'"
   },
-  "play_option": "{'c'A}",
-  "output_files": []
+  "log_expr": {
+    "base": "/[^(fastq)]/",
+    "extension": "PRE'&> tophat2/'SUF'.log'",
+    "arrangement": "'l'"
+  },
+  "output_files": {
+    "base": "/[^(fastq)]/",
+    "extension": "PRE'tophat2/'SUF'/accepted_hits.bam'",
+    "arrangement": "'l'"
+  }
 }
