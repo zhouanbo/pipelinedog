@@ -167,7 +167,7 @@ var CodeParse = {
         if(e.base) pseudoString += `${e.base}B|`;
         if(e.extension) pseudoString += `${e.extension}E|`;
         if(e.arrangement) pseudoString += `${e.arrangement}A|`;
-        pseudoString = pseudoString.slice(0,-1);
+        if(pseudoString.slice(-1)=="|") pseudoString = pseudoString.slice(0,-1);
         pseudoString += "}";
         return i!=a.length-1?pseudoString:[pseudoString];
       }

@@ -55,9 +55,8 @@ var FileOperation = {
           console.log("Project saved!");
         });
     }
-    app.setState(app.state);
   },
-  
+
   saveAsProject: function(app) {
     var filepath = dialog.showSaveDialog({
       title: "Save Project",
@@ -74,7 +73,6 @@ var FileOperation = {
         console.log("Project saved!");
       });
     });
-    app.setState(app.state);
   },
 
   importFile: function(app) {
@@ -127,7 +125,7 @@ var FileOperation = {
       app.setState(app.state);
     });
   },
-  
+
   newParse: function(app) {
     var tool = Util.filterByProperty(app.state.tools, "id", app.state.currentTool);
     mkdirp(path.join(app.state.workDir, tool.name), function(err) {
@@ -144,7 +142,7 @@ var FileOperation = {
     }
     app.setState(app.state);
   },
-  
+
   exportCommand: function(app) {
     var filepath = dialog.showSaveDialog({
       title: "Export Code",
@@ -160,16 +158,16 @@ var FileOperation = {
       });
     });
   },
-  
+
   runCommand: function(app) {
     fs.writeFileSync(path.join(app.state.workDir, ".pipelinecommand.sh"), app.state.command);
   },
-  
+
   openFile: function(filepath)
   {
     open(filepath);
   },
-  
+
   exportTool: function(app) {
     var tool = Util.filterByProperty(app.state.tools, "id", app.state.currentTool);
     var filepath = dialog.showSaveDialog({
