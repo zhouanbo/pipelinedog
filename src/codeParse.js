@@ -113,7 +113,7 @@ var CodeParse = {
       if (process.platform != 'win32'){
         tool.parsedCommand = tool.codeobj.invoke + " " + tool.parsedOptions.join(" ") + "&";
       } else {
-        tool.parsedCommand = "START /wait" + tool.codeobj.invoke + " " + tool.parsedOptions.join(" ");
+        tool.parsedCommand = "START /wait " + tool.codeobj.invoke + " " + tool.parsedOptions.join(" ");
       }
 
     } else { //if the tool is looping
@@ -142,14 +142,14 @@ var CodeParse = {
           if (process.platform != 'win32'){
             tool.parsedCommand += tool.codeobj.invoke + " " + tool.parsedOptions.join(" ") + "&" + newline;
           } else {
-            tool.parsedCommand += "START /wait" + tool.codeobj.invoke + " " + tool.parsedOptions.join(" ") + newline;
+            tool.parsedCommand += "START /wait " + tool.codeobj.invoke + " " + tool.parsedOptions.join(" ") + newline;
 
           }
         } else {
           if (process.platform != 'win32'){
             tool.parsedCommand += tool.codeobj.invoke + " " + tool.parsedOptions.join(" ") + "&";
           } else {
-            tool.parsedCommand += "START /wait" + tool.codeobj.invoke + " " + tool.parsedOptions.join(" ");
+            tool.parsedCommand += "START /wait " + tool.codeobj.invoke + " " + tool.parsedOptions.join(" ");
           }
         }
 
