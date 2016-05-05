@@ -5,6 +5,11 @@ var open = require("open");
 
 var Util = require('./util');
 
+if (process.platform != 'win32'){
+  var newline = "\n";
+} else {
+  var newline = "\n\r";
+}
 
 var FileOperation = {
 
@@ -136,7 +141,7 @@ var FileOperation = {
       }
     });
     var filepath = path.join(app.state.workDir, tool.name, tool.name+".list.txt");
-    fs.writeFileSync(filepath, tool.output_files.join("\n"));
+    fs.writeFileSync(filepath, tool.output_files.join(newline));
     if(!Util.hasPath(app.state.files, filepath)) {
       app.state.files.push({name: tool.name+".list.txt", type: "generated", path: filepath});
     }
