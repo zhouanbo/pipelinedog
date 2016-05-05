@@ -41,7 +41,7 @@ app.on('activate', function () {
 ipcMain.on('createRun', createRunWindow);
 
 function createRunWindow () {
-  runWindow = new BrowserWindow({ width: 600, height: 300, alwaysOnTop: true });
+  runWindow = new BrowserWindow({ width: 600, height: 300, alwaysOnTop: true, "auto-hide-menu-bar": true });
   runWindow.loadURL('file://' + __dirname + '/run.html');
 
   runWindow.on('closed', function() {
