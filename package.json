@@ -14,7 +14,7 @@
   },
   "dependencies": {
     "brace": "^0.7.0",
-    "draft-js": "^0.5.0",
+    "electron-prebuilt": "^0.37.8",
     "github": "^0.2.4",
     "jquery": "^2.2.1",
     "lodash": "^4.6.1",
@@ -22,8 +22,7 @@
     "open": "0.0.5",
     "react": "^0.14.7",
     "react-ace": "^3.2.0",
-    "react-dom": "^0.14.7",
-    "toastr": "^2.1.2"
+    "react-dom": "^0.14.7"
   },
   "devDependencies": {
     "babel-preset-react": "^6.5.0",

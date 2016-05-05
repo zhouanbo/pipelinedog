@@ -37,10 +37,47 @@
       </div>
     </div>
     <script>
-      require('electron').ipcRenderer.on('senddata', function(event, output) {
+			var ipcRenderer = require('electron').ipcRenderer;
+			var fs = require('fs');
+      var path = require('path');
+      var spawn = require('child_process').spawn;
+      
+			function showData(output) {
         var line = `<div>${output}</div>`;
         document.getElementById('content').innerHTML = line + document.getElementById('content').innerHTML;
-      });
+      }
+			
+			ipcRenderer.on('winloaded', function(event, workDir, command) {
+				
+				console.log("received");
+    		
+				var pipeline;
+				
+        fs.writeFileSync(path.join(workDir, process.platform != 'win32' ? ".pipelinecommand.sh" : ".pipelinecommand.BAT"), command);
+        
+				if(process.platform != 'win32') {
+          pipeline = spawn("bash", [path.join(workDir, ".pipelinecommand.sh")]);
+        } else {
+          pipeline = spawn(path.join(workDir, ".pipelinecommand.BAT"));
+        }
+        pipeline.stdout.on('data', function(data) {
+          showData(data);
+        });
+
+        pipeline.stderr.on('data', function(data) {
+          showData(data);
+        });
+
+        pipeline.on('close', function(code) {
+          showData(`child process exited with code ${code}`);
+        });
+
+      }.bind(this));
+
+      ipcRenderer.on('runclosing', function(event) {
+        pipeline.kill('SIGHUP');
+        ipcRenderer.send('confirmClose');
+      }.bind(this));
     </script>
   </body>
 </html>

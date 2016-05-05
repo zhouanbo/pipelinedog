@@ -151,7 +151,7 @@ var FileOperation = {
   exportCommand: function(app) {
     var filepath = dialog.showSaveDialog({
       title: "Export Code",
-      defaultPath: path.join(app.state.workDir, "PipelineDog.sh")
+      defaultPath: path.join(app.state.workDir, process.platform != 'win32' ? "PipelineDog.sh" : "PipelineDog.BAT")
     }, function(filepath) {
       if (!filepath) {return;}
       var writeState = app.state.command;
@@ -162,10 +162,6 @@ var FileOperation = {
         console.log("Command exported!");
       });
     });
-  },
-
-  runCommand: function(app) {
-    fs.writeFileSync(path.join(app.state.workDir, ".pipelinecommand.sh"), app.state.command);
   },
 
   openFile: function(filepath)

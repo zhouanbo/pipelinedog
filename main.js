@@ -21,6 +21,9 @@ function createWindow () {
   //mainWindow.webContents.openDevTools();
 
   mainWindow.on('closed', function() {
+		if(runWindow) {
+			runWindow.close();
+		}
     mainWindow = null;
   });
 
@@ -38,23 +41,19 @@ app.on('activate', function () {
   }
 });
 
-ipcMain.on('createRun', createRunWindow);
-
-function createRunWindow () {
-  runWindow = new BrowserWindow({ width: 600, height: 300, alwaysOnTop: true, "auto-hide-menu-bar": true });
+ipcMain.on('createRun', function(event, workDir, command) {
+  runWindow = new BrowserWindow({ width: 600, height: 300, autoHideMenuBar: true });
   runWindow.loadURL('file://' + __dirname + '/run.html');
 
-  runWindow.on('closed', function() {
-    if(mainWindow) mainWindow.webContents.send('runclosed');
-    runWindow = null;
+  runWindow.on('close', function() {
+    runWindow.webContents.send('runclosing');
   });
+  
+  ipcMain.on('confirmClose', function() {
+    runWindow = null;
+  })
 
   runWindow.webContents.on('did-finish-load', function() {
-    mainWindow.webContents.send('winloaded');
-  });
-
-  ipcMain.on('ondata', function(event, msg) {
-    if(runWindow) runWindow.webContents.send('senddata', msg);
-  });
-
-}
+    runWindow.webContents.send('winloaded', workDir, command);
+  }.bind(this));
+});
