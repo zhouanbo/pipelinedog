@@ -16,5 +16,9 @@ tophat2 --output-dir tophat2/f4 --num-threads 16 /mnt/input/ref/Mus_musculus/UCS
 tophat2 --output-dir tophat2/f5 --num-threads 16 /mnt/input/ref/Mus_musculus/UCSC/mm9/Sequence/Bowtie2Index/genome /home/f5.fastq &> tophat2/f5.log&
 wait
 
-cufflinks --output-dir cufflinks/f1 --num-threads 16 --GTF /mnt/input/statics/mm9/mm9_genes_archive_2014.gtf --frag-bias-correct /mnt/input/ref/Mus_musculus/UCSC/mm9/Sequence/WholeGenomeFasta/genome.fa --multi-read-correct --upper-quartile-norm }&
+cufflinks --output-dir cufflinks/f1 --num-threads 16 --GTF /mnt/input/statics/mm9/mm9_genes_archive_2014.gtf --frag-bias-correct /mnt/input/ref/Mus_musculus/UCSC/mm9/Sequence/WholeGenomeFasta/genome.fa --multi-read-correct --upper-quartile-norm tophat2/f1/accepted_hits.bam&
+cufflinks --output-dir cufflinks/f2 --num-threads 16 --GTF /mnt/input/statics/mm9/mm9_genes_archive_2014.gtf --frag-bias-correct /mnt/input/ref/Mus_musculus/UCSC/mm9/Sequence/WholeGenomeFasta/genome.fa --multi-read-correct --upper-quartile-norm tophat2/f2/accepted_hits.bam&
+cufflinks --output-dir cufflinks/f3 --num-threads 16 --GTF /mnt/input/statics/mm9/mm9_genes_archive_2014.gtf --frag-bias-correct /mnt/input/ref/Mus_musculus/UCSC/mm9/Sequence/WholeGenomeFasta/genome.fa --multi-read-correct --upper-quartile-norm tophat2/f3/accepted_hits.bam&
+cufflinks --output-dir cufflinks/f4 --num-threads 16 --GTF /mnt/input/statics/mm9/mm9_genes_archive_2014.gtf --frag-bias-correct /mnt/input/ref/Mus_musculus/UCSC/mm9/Sequence/WholeGenomeFasta/genome.fa --multi-read-correct --upper-quartile-norm tophat2/f4/accepted_hits.bam&
+cufflinks --output-dir cufflinks/f5 --num-threads 16 --GTF /mnt/input/statics/mm9/mm9_genes_archive_2014.gtf --frag-bias-correct /mnt/input/ref/Mus_musculus/UCSC/mm9/Sequence/WholeGenomeFasta/genome.fa --multi-read-correct --upper-quartile-norm tophat2/f5/accepted_hits.bam&
 wait

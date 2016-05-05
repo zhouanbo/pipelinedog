@@ -11,12 +11,12 @@ var Police = {
     var app = appParam;
 
     var tool = Util.filterByProperty(app.state.tools, "id", app.state.currentTool);
-    var expressions = [
-      tool.codeobj.input_option,
-      tool.codeobj.output_option,
-      tool.codeobj.label_option,
-      tool.codeobj.log_option
-    ];
+    var expressions = [];
+    for (var key in tool.codeobj) {
+      if(key.slice(-5) == '_expr') {
+        expressions.push(tool.codeobj[key]);
+      }
+    }
 
     var rfalse = false;
     expressions.map(function(s, i) {
@@ -80,6 +80,18 @@ var Police = {
       return false;
     }
 
+    //must have valid properties
+    var propnames = true;
+    for (var key in tool.codeobj) {
+      if(key.slice(-5) != '_expr' && key != 'name' && key != 'description' && key != 'invoke' && key != 'inputlists' && key != 'options' && key != 'output_files') {
+        propnames = false;
+      }
+    }
+    if(!propnames) {
+      dialog.showErrorBox("Tool Parse Error", "Property names not valid in "+tool.name+".");
+      return false;
+    }
+
     //check if JSON is valid
     if(!tool.valid) {
       dialog.showErrorBox("Tool Parse Error", "JSON syntax not valid in "+tool.name+".");
@@ -90,12 +102,6 @@ var Police = {
     var looping = false;
     var ltOne = false;
     var notlooping = false;
-    var expressions=[];
-    for (var key in tool.codeobj) {
-      if(key.slice(-5) == '_expr') {
-        expressions.push(tool.codeobj[key]);
-      }
-    }
 
     expressions.map(function(e, i) {
       if(e) {
@@ -210,7 +216,7 @@ var Police = {
         } else if(si == 'E') {
           if(lastSeg > 3) wrongOrder = true;
           lastSeg = 3;
-          if(ss.search(/([(PRE)(SUF)]\'.*\')+/) == -1) {
+          if(ss.search(/(^PRE\'[^\']*\'$)|(^SUF\'[^\']*\'$)|(^PRE\'[^\']*\'SUF\'[^\']*\'$)|(^SUF\'[^\']*\'PRE\'[^\']*\'$)/) == -1) {
             legalType = false;
           }
         } else if(si == 'A') {
@@ -271,7 +277,7 @@ var Police = {
       } else if(key == 'extension') {
         if(lastSeg > 3) wrongOrder = true;
         lastSeg = 3;
-        if(obj[key].search(/([(PRE)(SUF)]\'.*\')+/) == -1) {
+        if(obj[key].search(/(^PRE\'[^\']*\'$)|(^SUF\'[^\']*\'$)|(^PRE\'[^\']*\'SUF\'[^\']*\'$)|(^SUF\'[^\']*\'PRE\'[^\']*\'$)/) == -1) {
           legalType = false;
         }
       } else if(key == 'arrangement') {

@@ -250,13 +250,13 @@ var MainComponent = React.createClass({
     CodeParse.parseToolCommand(this);
     FileOperation.newParse(this);
     this.setState(this.state);
-    console.log("parsing.");
+    console.log('showingParsed: ' + this.state.showingParsed);
   },
   editCode: function() {
     this.state.showingParsed = false;
     CodeParse.syncStateToEditor(this);
     this.setState(this.state);
-    console.log("editing.");
+    console.log('showingParsed: ' + this.state.showingParsed);
   },
   exportTool: function() {
     FileOperation.exportTool(this);
