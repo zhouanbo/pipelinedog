@@ -13,20 +13,19 @@
     "plugins": []
   },
   "dependencies": {
-    "brace": "^0.7.0",
-    "electron-prebuilt": "^0.37.8",
+    "brace": "^0.8.0",
     "github": "^0.2.4",
     "jquery": "^2.2.1",
     "lodash": "^4.6.1",
     "mkdirp": "^0.5.1",
     "open": "0.0.5",
-    "react": "^0.14.7",
-    "react-ace": "^3.2.0",
-    "react-dom": "^0.14.7"
+    "react": "^15.0.2",
+    "react-ace": "^3.4.1",
+    "react-dom": "^15.0.2"
   },
   "devDependencies": {
     "babel-preset-react": "^6.5.0",
-    "electron-prebuilt": "^0.36.0"
+    "electron-prebuilt": "^0.37.8"
   },
   "repository": {
     "type": "git",

@@ -1,6 +1,6 @@
 var React = require('react');
 var brace = require('brace');
-var AceEditor = require('react-ace');
+var AceEditor = require('react-ace').default;
 var Util = require('./util');
 
 require('brace/mode/json');
@@ -88,7 +88,7 @@ var CodePanel = React.createClass({
                   <span className="icon icon-share icon-text"></span>&nbsp;
                   Share
                 </span>
-                
+
               </div>
             </li>
           </ul>
