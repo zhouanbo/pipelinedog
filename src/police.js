@@ -190,7 +190,8 @@ var Police = {
     var legalSeg = true;
     var legalType = true;
     var leashArray = leashString.split(/[\{\}]/);
-    var lastSeg = -1; wrongOrder = false;
+    var lastSeg = -1;
+    var wrongOrder = false;
     for (var i=1; i < leashArray.length-1; i+=2) {
       leashArray[i].split("|").map(function(s, i) {
         var si = s.slice(-1);
@@ -253,7 +254,8 @@ var Police = {
 
     var legalKey = true;
     var legalType = true;
-    var lastSeg = -1; wrongOrder = false;
+    var lastSeg = -1;
+    var wrongOrder = false;
 
     for (var key in obj) {
       if(key == 'file') {

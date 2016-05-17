@@ -228,7 +228,11 @@ var CodeParse = {
   parseLEASH: function(expression, tool, segment) { //parse LEASH expression and process inputlists
     var inputlists = tool.codeobj.inputlists;
     var segs = [];
-    var f = [], l = [], b = [], e = [], a = "";
+    var f = [];
+    var l = [];
+    var b = [];
+    var e = [];
+    var a = "";
 
     expression.split(segment).map(function(s, i) {
       if(s.slice(-1) == 'F') {
@@ -364,7 +368,7 @@ var CodeParse = {
       var a = s.split(',');
       a.map(function(ss, i) {
         if(ss.indexOf('-') > -1) {
-          b = ss.split('-');
+          var b = ss.split('-');
           if(b[0]=="" && b[1]==""){b[0] = 1; b[1] = length;}
           else if(b[1]==""){b[1] = length;}
           else if(b[0]==""){b[0] = 1;}
