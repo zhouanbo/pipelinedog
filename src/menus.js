@@ -1,4 +1,4 @@
-var remote = require('remote');
+var remote = require('electron').remote;
 var application = remote.app;
 var shell = remote.shell;
 var FileOperation = require('./fileOperation');

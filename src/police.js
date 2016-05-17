@@ -1,5 +1,5 @@
-var remote = require('remote');
-var dialog = remote.require('dialog');
+var remote = require('electron').remote;
+var {dialog} = remote;
 var Util = require('./util');
 var path = require('path');
 var fs = require('fs');

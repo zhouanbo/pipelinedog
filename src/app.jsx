@@ -1,9 +1,9 @@
 var React = require('react');
 var ReactDOM = require('react-dom');
-var remote = require('remote');
+var remote = require('electron').remote;
 var ipcRenderer = require('electron').ipcRenderer;
 
-var dialog = remote.require('dialog');
+var {dialog} = remote;
 var Menu = remote.Menu;
 var path = require('path');
 var GitHubApi = require("github");
