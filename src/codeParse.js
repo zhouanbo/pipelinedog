@@ -70,7 +70,7 @@ var CodeParse = {
       app.state.tools.map(function(level, i) {
         level.map(function(tool, i) {
           app.state.command += newline+tool.parsedCommand;
-        }, this)
+        }, this);
         app.state.command += `${newline}wait${newline}`;
       });
     } else {

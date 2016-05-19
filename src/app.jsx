@@ -52,7 +52,7 @@ var MainComponent = React.createClass({
           looping: false, //if the command is to run as a loop, or the values to loop
           expressions: [], //direct LEASH parsing result
           options: [], //keys for options
-          parsedCommnad: "", //the command to finally run
+          parsedCommand: "", //the command to finally run
           valid: true, //if the JSON is valid
           output_files: [], //the array of predicted output files path
         };
