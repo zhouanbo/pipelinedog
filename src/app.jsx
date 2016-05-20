@@ -28,7 +28,7 @@ var MainComponent = React.createClass({
       workDir: "",
       lastSaved: "",
       tools: [
-        [this.getNewTool(0)],
+        [this.getNewTool(0)]
       ],
       lastId: 0,
       files: [],
@@ -47,14 +47,14 @@ var MainComponent = React.createClass({
           name: "New Step",
           description: "A new step you just created",
           code: CodeParse.initCode(), //the JSON code
-          codeobj: {}, //JOSN object parsed from the code
+          codeobj: {}, //JSON object parsed from the code
           parsedOptions: {}, //LEASH converted options of the tool
           looping: false, //if the command is to run as a loop, or the values to loop
           expressions: [], //direct LEASH parsing result
           options: [], //keys for options
           parsedCommand: "", //the command to finally run
           valid: true, //if the JSON is valid
-          output_files: [], //the array of predicted output files path
+          output_files: [] //the array of predicted output files path
         };
   },
 
@@ -234,6 +234,10 @@ var MainComponent = React.createClass({
   exportTool: function() {
     FileOperation.exportTool(this);
   },
+  exportProject: function() {
+    var json = Util.arrayToJSON(this.state.tools);
+    FileOperation.exportProject(this, json);
+  },
   importTool: function() {
     FileOperation.importTool(this);
     CodeParse.syncEditorToState(this);
@@ -301,6 +305,7 @@ var MainComponent = React.createClass({
             importFile={this.importFile}
             mapCode={this.mapCode}
             parseAll={this.parseAll}
+            exportProject={this.exportProject}
             exportCode={this.exportCode}
             runCode={this.runCode}
           />

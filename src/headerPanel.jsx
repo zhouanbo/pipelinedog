@@ -35,8 +35,12 @@ var HeaderPanel = React.createClass({
             Run
           </button>
           <button className="btn btn-large btn-default pull-right" onClick={this.props.exportCode}>
+            <span className="icon icon-publish icon-text"></span>
+            Export Code
+          </button>
+          <button className="btn btn-large btn-default pull-right" onClick={this.props.exportProject}>
             <span className="icon icon-export icon-text"></span>
-            Export
+            Export Project
           </button>
           <button className="btn btn-large btn-default pull-right" onClick={this.props.parseAll}>
             <span className="icon icon-code icon-text"></span>

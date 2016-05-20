@@ -48,9 +48,7 @@
       }
 			
 			ipcRenderer.on('winloaded', function(event, workDir, command) {
-				
-				console.log("received");
-    		
+
 				var pipeline;
 				
         fs.writeFileSync(path.join(workDir, process.platform != 'win32' ? ".pipelinecommand.sh" : ".pipelinecommand.BAT"), command);

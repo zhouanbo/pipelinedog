@@ -11,6 +11,17 @@ var Util = {
     }
   },
 
+  arrayToJSON: function (array) {
+    var json = {};
+    for (var i = 0; i < array.length; i++) {
+      for (var j = 0; j < array[i].length; j++) {
+        var obj = array[i][j];
+        json["Step_"+(i+1)+"_"+(j+1)] = obj.codeobj;
+      }
+    }
+    return json;
+  },
+
   getHierarchy: function(array, toolid) {
     for (var i = 0; i < array.length; i++) {
       for (var j = 0; j < array[i].length; j++) {

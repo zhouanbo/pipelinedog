@@ -1,0 +1,59 @@
+{
+  "Step_1_1": {
+    "name": "fastqc",
+    "description": "Quality control of fastq files",
+    "invoke": "fastqc",
+    "inputlists": [
+      "/Users/zhouanbo/ElectronProjects/pipelinedog/examples/fastqc2cufflinks/INPUT.list.txt"
+    ],
+    "options": [
+      "-o {OUTPUT}",
+      "{INPUT}"
+    ],
+    "input_expr": "{'l'A}",
+    "output_expr": "{/[^(fastq)]/B|PRE'fastqc/'E|'l'A}",
+    "output_files": []
+  },
+  "Step_2_1": {
+    "name": "tophat2",
+    "description": "Alignment reads",
+    "invoke": "tophat2",
+    "inputlists": [
+      "/Users/zhouanbo/ElectronProjects/pipelinedog/examples/fastqc2cufflinks/INPUT.list.txt"
+    ],
+    "options": [
+      "{OUTPUT}",
+      "--num-threads 16",
+      "/mnt/input/ref/Mus_musculus/UCSC/mm9/Sequence/Bowtie2Index/genome",
+      "{INPUT}",
+      "{LOG}"
+    ],
+    "input_expr": "{'l'A}",
+    "output_expr": "{/[^(fastq)]/B|PRE'--output-dir tophat2/'E|'l'A}",
+    "log_expr": "{/[^(fastq)]/B|PRE'&> tophat2/'SUF'.log'E|'l'A}",
+    "output_files": [
+      "{/[^(fastq)]/B|PRE'tophat2/'SUF'/accepted_hits.bam'E|'l'A}"
+    ]
+  },
+  "Step_3_1": {
+    "name": "cufflinks",
+    "description": "Calculate gene enrichment",
+    "invoke": "cufflinks",
+    "inputlists": [
+      "/Users/zhouanbo/ElectronProjects/pipelinedog/examples/fastqc2cufflinks/tophat2/tophat2.list.txt",
+      "/Users/zhouanbo/ElectronProjects/pipelinedog/examples/fastqc2cufflinks/INPUT.list.txt"
+    ],
+    "options": [
+      "{OUTPUT}",
+      "--num-threads 16",
+      "--GTF /mnt/input/statics/mm9/mm9_genes_archive_2014.gtf",
+      "--frag-bias-correct /mnt/input/ref/Mus_musculus/UCSC/mm9/Sequence/WholeGenomeFasta/genome.fa",
+      "--multi-read-correct",
+      "--upper-quartile-norm",
+      "{INPUT}"
+    ],
+    "input_expr": "{1F|'l'A}",
+    "output_expr": "{2F|/[^(fastq)]/B|PRE'--output-dir cufflinks/'E|'l'A}",
+    "output_files": []
+  }
+}

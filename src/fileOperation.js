@@ -164,6 +164,21 @@ var FileOperation = {
     });
   },
 
+  exportProject: function(app, json) {
+    var filepath = dialog.showSaveDialog({
+      title: "Export Project",
+      defaultPath: path.join(app.state.workDir, "PipelineDog.pipeline.json")
+    }, function(filepath) {
+      if (!filepath) {return;}
+      fs.writeFile(filepath, JSON.stringify(json, null, "  "), function(err) {
+        if(err) {
+          return console.log(err);
+        }
+        console.log("Project exported!");
+      });
+    });
+  },
+
   openFile: function(filepath)
   {
     open(filepath);
