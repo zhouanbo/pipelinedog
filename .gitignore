@@ -2,5 +2,6 @@ node_modules
 jsconfig.json
 PipelineDog-linux-x64
 PipelineDog-darwin-x64
+PipelineDog-win32-x64
 .vscode
 .idea
