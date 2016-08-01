@@ -46,7 +46,7 @@ ipcMain.on('createRun', function(event, workDir, command) {
   runWindow.on('close', function() {
     runWindow.webContents.send('runclosing');
   });
-  
+ 
   ipcMain.on('confirmClose', function() {
     runWindow = null;
   })

@@ -18,8 +18,10 @@ var Police = {
     var tool = Util.filterByProperty(app.state.tools, "id", app.state.currentTool);
     var expressions = [];
     for (var key in tool.codeobj) {
-      if (key.slice(-5) == '_expr') {
-        expressions.push(tool.codeobj[key]);
+      if (tool.codeobj.hasOwnProperty(key)) {
+        if (key.slice(-5) == '_expr') {
+          expressions.push(tool.codeobj[key]);
+        }
       }
     }
 
@@ -87,9 +89,11 @@ var Police = {
 
     //must have valid properties
     var propnames = true;
-    for (var key in tool.codeobj) {
-      if (key.slice(-5) != '_expr' && key != 'name' && key != 'description' && key != 'invoke' && key != 'inputlists' && key != 'options' && key != 'output_files') {
-        propnames = false;
+    for (key in tool.codeobj) {
+      if (tool.codeobj.hasOwnProperty(key)) {
+        if (key.slice(-5) != '_expr' && key != 'name' && key != 'description' && key != 'invoke' && key != 'inputlists' && key != 'options' && key != 'output_files') {
+          propnames = false;
+        }
       }
     }
     if (!propnames) {

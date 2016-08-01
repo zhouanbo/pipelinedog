@@ -9,17 +9,17 @@ var path = require('path');
 var GitHubApi = require("github");
 var open = require("open");
 
-var Util = require('./lib/util');
-var Menus = require('./lib/menus')
-var CodeParse = require('./lib/codeParse');
-var FileOperation = require('./lib/fileOperation');
-var HeaderPanel = require('./lib/headerPanel');
-var ToolPanel = require('./lib/toolPanel');
-var CodePanel = require('./lib/codePanel');
-var MapPanel = require('./lib/mapPanel');
-var FilePanel = require('./lib/filePanel');
-var WelcomeScreen = require('./lib/welcomeScreen');
-var Police = require('./lib/police');
+var Util = require('./dist/util');
+var Menus = require('./dist/menus')
+var CodeParse = require('./dist/codeParse');
+var FileOperation = require('./dist/fileOperation');
+var HeaderPanel = require('./dist/headerPanel');
+var ToolPanel = require('./dist/toolPanel');
+var CodePanel = require('./dist/codePanel');
+var MapPanel = require('./dist/mapPanel');
+var FilePanel = require('./dist/filePanel');
+var WelcomeScreen = require('./dist/welcomeScreen');
+var Police = require('./dist/police');
 
 var MainComponent = React.createClass({
 
@@ -43,19 +43,19 @@ var MainComponent = React.createClass({
 
   getNewTool: function(index) {
     return {
-          id: index,
-          name: "New Step",
-          description: "A new step you just created",
-          code: CodeParse.initCode(), //the JSON code
-          codeobj: {}, //JSON object parsed from the code
-          parsedOptions: {}, //LEASH converted options of the tool
-          looping: false, //if the command is to run as a loop, or the values to loop
-          expressions: [], //direct LEASH parsing result
-          options: [], //keys for options
-          parsedCommand: "", //the command to finally run
-          valid: true, //if the JSON is valid
-          output_files: [] //the array of predicted output files path
-        };
+      id: index,
+      name: "New Step",
+      description: "A new step you just created",
+      code: CodeParse.initCode(), //the JSON code
+      codeobj: {}, //JSON object parsed from the code
+      parsedOptions: {}, //LEASH converted options of the tool
+      looping: false, //if the command is to run as a loop, or the values to loop
+      expressions: [], //direct LEASH parsing result
+      options: [], //keys for options
+      parsedCommand: "", //the command to finally run
+      valid: true, //if the JSON is valid
+      output_files: [] //the array of predicted output files path
+    };
   },
 
   componentDidMount: function() {

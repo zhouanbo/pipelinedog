@@ -12,17 +12,17 @@ var path = require('path');
 var GitHubApi = require("github");
 var open = require("open");
 
-var Util = require('./lib/util');
-var Menus = require('./lib/menus');
-var CodeParse = require('./lib/codeParse');
-var FileOperation = require('./lib/fileOperation');
-var HeaderPanel = require('./lib/headerPanel');
-var ToolPanel = require('./lib/toolPanel');
-var CodePanel = require('./lib/codePanel');
-var MapPanel = require('./lib/mapPanel');
-var FilePanel = require('./lib/filePanel');
-var WelcomeScreen = require('./lib/welcomeScreen');
-var Police = require('./lib/police');
+var Util = require('./dist/util');
+var Menus = require('./dist/menus');
+var CodeParse = require('./dist/codeParse');
+var FileOperation = require('./dist/fileOperation');
+var HeaderPanel = require('./dist/headerPanel');
+var ToolPanel = require('./dist/toolPanel');
+var CodePanel = require('./dist/codePanel');
+var MapPanel = require('./dist/mapPanel');
+var FilePanel = require('./dist/filePanel');
+var WelcomeScreen = require('./dist/welcomeScreen');
+var Police = require('./dist/police');
 
 var MainComponent = React.createClass({
   displayName: 'MainComponent',
