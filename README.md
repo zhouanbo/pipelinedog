@@ -1,4 +1,5 @@
 <img src="http://pipeline.dog/icon.png" alt="pipelinedog logo" height="128" >
+
 # PipelineDog Docs
 
 ## Overview
@@ -7,10 +8,14 @@ This is the documentation of PipelineDog, a tool that helps you better construct
 
 ## Links
 
-Please first read the [Quick Start Guide](https://github.com/zhouanbo/pipelinedog/wiki/Quick-Start), which include the installation tutorial and essential GUI introductions.
+- To get an idea on the essential building blocks of PipelineDog steps, take a look at the [LEASH Expression Specification](https://github.com/ysunlab/PipelineDog/blob/master/pipelineDog.LEASHexpression.md).
 
-The [Paradigm](https://github.com/zhouanbo/pipelinedog/wiki/Paradigm) page has information about how PipelineDog is designed to work.
+- The [Step Specification](https://github.com/ysunlab/PipelineDog/blob/master/web.pipelineDog.StepFormatDefinition.md) has information of how to structure a PipelineDog step.
 
-In [Use Cases](https://github.com/zhouanbo/pipelinedog/wiki/Use-Cases), there're several examples of pipelines and tools definition that you can refer to.
+- To combine steps into a pipeline, refer to the [Project Specification](https://github.com/ysunlab/PipelineDog/blob/master/web.pipelineDog.ProjectFormatDefinition.md).
+
+- Try it out following the [Start From Scratch](https://github.com/ysunlab/PipelineDog/blob/master/startFromScratch.md) guide, a step-by-step tutorial with screenshots for each step.
+
+- Tips and common pitfalls are pointed out at [YAML Tips](https://github.com/ysunlab/PipelineDog/blob/master/pipelineDog.YAMLtips.md).
 
 Have fun pipelining!
