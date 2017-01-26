@@ -1,0 +1,142 @@
+OUT_DIR: /home/output
+REF: /home/hg19/ref.fa
+
+bwaPath: /usr/bin/bwa
+samtoolsPath: /usr/bin/samtools
+gatkPath: /usr/bin/gatk
+
+bwa:
+  step: 1-1
+  name: Bwa
+  in: $fastq
+  folder: bwa
+
+mark_duplicates:
+  step: 2-1
+  name: MarkDuplicate
+  in: $1-1.out
+  folder: mark_duplicates
+  
+realigner_target_creator:
+  step: 3-1
+  name: RealignerTargetCreator
+  in: $2-1.out
+  folder: realigner_target_creator
+  
+indel_realigner:
+  step: 4-1
+  name: IndelRealigner
+  in: 
+   - $2-1.out
+   - $3-1.out
+  folder: indel_realigner
+  
+base_recalibrator:
+  step: 5-1
+  name: BaseRecalibrator
+  in: $4-1.out
+  folder: base_recalibrator
+  
+print_reads:
+  step: 6-1
+  name: PrintReads
+  in: 
+   - $4-1.out
+   - $5-1.out
+  folder: print_reads
+  
+haplotype_caller:
+  step: 7-1
+  name: HaplotypeCaller
+  in: $6-1.out
+  folder: haplotype_caller
+  
+genotype_gVCFs:
+  step: 8-1
+  name: GenotypeGVCFs
+  in: $7-1.out
+  folder: genotype_gVCFs
+  
+
+$bwa.step:
+  name: $bwa.name
+  in: $bwa.in
+  run: $bwaPath/bwa mem $REF ~fastq | samtools sort -m 2G -@ 8 -O bam -o ~bam&
+  ~fastq: {}
+  ~bam:
+    mods: $OUT_DIR/$bwa.folder/$FILENAME_NOEXT.bam
+  out: ~bam
+
+$mark_duplicates.step:
+  name: $mark_duplicates.name
+  in: $mark_duplicates.in
+  run: $samtoolsPath samtools rmdup ~inBam ~outBam&
+  ~inBam: {}
+  ~outBam:
+    mods: $OUT_DIR/$mark_duplicates.folder/$FILENAME_NOEXT.rmdup.bam
+  out: ~outBam
+
+$realigner_target_creator.step:
+  name: $realigner_target_creator.name
+  in: $realigner_target_creator.in
+  run: $gatkPath/GenomeAnalysisTK.jar -T RealignerTargetCreator -R $REF -I ~inBam -known 1000G_phase1.indels.hg19.vcf -known Mills_and_1000G_gold_standard.indels.hg19.vcf -S LENIENT -o ~outBam&
+  ~inBam: {}
+  ~outBam:
+    mods: $OUT_DIR/$realigner_target_creator.folder/$FILENAME_NOEXT.reaglined.intervals
+  out: ~outBam
+
+$indel_realigner.step:
+  name: $indel_realigner.name
+  in: $indel_realigner.in
+  run: $gatkPath/GenomeAnalysisTK.jar -T IndelRealigner -R $REF -I ~inBam -targetIntervals ~intervals -known 1000G_phase1.indels.hg19.vcf -known Mills_and_1000G_gold_standard.indels.hg19.vcf -S LENIENT -o ~outBam&
+  ~inBam: 
+    line: /.bam/
+  ~intervals: 
+    line: /.intervals/
+  ~outBam:
+    line: /.bam/
+    mods: $OUT_DIR/$indel_realigner.folder/$FILENAME_NOEXT.realigned.bam
+  out: ~outBam
+
+$base_recalibrator.step:
+  name: $base_recalibrator.name
+  in: $base_recalibrator.in
+  run: $gatkPath/GenomeAnalysisTK.jar -T BaseRecalibrator -R $REF -I ~inBam -knownSites 1000G_phase1.indels.hg19.vcf -knownSites Mills_and_1000G_gold_standard.indels.hg19.vcf -S LENIENT -o ~grp&
+  ~inBam: {}
+  ~grp:
+    mods: $OUT_DIR/$base_recalibrator.folder/$FILENAME_NOEXT.bqsr.grp
+  out: ~grp
+
+$print_reads.step:
+  name: $print_reads.name
+  in: $print_reads.in
+  run: $gatkPath/GenomeAnalysisTK.jar -T PrintReads -R $REF -I ~inBam -BQSR ~bqsr -known 1000G_phase1.indels.hg19.vcf -known Mills_and_1000G_gold_standard.indels.hg19.vcf -S LENIENT -o ~outBam&
+  ~inBam: 
+    line: /.bam/
+  ~bqsr: 
+    line: /.grp/
+  ~outBam:
+    line: /.bam/
+    mods: $OUT_DIR/$print_reads.folder/$FILENAME_NOEXT.recalibrated.bam
+  out: ~outBam
+
+$haplotype_caller.step:
+  name: $haplotype_caller.name
+  in: $haplotype_caller.in
+  run: $gatkPath/GenomeAnalysisTK.jar -T HaplotypeCaller -R $REF --dbsnp dbSNP.vcf --emitRefConfidence GVCF -I ~inBam -o ~gVCF&
+  ~inBam: {}
+  ~gVCF:
+    mods: $OUT_DIR/$haplotype_caller.folder/$FILENAME_NOEXT.gvcf
+  out: ~gVCF
+
+$genotype_gVCFs.step:
+  name: $genotype_gVCFs.name
+  in: $genotype_gVCFs.in
+  run: $gatkPath/GenomeAnalysisTK.jar -T GenotypeGVCFs -R $REF ~variants -o ~vcf&
+  ~variants: 
+    line: -:0
+    mods: --variant $FILENAME
+  ~vcf:
+    mods: $OUT_DIR/$genotype_gVCFs.folder/$FILENAME_NOEXT.vcf
+  out: ~vcf
+
