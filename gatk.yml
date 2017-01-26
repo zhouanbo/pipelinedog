@@ -8,7 +8,7 @@ gatkPath: /usr/bin/gatk
 bwa:
   step: 1-1
   name: Bwa
-  in: $fastq
+  in: $Default_List
   folder: bwa
 
 mark_duplicates:
