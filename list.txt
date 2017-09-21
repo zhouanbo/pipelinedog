@@ -1,0 +1,3 @@
+/home/usr/sample1.fq
+/home/usr/sample2.fq
+/home/usr/sample3.fq
