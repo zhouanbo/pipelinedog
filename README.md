@@ -2,6 +2,9 @@
 
 # PipelineDog Docs
 
+## Important
+PipelineDog has moved from this desktop version to the web version (web.pipeline.dog), therefore this repo is no longer maintained. Go to the web verison and have a try!
+
 ## Overview
 
 This is the documentation of PipelineDog, a tool that helps you better construct and maintain your scientific pipelines.
