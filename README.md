@@ -3,7 +3,7 @@
 # PipelineDog Docs
 
 ## Important
-PipelineDog has moved from this desktop version to the web version (http://web.pipeline.dog), therefore this repo is no longer maintained. Go to the web verison and have a try!
+PipelineDog has moved from this desktop version to the web version (http://web.pipeline.dog and https://github.com/zhouanbo/pipelinedog-web), therefore this repo is no longer maintained. Go to the web verison and have a try!
 
 ## Overview
 
